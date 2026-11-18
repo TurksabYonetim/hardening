@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { App as AntApp, Button, ConfigProvider, Drawer, FloatButton, Grid, Layout } from "antd";
-import { MenuOutlined, HomeOutlined, ProjectOutlined, ApartmentOutlined, FlagOutlined, SafetyCertificateOutlined, VerticalAlignTopOutlined, SearchOutlined, CloseOutlined } from "@ant-design/icons";
+import { MenuOutlined, HomeOutlined, ProjectOutlined, ApartmentOutlined, SafetyCertificateOutlined, VerticalAlignTopOutlined, SearchOutlined, CloseOutlined } from "@ant-design/icons";
 import trTR from "antd/locale/tr_TR";
 import { buildTheme } from "../lib/theme";
 import { url } from "../lib/base";
@@ -8,7 +8,6 @@ import { SiteSearch } from "./SiteSearch";
 
 const NAV = [
 	{ key: "/", label: "Genel bakış", icon: <HomeOutlined /> },
-	{ key: "/fazlar/", label: "Fazlar", icon: <FlagOutlined /> },
 	{ key: "/kanban/", label: "Kanban", icon: <ProjectOutlined /> },
 	{ key: "/baglamlar/", label: "Bağlamlar", icon: <ApartmentOutlined /> },
 	{ key: "/yonergeler/", label: "Yönergeler", icon: <SafetyCertificateOutlined /> },

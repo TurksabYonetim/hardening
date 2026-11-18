@@ -45,9 +45,9 @@ const FAZ_CSS = `
 }
 .faz-ray { display: none; }
 @media (min-width: 1024px) { .faz-ray { display: block; } }
-/* Ray modüllerden oluşur. Her modül kendi yüzeyini taşır, çıplak metin değildir. */
-.faz-ray section { background: var(--bg-sunken); border-radius: var(--radius-md); padding: var(--space-4); }
-.faz-ray section + section { margin-top: var(--space-3); }
+/* Ray tek bir modüldür. Üç ayrı kutu yerine bir yüzey ve içinde bölümler. */
+.faz-ray { background: var(--bg-sunken); border-radius: var(--radius-md); padding: var(--space-4); }
+.faz-ray section + section { margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--color-hairline); }
 .faz-ray h2 {
 	font-size: var(--text-eyebrow) !important;
 	font-weight: var(--weight-strong) !important;
@@ -55,21 +55,21 @@ const FAZ_CSS = `
 	color: var(--color-text-muted) !important;
 	margin: 0 0 var(--space-3) !important;
 }
-/* Sayılar yan yana durur. Etiket küçük, rakam büyük. */
-.faz-ray dl { display: flex; gap: var(--space-4); margin: 0; }
-.faz-ray dl > div { display: flex; flex-direction: column-reverse; gap: 2px; min-width: 0; }
-.faz-ray dt { margin: 0; font-size: var(--text-small); color: var(--color-text-muted); white-space: nowrap; }
+/* Sayı satırı: etiket solda, rakam sağda. Aynı hizada, aynı sırada. */
+/* Etiket solda, rakam sağda. İkisi aynı satırda ve hizalı durur. */
+.faz-ray dl { display: grid; grid-template-columns: 1fr auto; gap: var(--space-2) var(--space-3); align-items: baseline; margin: 0; }
+.faz-ray dt { margin: 0; font-size: var(--text-small); color: var(--color-text-muted); }
 .faz-ray dd {
 	margin: 0;
-	font-size: 26px;
+	font-size: var(--text-lead);
 	font-weight: var(--weight-strong);
-	line-height: 1;
-	letter-spacing: -0.02em;
+	line-height: 1.2;
 	color: var(--color-text-strong);
 	font-variant-numeric: tabular-nums lining-nums;
 }
 .faz-ray ul { list-style: none; margin: 0; padding: 0; }
 /* Ray bağlantısı mavi değildir. Etkileşim zemini değiştirir. */
+.faz-ray li + li { margin-top: 2px; }
 .faz-ray a {
 	display: block;
 	padding: var(--space-2);
@@ -87,8 +87,6 @@ const FAZ_CSS = `
 .faz-ray a[aria-current="page"] { background: var(--color-ink); color: #ffffff !important; font-weight: var(--weight-medium); }
 .faz-ray [data-ray-faz] { display: flex; align-items: center; gap: var(--space-2); }
 .faz-ray [data-ray-nokta] { width: 10px; height: 10px; border-radius: 2px; flex: 0 0 auto; }
-/* Faz listesi iki sütuna iner, yedi satır yer kaplamaz. */
-.faz-ray [data-ray-fazlar] { display: grid; grid-template-columns: 1fr 1fr; gap: 2px var(--space-1); }
 .faz-switch { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); margin-bottom: var(--rhythm-block); }
 .faz-switch-label { font-size: var(--text-small); color: var(--color-text-muted); letter-spacing: var(--track-meta); margin-inline-end: var(--space-1); }
 .faz-switch .ant-btn { padding-inline: var(--space-2); min-width: calc(var(--space-6) + var(--space-3)); font-size: var(--text-body); font-weight: var(--weight-medium); color: var(--color-text-muted); font-variant-numeric: tabular-nums; border-radius: var(--radius-sm); }
@@ -427,7 +425,7 @@ export default function PhasePage(props: { phase: Phase; phases: PhaseLink[]; gu
 	}, []);
 
 	return (
-		<AppShell active="/fazlar/" crumbs={[{ title: "Genel bakış", href: "/" }, { title: "Fazlar", href: "/fazlar/" }, { title: phase.label }]}>
+		<AppShell active="/" crumbs={[{ title: "Genel bakış", href: "/" }, { title: phase.label }]}>
 			<style dangerouslySetInnerHTML={{ __html: FAZ_CSS }} />
 			<div className="faz-duzen">
 			<div className="faz" data-faz-column style={{ ["--faz-renk" as string]: FAZ_RENK[phase.id] || "var(--color-ink)" }}>
@@ -492,7 +490,7 @@ export default function PhasePage(props: { phase: Phase; phases: PhaseLink[]; gu
 				)}
 				<section>
 					<h2>Fazlar</h2>
-					<ul data-ray-fazlar>
+					<ul>
 						{phases.map((p) => (
 							<li key={p.id}>
 								<a href={url(`/fazlar/${p.slug}/`)} aria-current={p.id === phase.id ? "page" : undefined}>
