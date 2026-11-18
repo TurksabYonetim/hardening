@@ -17,7 +17,17 @@ const { title, description = "tradehub_core modüler monolit geçiş planı" } =
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<meta name="description" content={description} />
 		<meta name="theme-color" content="#0a3d91" />
+		<meta name="color-scheme" content="light" />
+		<link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+		<link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}favicon.svg`} />
 		<title>{title} | İstoç mimari</title>
+		<!-- Bağlantı sohbete yapıştırılınca sayfanın adı ve özeti görünür. -->
+		<meta property="og:site_name" content="İstoç mimari" />
+		<meta property="og:title" content={`${title} | İstoç mimari`} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="tr_TR" />
+		<meta name="twitter:card" content="summary" />
 		<script is:inline>
 			// Merkezi odak modu: yalnız Tab ve Shift+Tab klavye modunu açar.
 			// İşaretçi ve dokunma yalnız görsel modu kapatır. Odak ve klavye erişimi korunur.
@@ -33,12 +43,348 @@ const { title, description = "tradehub_core modüler monolit geçiş planı" } =
 				window.addEventListener("touchstart", function () { set("pointer"); }, { capture: true, passive: true });
 			})();
 		</script>
+		<style is:global>
+			/* Kabuk stilleri: üst çubuk, menü, yol izi, içerik ve alt bilgi.
+			   Değerler src/styles/tokens.css dosyasındaki tokenlardan gelir. */
+
+			/* Üst çubuk, içerik ve alt bilgi aynı 1200 px'lik hat üzerinde durur.
+			   Yatay kenar boşluğunu tokens.css verir. Çentik payı da oradan gelir. */
+			.shell-bar {
+				width: 100%;
+				max-width: 1200px;
+				margin-inline: auto;
+			}
+
+			/* Zemin tokens.css dosyasından gelir ve marka mavisidir.
+			   Mavi üstündeki yazı beyaz ailesindendir. Tek tam beyaz, bir de %90 beyaz kullanırız.
+			   Ölçülen kontrast beyazda 10,05:1 ve %90 beyazda 8,45:1 olur.
+			   İstek notu: bu iki değer için tokens.css içinde renk tokenı açılmalı. */
+			.shell-header {
+				position: sticky;
+				top: 0;
+				z-index: 20;
+				height: 56px;
+				line-height: normal;
+				padding: 0;
+			}
+			.shell-topbar {
+				display: flex;
+				align-items: center;
+				gap: var(--space-2);
+				height: 56px;
+			}
+
+			/* Menü düğmesinin simgesi, altındaki başlıkla aynı hizada başlar.
+			   Simge 20 px'tir. Eksi boşluk, düğmenin iç dolgusunu geri alır. */
+			.shell-menu-btn.ant-btn {
+				flex: none;
+				width: var(--hit);
+				min-width: var(--hit);
+				margin-inline-start: calc((var(--hit) - 20px) / -2);
+			}
+
+			.shell-logo {
+				display: inline-flex;
+				align-items: center;
+				height: 56px;
+				margin-inline-end: var(--space-6);
+				font-size: var(--text-h3);
+				font-weight: var(--weight-strong);
+				letter-spacing: var(--track-display);
+				white-space: nowrap;
+				text-decoration: none;
+			}
+			/* tokens.css üst çubuktaki bütün bağlantılara tek renk verir.
+			   Site adı ile menü arasındaki farkı burada kurarız. */
+			.shell-header.ant-layout-header .shell-logo,
+			.shell-header.ant-layout-header .shell-logo:hover,
+			.shell-header.ant-layout-header .shell-menu-btn.ant-btn,
+			.shell-header.ant-layout-header .shell-menu-btn.ant-btn .anticon {
+				color: #ffffff !important;
+			}
+
+			/* Geniş ekrandaki ana menü. Bağlantı satırın tamamını kaplar. */
+			.shell-nav {
+				min-width: 0;
+				flex: 1;
+			}
+			.shell-nav ul,
+			.shell-drawer-nav ul {
+				display: flex;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			.shell-nav ul {
+				align-items: stretch;
+				overflow-x: auto;
+				scrollbar-width: none;
+			}
+			.shell-nav ul::-webkit-scrollbar {
+				display: none;
+			}
+			.shell-nav a {
+				display: inline-flex;
+				align-items: center;
+				gap: var(--space-2);
+				height: 56px;
+				padding-inline: var(--space-3);
+				font-size: var(--text-body);
+				font-weight: var(--weight-medium);
+				white-space: nowrap;
+				text-decoration: none;
+				transition-property: color, background-color;
+				transition-duration: var(--motion-fast);
+				transition-timing-function: var(--motion-ease);
+			}
+			/* Bekleyen bağlantı %90 beyazdır. Açık olan sayfa tam beyazdır.
+			   Açık olan sayfanın altında düz beyaz çizgi vardır.
+			   Çizginin değdiği köşeler karedir, bu yüzden kural izinlidir. */
+			.shell-header.ant-layout-header .shell-nav a,
+			.shell-header.ant-layout-header .shell-nav a:visited {
+				color: rgba(255, 255, 255, 0.9) !important;
+			}
+			.shell-header.ant-layout-header .shell-nav a:hover {
+				color: #ffffff !important;
+				background: rgba(255, 255, 255, 0.12) !important;
+				box-shadow: none !important;
+			}
+			/* Açık olan sayfa beyaz bir blok olur. Blok çubuğun tamamını kaplar.
+			   Köşeler karedir, bu yüzden kavisli vurgu yasağı çiğnenmez. */
+			.shell-header.ant-layout-header .shell-nav a[aria-current="page"],
+			.shell-header.ant-layout-header .shell-nav a[aria-current="page"]:hover {
+				color: var(--color-primary) !important;
+				background: #ffffff !important;
+				font-weight: var(--weight-strong);
+				box-shadow: none !important;
+				border-radius: 0 !important;
+			}
+			.shell-header.ant-layout-header .shell-nav a[aria-current="page"] .anticon {
+				color: var(--color-primary) !important;
+			}
+
+			/* Klavye odağı merkezî kuraldan gelir: sarı zemin ve siyah yazı.
+			   Yukarıdaki beyaz kurallar odakta geçerli olmamalı.
+			   Beyaz yazı sarı zeminde okunmaz. */
+			html[data-focus-mode="keyboard"] .shell-header.ant-layout-header .shell-logo:focus-visible,
+			html[data-focus-mode="keyboard"] .shell-header.ant-layout-header .shell-nav a:focus-visible,
+			html[data-focus-mode="keyboard"] .shell-header.ant-layout-header .shell-nav a[aria-current="page"]:focus-visible,
+			html[data-focus-mode="keyboard"] .shell-header.ant-layout-header .shell-menu-btn.ant-btn:focus-visible,
+			html[data-focus-mode="keyboard"] .shell-header.ant-layout-header .shell-menu-btn.ant-btn:focus-visible .anticon {
+				color: var(--focus-fg) !important;
+			}
+
+			/* Dar ekrandaki çekmece menüsü. Her satır en az 48 px yüksekliktedir. */
+			.shell-drawer-nav ul {
+				flex-direction: column;
+			}
+			.shell-drawer-nav a {
+				display: flex;
+				align-items: center;
+				gap: var(--space-3);
+				min-height: var(--hit);
+				padding: var(--space-2) var(--space-4);
+				color: var(--color-text);
+				font-size: var(--text-body);
+				text-decoration: none;
+				transition-property: background-color, color;
+				transition-duration: var(--motion-fast);
+				transition-timing-function: var(--motion-ease);
+			}
+			.shell-drawer-nav a:hover {
+				background: var(--color-surface);
+			}
+			.shell-drawer-nav a[aria-current="page"] {
+				background: var(--color-surface);
+				font-weight: var(--weight-strong);
+			}
+			.shell-ico {
+				display: inline-flex;
+				flex: none;
+			}
+
+			/* Çekmecenin kapatma düğmesi tokens.css listesinde yoktur.
+			   Ölçüyü burada veririz. İstek notunu ux-notlar dosyasına yazdım. */
+			.shell-drawer .ant-drawer-close {
+				width: var(--hit);
+				height: var(--hit);
+				margin-inline-end: var(--space-2);
+			}
+
+			.shell-content {
+				padding: var(--space-4) 0 48px;
+			}
+
+			/* Okunur sütun: düz yazı satırı yaklaşık 68 karakter olur.
+			   Geniş ekran daha uzun satır değil, yanda boşluk kazanır.
+			   Tablo, pano ve kod bloğu tam genişliği kullanabilir. */
+			.shell-main :where(p, blockquote, dd, figcaption) {
+				max-width: var(--measure);
+			}
+			.shell-main :where(h1, h2, h3, h4) {
+				max-width: var(--measure-wide);
+			}
+			.shell-main :where(td, th, pre) :where(p, blockquote, dd, figcaption, h1, h2, h3, h4) {
+				max-width: none;
+			}
+
+			/* Yol izi tek satırda durur. Sığmazsa kendi içinde yana kayar. */
+			/* Dokunma alanı 44 px'tir. Eksi dış boşluk, satırın kapladığı yeri 24 px'te tutar. */
+			.shell-crumbs {
+				margin-block: -10px 0;
+			}
+			.shell-crumbs ol {
+				display: flex;
+				align-items: center;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				overflow-x: auto;
+				scrollbar-width: none;
+				white-space: nowrap;
+			}
+			.shell-crumbs ol::-webkit-scrollbar {
+				display: none;
+			}
+			.shell-crumbs li {
+				display: flex;
+				align-items: center;
+			}
+			.shell-crumbs a {
+				display: inline-flex;
+				align-items: center;
+				min-height: var(--hit-sm);
+				padding-inline: var(--space-1);
+				color: var(--color-primary);
+				font-size: var(--text-small);
+				text-decoration: underline;
+			}
+			/* Bağlantısı olmayan basamak. Metin olarak çizilir. */
+			.shell-crumbs .shell-crumb-text {
+				display: inline-flex;
+				align-items: center;
+				min-height: var(--hit-sm);
+				color: var(--color-text-muted);
+				font-size: var(--text-small);
+			}
+			.shell-sep {
+				padding-inline: var(--space-1);
+				color: var(--color-text-muted);
+				font-size: var(--text-small);
+			}
+
+			/* Alt bilgi sessizdir. Ayrımı kenarlık değil zemin kurar. */
+			.shell-footer {
+				padding: 0;
+				background: var(--color-surface);
+			}
+			.shell-footer-inner {
+				padding-block: var(--space-4);
+			}
+			.shell-footer-inner p {
+				margin: 0 0 var(--space-1);
+				max-width: var(--measure);
+				color: var(--color-text-muted);
+				font-size: var(--text-small);
+			}
+			.shell-footer-inner p:last-child {
+				margin-bottom: 0;
+			}
+
+			.shell-noscript {
+				max-width: 1200px;
+				margin-inline: auto;
+				padding: var(--space-4) var(--gutter);
+			}
+			.shell-noscript p {
+				margin: 0 0 var(--space-2);
+				max-width: var(--measure);
+				font-size: var(--text-body);
+			}
+
+			/* Üst çubuk yapışkandır. İç bağ hedefi çubuğun altında kalmaz. */
+			html {
+				scroll-padding-top: 72px;
+			}
+			@media (max-height: 480px) {
+				html {
+					scroll-padding-top: 64px;
+				}
+			}
+
+			/* Açılış çubuğu. Sayfa yüklenirken ekran boş kalmaz.
+			   React kabuğu hazır olunca bu çubuğu betik kaldırır. */
+			.shell-boot {
+				height: 56px;
+				background: var(--color-primary);
+			}
+			.shell-boot .shell-logo {
+				color: #ffffff;
+			}
+			.shell-boot-btn {
+				flex: none;
+				width: var(--hit);
+				height: var(--hit);
+				margin-inline-start: -12px;
+			}
+			@media (min-width: 992px) {
+				.shell-boot-btn {
+					display: none;
+				}
+			}
+
+			/* Yatay telefonda ekran kısadır. Üst çubuğu 48 px'e indiririz.
+			   Not: Astro, bu blokta tanımlanan CSS değişkenini sabit değere çevirir.
+			   Bu yüzden yüksekliği değişkenle değil, doğrudan medya sorgusuyla yazarız. */
+			@media (max-height: 480px) {
+				.shell-header,
+				.shell-topbar,
+				.shell-logo,
+				.shell-nav a,
+				.shell-boot {
+					height: 48px;
+				}
+			}
+
+			/* Başa dön düğmesi alt bilgi yazısının üstünü kapatmaz. */
+			@media (max-width: 991px) {
+				.shell-footer-inner {
+					padding-bottom: 72px;
+				}
+			}
+		</style>
 	</head>
 	<body>
 		<a class="skip-link" href="#icerik">İçeriğe geç</a>
+		<div class="shell-boot" aria-hidden="true">
+			<div class="shell-bar shell-topbar">
+				<span class="shell-boot-btn"></span>
+				<span class="shell-logo">İstoç mimari planı</span>
+			</div>
+		</div>
+		<script is:inline>
+			// Kabuk hazır olunca açılış çubuğunu kaldırırız. Böylece iki çubuk üst üste gelmez.
+			(function () {
+				var boot = document.querySelector(".shell-boot");
+				if (!boot) return;
+				var bitir = function () {
+					if (!document.querySelector("[data-app-ready]")) return false;
+					boot.remove();
+					return true;
+				};
+				if (bitir()) return;
+				var gozlemci = new MutationObserver(function () {
+					if (bitir()) gozlemci.disconnect();
+				});
+				gozlemci.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-app-ready"] });
+			})();
+		</script>
 		<slot />
 		<noscript>
-			<p style="padding:16px">Bu sayfa JavaScript ile çalışır. Raporların Markdown hâli <code>mimari/</code> klasöründedir.</p>
+			<div class="shell-noscript">
+				<p>Bu sayfa JavaScript ile çalışır. Tarayıcınızda JavaScript kapalı görünüyor.</p>
+				<p>Raporların Markdown hâli <code>mimari/</code> klasöründedir.</p>
+			</div>
 		</noscript>
 	</body>
 </html>

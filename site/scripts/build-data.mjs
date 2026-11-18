@@ -243,6 +243,21 @@ writeFileSync(join(OUT, "phases.json"), JSON.stringify({ phases, overviewHtml, o
 writeFileSync(join(OUT, "guides.json"), JSON.stringify(guides));
 writeFileSync(join(OUT, "agent-brief.json"), JSON.stringify({ md: agentBrief }));
 writeFileSync(join(OUT, "tasks.json"), JSON.stringify(tasks));
+
+// --- Arama dizini ---
+// Üst çubuktaki arama bu küçük dosyayı okur. Büyük veri dosyaları istemciye gitmez.
+const aramaDizini = [
+	...phases.flatMap((f) =>
+		f.tasks.map((t) => ({ a: t.title, y: t.href, t: "Görev", e: f.label })),
+	),
+	...summary.map((d) => ({ a: d.title, y: `/doctype/${d.ctx}/${d.slug}/`, t: "DocType", e: d.ctx })),
+	...ctxData.map((c) => ({ a: c.title, y: `/baglamlar/${c.ctx}/`, t: "Bağlam", e: c.ctx })),
+	...guides.map((g) => ({ a: g.title, y: `/yonergeler/${g.slug}/`, t: "Yönerge", e: "" })),
+	...phases.map((f) => ({ a: f.title, y: `/fazlar/${f.slug}/`, t: "Faz", e: f.label })),
+];
+writeFileSync(join(OUT, "search-index.json"), JSON.stringify(aramaDizini));
+console.log("arama dizini:", aramaDizini.length, "kayıt");
+
 if (warnings.length) {
 	console.warn(`UYARI: ${warnings.length} rapor eksik alan içeriyor:\n` + warnings.slice(0, 20).join("\n"));
 	if (process.env.STRICT_DATA) process.exit(1);

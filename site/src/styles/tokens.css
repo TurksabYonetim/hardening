@@ -1,76 +1,307 @@
-/* Tek kaynak: renk, tipografi, köşe, boşluk ve hareket tokenları.
-   Ant Design teması (src/lib/theme.ts) aynı değerleri kullanır. */
-:root {
-	--font-sans: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
-	--font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+/* Outfit'in orta ağırlığı. 400 ve 600 Base.astro içinde yüklenir. */
+@import "@fontsource/outfit/500.css";
 
-	--text-body: 16px;
+/* Tek kaynak: renk, tipografi, boşluk, köşe, dokunma hedefi ve hareket tokenları.
+   Ant Design teması (src/lib/theme.ts) aynı değerleri kullanır. İkisi birlikte değişir.
+   Bileşen dosyalarında sabit değer yazılmaz. */
+:root {
+	/* --- Tipografi ---
+	   Outfit ilk ailedir. Yedek zincir Türkçe harfleri ve benzer genişliği korur. */
+	--font-sans: "Outfit", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+	--font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+	--weight-normal: 400;
+	--weight-medium: 500;
+	--weight-strong: 600;
+
+	/* Ölçek. Hiçbir okunabilir metin 14 CSS px altına inmez.
+	   400 gövde, 500 etiket ve meta, 600 bütün başlıklar. */
 	--text-small: 14px;
-	--text-h1: 28px;
-	--text-h2: 22px;
-	--text-h3: 18px;
+	--text-body: 16px;
+	--text-lead: 18px;
+	--text-h3: 22px;
+	--text-h2: clamp(24px, 3.2vw, 28px);
+	--text-h1: clamp(30px, 6.4vw, 44px);
+	--text-eyebrow: 14px;
+
+	--leading-small: 1.45;
+	--leading-body: 1.55;
+	--leading-lead: 1.5;
+	--leading-h3: 1.25;
+	--leading-h2: 1.2;
+	--leading-h1: 1.05;
+	--leading-tight: 1.25;
+	--leading-heading: 1.2;
+
+	--track-h1: -0.025em;
+	--track-h2: -0.015em;
+	--track-h3: -0.01em;
+	--track-display: -0.015em;
+	--track-meta: 0.01em;
+	--track-eyebrow: 0.06em;
+
+	/* Piksel kullanılır. ch birimi öğenin kendi yazı boyuna göre büyür,
+	   bu yüzden 44px başlıkta ölçü iki katına çıkıyordu.
+	   16px Outfit'te 560px yaklaşık 70 karakter eder. */
+	--measure: 560px;
+	--measure-wide: 680px;
+
+	/* --- Renk ---
+	   Her değerin yanındaki oran beyaz zemine göre hesaplandı.
+	   Normal metin en az 4,5:1. İşlevsel kenarlık ve ayırıcı en az 3:1. */
+
+	/* Zemin katmanları */
+	--bg-page: #e9edf3;      /* sayfa kâğıdı */
+	--bg-surface: #ffffff;   /* içerik yaprağı, sayfadan 1,17:1 ayrılır */
+	--bg-raised: #ffffff;    /* açılır menü, çekmece, ipucu. Gölgeyle yüzer. */
+	--bg-sunken: #edf1f6;    /* kod bloğu, hikâye kutusu, boş durum */
+	--bg-ink: #11161d;       /* üst çubuk ve alt bilgi bandı */
 
 	--color-bg: #ffffff;
-	--color-surface: #f4f5f7;
-	--color-surface-strong: #e6e8ec;
-	--color-text: #0b0b0c;
-	--color-text-muted: #2e3136;
-	--color-primary: #0a3d91;
-	--color-primary-hover: #072c69;
-	--color-border: #6b6f76;
-	--color-divider: #c9ccd1;
+	--color-surface: #edf1f6;
+	--color-surface-strong: #e3e9f1;
+	--color-surface-raised: #ffffff;
+
+	/* Metin katmanları */
+	--color-text-strong: #0e1319;  /* 18,65:1 başlık */
+	--color-text: #1d242e;         /* 15,62:1 gövde */
+	--color-text-muted: #4e5a68;   /* 7,03:1 meta ve etiket */
+	--color-text-faint: #5c6878;   /* 5,67:1 en sessiz yardımcı metin */
+	--color-text-on-ink: #ffffff;  /* 18,16:1 */
+	--color-text-on-ink-soft: #c8d2e0; /* 11,89:1 */
+
+	/* Mürekkep ana eylem rengidir. Mavi yalnız bağlantıda ve ilerleme dolgusunda kullanılır. */
+	--color-ink: #11161d;
+	--color-ink-hover: #000000;
+	--color-primary: #0b4a8f;       /* 8,79:1 */
+	--color-primary-hover: #083866;
+
+	/* Kenar katmanları. Dekoratif kenarlık kullanılmaz. */
+	--color-hairline: #7d8899;      /* 3,59:1 işlevsel ayırıcı */
+	--color-divider: #4e5a68;       /* 7,03:1 tablo başlığı, seçili durum */
+	--color-border: #767f8f;        /* 4,04:1 form alanı kenarı */
+	--line-strong: #4e5a68;
+
+	/* Gömülü alan. Kart ayrımı tonla kurulur, kenarlıkla değil. */
+	--color-card: #edf1f6;
+
+	/* Kod: ayrım renkle kurulur, soluk zeminle değil. */
+	--text-code: #0b3d6e;           /* beyazda 11,01:1, gömülüde 9,71:1 */
+	--kod-vurgu: #edf1f6;
+
+	/* Anlam renkleri */
+	--ok-bg: #dcefe0;
+	--ok-fg: #0d5132;               /* 7,80:1 */
+	--uyari-bg: #fbefc4;
+	--uyari-fg: #5a4300;            /* 8,15:1 */
+	--tehlike-bg: #fbe0e3;
+	--tehlike-fg: #96121f;          /* 7,02:1 */
+	--bilgi-bg: #e1ecf8;
+	--bilgi-fg: #0b4a8f;            /* 7,34:1 */
+
+	/* Öncelik. Yalnız Kriz ve Kritik dolu alan alır.
+	   Böylece bir sayfada en çok iki renk alanı olur. */
+	--kriz-bg: #96121f;
+	--kriz-fg: #ffffff;             /* 8,74:1 */
+	--kritik-bg: #fbe4d3;
+	--kritik-fg: #7a2e00;           /* 7,73:1 */
+	--acil-bg: #fbefc4;
+	--acil-fg: #5a4300;             /* 8,15:1 */
+	--onemli-bg: transparent;
+	--onemli-fg: #14532d;           /* 9,11:1 */
+	--dusuk-bg: transparent;
+	--dusuk-fg: #4e5a68;            /* 7,03:1 */
+
+	/* Faz renkleri. Hepsi beyaz yazıyla dolgu olarak 7:1 üstü verir. */
+	--faz-eksi1: #7a2e00;
+	--faz-0: #8a1538;
+	--faz-1: #4a2a7a;
+	--faz-2: #0b4a8f;
+	--faz-3: #0f5a63;
+	--faz-4: #2a5a1f;
+	--faz-5: #3d4652;
 
 	--focus-bg: #ffd60a;
 	--focus-fg: #000000;
 
+	/* Derinlik. Gölge yalnız sayfanın üstünde yüzen katmanda kullanılır. */
+	--shadow-raised: 0 1px 2px rgba(14, 19, 25, 0.1), 0 10px 28px rgba(14, 19, 25, 0.14);
+
+	/* --- Köşe --- En çok 6px. Yuvarlak ya da hap biçim yoktur. */
 	--radius-xs: 2px;
 	--radius-sm: 4px;
 	--radius-md: 6px;
 
+	/* --- Boşluk ---
+	   Ayrı anlamlar ayrı tokenlardır: sayfa kenarı, öğe arası, sıkışık veri,
+	   bileşen iç dolgusu. Değerler proje yoğunluk tablosundan türetildi.
+	   Dar ekranda önce dekoratif boşluk azalır, metin ve dokunma hedefi küçülmez. */
 	--space-1: 4px;
 	--space-2: 8px;
 	--space-3: 12px;
 	--space-4: 16px;
 	--space-6: 24px;
-	--page-gutter: 16px;
+	--space-8: 32px;
+	--space-10: 40px;
+	--space-12: 48px;
+	--space-16: 64px;
 
+	/* Dikey ritim. Her sayfa aynı üç tokenı kullanır. */
+	--rhythm-section: 40px;
+	--rhythm-block: 24px;
+	--rhythm-item: 12px;
+
+	--gutter: 12px;
+	--gap: 8px;
+	--gap-dense: 4px;
+	--pad-card: 12px;
+
+	/* --- Dokunma ---
+	   Görünür ölçü ile gerçek etkileşim alanı ayrı tokenlardır. */
+	--hit: 44px;
+	--hit-sm: 36px;
+
+	/* --- Hareket --- Simetrik easeInOut. Giriş ve çıkış aynı eğriyi kullanır. */
 	--motion-ease: cubic-bezier(0.65, 0, 0.35, 1);
 	--motion-fast: 120ms;
 	--motion-mid: 200ms;
 	--motion-slow: 300ms;
+}
 
-	--hit-min: 44px;
+@media (min-width: 375px) {
+	:root {
+		--gutter: 16px;
+		--gap: 12px;
+		--gap-dense: 6px;
+	}
+}
+
+@media (min-width: 600px) {
+	:root {
+		--gap: 16px;
+		--gap-dense: 8px;
+		--gutter: 20px;
+		--pad-card: 16px;
+	}
 }
 
 @media (min-width: 768px) {
 	:root {
-		--page-gutter: 24px;
+		--gutter: 24px;
+		--gap: 20px;
+		--gap-dense: 12px;
+	}
+}
+
+@media (min-width: 1280px) {
+	:root {
+		--gutter: 32px;
+		--gap: 24px;
+		--gap-dense: 16px;
+		--pad-card: 20px;
+	}
+}
+
+/* Kaba işaretçide (dokunma) hedef büyür. Yazı boyutu değişmez. */
+@media (pointer: coarse) {
+	:root {
+		--hit: 48px;
+		--hit-sm: 44px;
+	}
+}
+
+/* Kullanıcı daha yüksek kontrast isterse kenarlar güçlenir. */
+@media (prefers-contrast: more) {
+	:root {
+		--color-divider: #3d4148;
+		--color-hairline: #6b6f76;
+		--color-text-muted: #1a1c1f;
 	}
 }
 
 html {
 	font-family: var(--font-sans);
 	color: var(--color-text);
-	background: var(--color-bg);
+	background: var(--bg-page);
 	-webkit-text-size-adjust: 100%;
 }
 
 body {
 	margin: 0;
 	font-size: var(--text-body);
-	line-height: 1.6;
-	background: var(--color-bg);
+	line-height: var(--leading-body);
+	background: var(--bg-page);
 	overflow-wrap: break-word;
 }
 
+/* Kod, tarih ve kısaltma hiç 14px altına inmez. Başlık içinde bağlamla büyür. */
 code,
 kbd,
 samp {
 	font-family: var(--font-mono);
-	font-size: var(--text-small) !important;
+	font-size: max(var(--text-small), 0.875em) !important;
 }
 
-/* Hareket: Ant Design "transition: all" kullanır. Yalnız boyanan özellikleri geçiririz. */
+/* Orta ağırlık: etiket ve tablo başlığı gövdeden ayrılır ama ağırlaşmaz. */
+.ant-tag,
+.ant-table-thead > tr > th,
+.ant-descriptions-item-label,
+.ant-statistic-title {
+	font-weight: var(--weight-medium);
+}
+
+/* Sayılar sütun hâlinde hizalansın. Tutar ve adet karşılaştırması kolaylaşır. */
+.ant-statistic-content-value,
+.ant-progress-text,
+.ant-pagination,
+.ant-table-cell-numeric,
+.num {
+	font-variant-numeric: tabular-nums lining-nums;
+	font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* Çentikli telefonlarda yatay kullanımda içerik çentiğin altına girmesin. */
+.ant-layout-header,
+.ant-layout-content,
+.ant-layout-footer {
+	padding-left: max(var(--gutter), env(safe-area-inset-left)) !important;
+	padding-right: max(var(--gutter), env(safe-area-inset-right)) !important;
+}
+.ant-layout-footer {
+	padding-bottom: max(var(--space-4), env(safe-area-inset-bottom)) !important;
+}
+
+/* Etkileşim hedefi her girişte en az --hit olur: farede 44, dokunmada 48.
+   Görünen gövde ölçüsü ve yazı boyutu değişmez. */
+.ant-btn,
+.ant-select .ant-select-content,
+.ant-select-selector,
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-tabs-tab,
+.ant-collapse-header,
+.ant-checkbox-wrapper,
+.ant-segmented-item {
+	min-height: var(--hit);
+}
+/* Hedef yüksekliği yalnız dış sarmalayıcıdan gelir.
+   Hem sarmalayıcıya hem iç öğeye uygulanınca kutu 67 piksele çıkıyordu. */
+.ant-input-affix-wrapper {
+	padding-block: 0 !important;
+}
+.ant-input-affix-wrapper > .ant-input,
+.ant-select .ant-select-content > .ant-input {
+	min-height: 0 !important;
+}
+/* Satır içi bağlantı ve kart başlığı bu kuralın dışındadır. */
+.ant-card-head .ant-btn-link,
+.ant-breadcrumb .ant-btn-link {
+	min-height: var(--hit-sm);
+}
+
+/* Hareket: Ant Design "transition: all" kullanır. Yalnız boyanan özellikleri geçiririz.
+   Alt öğeler ve pseudo-elementler de kapsanır. Portal katmanları gövde altında olduğu
+   için aynı seçici onları da yakalar. */
 [class^="ant-"],
 [class*=" ant-"],
 [class^="ant-"]::before,
@@ -147,6 +378,12 @@ html[data-focus-mode="keyboard"] :focus-visible .anticon * {
 	box-shadow: none !important;
 }
 
+/* Kart kenarlığı dekoratif değil, yalnız sessiz bir ayraçtır.
+   Ayrımı önce boşluk ve yüzey tonu kurar. */
+.ant-card {
+	border-color: var(--color-hairline);
+}
+
 .skip-link {
 	position: absolute;
 	left: var(--space-2);
@@ -165,13 +402,16 @@ html[data-focus-mode="keyboard"] :focus-visible .anticon * {
 /* Rapor içeriği (Markdown'dan gelen HTML). */
 .md {
 	font-size: var(--text-body);
+	line-height: var(--leading-body);
 	color: var(--color-text);
-	max-width: 76ch;
+	max-width: var(--measure-wide);
 }
 .md h1,
 .md h2,
-.md h3 {
-	line-height: 1.3;
+.md h3,
+.md h4 {
+	line-height: var(--leading-heading);
+	font-weight: var(--weight-strong);
 	margin: var(--space-6) 0 var(--space-2);
 }
 .md h1 {
@@ -183,21 +423,40 @@ html[data-focus-mode="keyboard"] :focus-visible .anticon * {
 .md h3 {
 	font-size: var(--text-h3);
 }
+.md h4 {
+	font-size: var(--text-body);
+	font-weight: var(--weight-medium);
+}
 .md p,
 .md li {
 	margin: var(--space-2) 0;
+}
+.md p {
+	max-width: var(--measure);
 }
 .md ul,
 .md ol {
 	padding-left: var(--space-6);
 }
+.md li::marker {
+	color: var(--color-text-muted);
+}
 .md a {
 	color: var(--color-primary);
 	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+.md strong {
+	font-weight: var(--weight-strong);
+}
+.md blockquote {
+	margin: var(--space-3) 0;
+	padding: var(--space-2) var(--space-4);
+	background: var(--color-surface);
+	border-radius: var(--radius-md);
 }
 .md code {
 	font-family: var(--font-mono);
-	font-size: var(--text-small);
 	background: var(--color-surface);
 	padding: 1px var(--space-1);
 	border-radius: var(--radius-xs);
@@ -208,16 +467,18 @@ html[data-focus-mode="keyboard"] :focus-visible .anticon * {
 	padding: var(--space-3);
 	border-radius: var(--radius-sm);
 	overflow-x: auto;
-	font-size: var(--text-small);
+	line-height: var(--leading-tight);
 }
 .md pre code {
 	background: none;
 	padding: 0;
 }
+/* Tablo kendi kapsayıcısında kayar. Sayfa yatay taşmaz. */
 .md table {
 	display: block;
 	overflow-x: auto;
 	border-collapse: collapse;
+	font-variant-numeric: tabular-nums;
 }
 .md th,
 .md td {
@@ -226,20 +487,45 @@ html[data-focus-mode="keyboard"] :focus-visible .anticon * {
 	text-align: left;
 	min-width: 8ch;
 }
+.md th {
+	background: var(--color-surface);
+	font-weight: var(--weight-strong);
+}
+/* İlk sütunda model adı ve başlık kelime ortasından bölünmez. */
+.md th:first-child,
+.md td:first-child {
+	word-break: normal;
+	overflow-wrap: normal;
+	min-width: 12ch;
+}
 
+/* Satır içi kod kutu DEĞİL. Kutu, başlık cümlesini parçalara bölüyordu.
+   Ayrım tek başına yazı tipiyle kurulur. */
 .md-inline code {
-	background: var(--color-surface-strong);
-	padding: 0 var(--space-1);
-	border-radius: var(--radius-xs);
-	overflow-wrap: break-word;
+	background: none;
+	padding: 0;
+	color: var(--color-text-muted);
+	overflow-wrap: anywhere;
+}
+/* Koyu başlık içinde kod, başlığın rengini ve ağırlığını paylaşır. */
+h1 .md-inline code,
+h2 .md-inline code,
+h3 .md-inline code,
+h4 .md-inline code,
+strong .md-inline code,
+.ant-typography strong .md-inline code,
+b .md-inline code {
+	color: inherit;
 }
 
 .story {
 	margin: 0;
-	padding: var(--space-3) var(--space-4);
+	padding: var(--pad-card) var(--space-4);
 	background: var(--color-surface);
 	border-radius: var(--radius-md);
-	font-size: 18px;
+	font-size: var(--text-lead);
+	line-height: var(--leading-body);
+	max-width: var(--measure);
 }
 
 /* Uzun dosya yolları dar ekranda taşmasın. Esnek kutu içindeki etiket küçülebilmeli. */
@@ -248,6 +534,1691 @@ html[data-focus-mode="keyboard"] :focus-visible .anticon * {
 	min-width: 0;
 	max-width: 100%;
 }
-.md-inline code {
-	overflow-wrap: anywhere;
+
+/* ===================================================================
+   GÖRSEL KİMLİK
+   Konu: canlı bir pazar yerinin fazlara bölünmüş sağlamlaştırma planı.
+   Okur: telefonda okuyan geliştirici ve teknik olmayan sahibi.
+   Ton: sakin, kesin, mühendislik el kitabı. Yönetim paneli değil.
+   Kural: renk anlam taşır, dekorasyon taşımaz. Ayrımı boşluk ve
+   tipografi kurar, kutu ve kenarlık değil.
+   =================================================================== */
+
+/* --- Üst çubuk: marka mavisi. Etkin sayfa beyaz dolgu bloğuyla değil,
+   altındaki beyaz çizgiyle belli olur. --- */
+.ant-layout-header {
+	background: var(--color-primary) !important;
+	border-bottom: none;
+	color: #ffffff !important;
+	box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.18);
+}
+.ant-layout-header a,
+.ant-layout-header .ant-btn,
+.ant-layout-header .anticon {
+	color: #ffffff !important;
+}
+.ant-layout-header .ant-menu,
+.ant-layout-header .ant-menu-horizontal {
+	background: transparent !important;
+	border-bottom: none !important;
+}
+.ant-layout-header .ant-menu-item {
+	color: rgba(255, 255, 255, 0.82) !important;
+	background: transparent !important;
+}
+.ant-layout-header .ant-menu-item a {
+	color: inherit !important;
+}
+.ant-layout-header .ant-menu-item:hover {
+	color: #ffffff !important;
+	background: transparent !important;
+}
+.ant-layout-header .ant-menu-item-selected {
+	color: #ffffff !important;
+	background: transparent !important;
+	box-shadow: inset 0 -3px 0 #ffffff;
+}
+.ant-layout-header .ant-menu-item::after {
+	display: none !important;
+}
+/* Çekmece menüsü koyu zeminde değil, bu yüzden marka rengini metinde taşır. */
+.ant-drawer .ant-menu-item-selected {
+	color: var(--color-primary) !important;
+	background: var(--color-surface) !important;
+}
+
+/* --- Başlıklar: büyük boyutta sıkı, net hiyerarşi --- */
+h1,
+.ant-typography h1,
+h1.ant-typography {
+	font-size: var(--text-h1) !important;
+	line-height: var(--leading-h1) !important;
+	letter-spacing: var(--track-h1);
+	font-weight: var(--weight-strong);
+	color: var(--color-text-strong);
+	margin-bottom: var(--rhythm-item) !important;
+}
+h2,
+.ant-typography h2,
+h2.ant-typography {
+	font-size: var(--text-h2) !important;
+	line-height: var(--leading-h2) !important;
+	letter-spacing: var(--track-h2);
+	color: var(--color-text-strong);
+}
+h3,
+.ant-typography h3,
+h3.ant-typography {
+	font-size: var(--text-h3) !important;
+	line-height: var(--leading-h3) !important;
+	letter-spacing: var(--track-h3);
+	color: var(--color-text-strong);
+}
+
+/* --- Yüzey: kart kenarlığı yerine ton. Ayrım boşlukla kurulur. --- */
+.ant-card {
+	border: none;
+	background: var(--bg-sunken);
+}
+.ant-card-head {
+	border-bottom: none;
+	min-height: 0;
+}
+
+/* --- Ana eylem mürekkeptir. Mavi yalnız bağlantıda kalır. --- */
+.ant-btn-primary {
+	background: var(--color-ink) !important;
+	border-color: var(--color-ink) !important;
+	color: #ffffff !important;
+	font-weight: var(--weight-medium);
+}
+.ant-btn-primary:hover {
+	background: var(--color-ink-hover) !important;
+	border-color: var(--color-ink-hover) !important;
+}
+.ant-btn-default {
+	border-color: var(--color-hairline);
+	color: var(--color-text);
+	font-weight: var(--weight-medium);
+}
+.ant-btn-default:hover {
+	border-color: var(--color-border);
+	color: var(--color-text);
+}
+
+/* --- Etiket: çerçeveli kutu değil, düz ve küçük renk alanı --- */
+.ant-tag {
+	border: none;
+	padding: 2px var(--space-2);
+	line-height: 1.45;
+	letter-spacing: var(--track-meta);
+	border-radius: var(--radius-xs);
+	background: var(--color-surface-strong);
+	color: var(--color-text-muted);
+	margin-inline-end: 0;
+}
+
+/* --- Giriş alanları: içe gömülü yüzey, hafif kenar --- */
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-select-selector {
+	background: var(--color-surface) !important;
+	border-color: var(--color-hairline) !important;
+}
+.ant-input:hover,
+.ant-input-affix-wrapper:hover,
+.ant-select:hover .ant-select-selector {
+	border-color: var(--color-border) !important;
+}
+
+/* --- Sekme ve ayırıcı: ince, sessiz --- */
+.ant-tabs-top > .ant-tabs-nav::before {
+	border-bottom-color: var(--color-hairline);
+}
+.ant-collapse {
+	border-color: var(--color-hairline);
+}
+.ant-collapse > .ant-collapse-item {
+	border-bottom-color: var(--color-hairline);
+}
+.ant-descriptions-bordered .ant-descriptions-view,
+.ant-descriptions-bordered .ant-descriptions-row,
+.ant-descriptions-bordered .ant-descriptions-item-label,
+.ant-descriptions-bordered .ant-descriptions-item-content {
+	border-color: var(--color-hairline) !important;
+}
+
+/* --- Uyarı kutusu: anlam rengini taşır, kenarlık almaz --- */
+.ant-alert {
+	border: none !important;
+	border-radius: var(--radius-md) !important;
+}
+.ant-alert-warning { background: var(--uyari-bg) !important; }
+.ant-alert-warning .ant-alert-message,
+.ant-alert-warning .ant-alert-description,
+.ant-alert-warning .anticon { color: var(--uyari-fg) !important; }
+.ant-alert-error { background: var(--tehlike-bg) !important; }
+.ant-alert-error .ant-alert-message,
+.ant-alert-error .ant-alert-description,
+.ant-alert-error .anticon { color: var(--tehlike-fg) !important; }
+.ant-alert-success { background: var(--ok-bg) !important; }
+.ant-alert-success .ant-alert-message,
+.ant-alert-success .ant-alert-description,
+.ant-alert-success .anticon { color: var(--ok-fg) !important; }
+.ant-alert-info { background: var(--bilgi-bg) !important; }
+.ant-alert-info .ant-alert-message,
+.ant-alert-info .ant-alert-description,
+.ant-alert-info .anticon { color: var(--bilgi-fg) !important; }
+
+/* --- İstatistik: etiket küçük ve sessiz, sayı büyük ve mürekkep --- */
+.ant-statistic-title {
+	font-size: var(--text-small);
+	color: var(--color-text-muted);
+	letter-spacing: var(--track-meta);
+	margin-bottom: 2px;
+}
+.ant-statistic-content {
+	color: var(--color-text);
+	letter-spacing: var(--track-display);
+	line-height: 1.1;
+}
+
+/* --- Liste kartı: beyaz üstünde beyaz kalmasın. Sessiz yüzey ve iç dolgu. --- */
+.ant-card-small > .ant-card-body {
+	padding: var(--pad-card);
+}
+/* Dar ekranda kart kenarlığı yerine yüzey farkı okunur. */
+@media (max-width: 767px) {
+	.ant-card {
+		background: var(--color-surface-raised);
+	}
+}
+
+/* --- Durum kutusu bir kartın en büyük öğesi olmamalı. --- */
+.ant-select-sm .ant-select-selector {
+	min-height: var(--hit-sm);
+}
+
+/* --- Meta satırı: öğeler birbirine yapışmasın, sessiz kalsın. --- */
+.ant-tag + .ant-tag {
+	margin-inline-start: var(--space-1);
+}
+
+/* --- Kart içi ritim: üç kontrol satırı yerine sıkı bir blok --- */
+.ant-card-small > .ant-card-body > * + * {
+	margin-top: var(--space-2);
+}
+/* Durum kutusu kartın en büyük öğesi olmasın. */
+.ant-card .ant-select {
+	font-size: var(--text-small);
+}
+.ant-card .ant-select .ant-select-selection-item {
+	color: var(--color-text-muted);
+}
+
+/* Ant Design, Typography içindeki <code> öğesine kenarlık ve zemin ekler.
+   Bu kutular başlık cümlesini parçalara böler. Kaynağında kapatılır. */
+.ant-typography code,
+.md-inline code,
+.ant-card code,
+.ant-list code {
+	margin: 0 !important;
+	padding: 0 !important;
+	background: none !important;
+	border: none !important;
+	border-radius: 0 !important;
+}
+/* Gövde metninde kod, çok hafif bir tonla ayrılır. Kutu yine yok. */
+.md p code,
+.md li code,
+.md td code {
+	background: var(--color-surface) !important;
+	padding: 0 var(--space-1) !important;
+	border-radius: var(--radius-xs) !important;
+}
+
+/* --- Kart içindeki durum kutusu sessiz bir kontrol olur ---
+   Kutu, kartın en büyük ve en gürültülü öğesiydi. Oysa görevin kendisi
+   içeriktir, durum seçici araçtır. Çerçeve kalkar, dokunma alanı kalır. */
+.ant-card .ant-select:not(.ant-select-open) .ant-select-selector,
+[data-task-card] .ant-select:not(.ant-select-open) .ant-select-selector {
+	background: transparent !important;
+	border-color: transparent !important;
+	padding-inline-start: 0 !important;
+}
+.ant-card .ant-select:hover .ant-select-selector,
+[data-task-card] .ant-select:hover .ant-select-selector {
+	background: var(--color-surface) !important;
+	border-color: var(--color-hairline) !important;
+}
+.ant-card .ant-select-arrow,
+[data-task-card] .ant-select-arrow {
+	color: var(--color-text-muted);
+}
+
+/* --- Kart dikey ritmi: üç ayrı blok yerine sıkı bir öbek --- */
+[data-task-card] {
+	padding-block: var(--space-3);
+}
+[data-task-card] .ant-typography + * {
+	margin-top: var(--space-1);
+}
+
+/* ===== Kullanıcı düzeltmeleri ===== */
+
+/* 1. ÜST ÇUBUK: yazılar soluk kalmasın. Hepsi mavide 7:1 üstü kontrast verir. */
+.ant-layout-header .ant-menu-item,
+.ant-layout-header .ant-menu-item a {
+	color: #e8eef8 !important;
+	font-weight: var(--weight-medium);
+}
+.ant-layout-header .ant-menu-item:hover,
+.ant-layout-header .ant-menu-item:hover a,
+.ant-layout-header .ant-menu-item-selected,
+.ant-layout-header .ant-menu-item-selected a,
+.ant-layout-header .ant-menu-item-selected * {
+	color: #ffffff !important;
+	background: transparent !important;
+}
+.ant-layout-header .ant-menu-item-selected {
+	font-weight: var(--weight-strong);
+	box-shadow: inset 0 -3px 0 #ffffff;
+}
+
+/* 2. KOD: kutu değil, fosforlu kalem izi.
+   Üstten ve alttan boşluk bırakan degrade, kalem darbesi hissi verir. */
+.ant-typography code,
+.md-inline code,
+.ant-card code,
+.ant-list code,
+.md p code,
+.md li code,
+.md td code {
+	background: var(--bg-sunken) !important;
+	padding: 1px 4px !important;
+	margin: 0 1px !important;
+	border: none !important;
+	border-radius: var(--radius-xs) !important;
+	color: var(--text-code) !important;
+	font-weight: var(--weight-medium);
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
+/* 3. GÖREV KARTI: kenarlıkla değil zeminle ayrılır.
+   Satır içi stil geldiği için üzerine yazmak gerekiyor. */
+[data-task-card] {
+	background: var(--color-card) !important;
+	border: none !important;
+	border-radius: var(--radius-md) !important;
+	padding: var(--pad-card) !important;
+	margin-bottom: var(--gap) !important;
+}
+/* Kartın içindeki kontroller beyaz kalsın ki zeminden ayrılsın. */
+[data-task-card] .ant-btn-default,
+[data-task-card] .ant-select-selector {
+	background: var(--color-bg) !important;
+	border-color: var(--color-border) !important;
+}
+[data-task-card] .ant-select:hover .ant-select-selector {
+	border-color: var(--color-text) !important;
+}
+
+/* --- Üst çubuk mavi olduğu için gezinme yazıları beyaz ailesindedir.
+   Kabuk stilleri beyaz zemin varsayarak mürekkep rengi kullanıyor.
+   Burada daha yüksek öncelikli seçiciyle düzeltilir. --- */
+.ant-layout-header .shell-logo,
+.ant-layout-header .shell-logo:hover {
+	color: #ffffff !important;
+}
+.ant-layout-header .shell-nav a,
+.ant-layout-header .shell-nav a:visited {
+	color: #e8eef8 !important;
+}
+.ant-layout-header .shell-nav a:hover {
+	color: #ffffff !important;
+	background: rgba(255, 255, 255, 0.12) !important;
+	box-shadow: none !important;
+}
+/* Açık olan sayfa beyaz blok olur. Köşeler karedir. */
+.ant-layout-header .shell-nav a[aria-current="page"],
+.ant-layout-header .shell-nav a[aria-current="page"]:hover {
+	color: var(--color-primary) !important;
+	background: #ffffff !important;
+	box-shadow: none !important;
+	border-radius: 0 !important;
+}
+.ant-layout-header .shell-nav a[aria-current="page"] .anticon {
+	color: var(--color-primary) !important;
+}
+.ant-layout-header .shell-menu-btn.ant-btn,
+.ant-layout-header .shell-menu-btn.ant-btn .anticon {
+	color: #ffffff !important;
+}
+
+/* --- Kanban başlık yeri: başlık, sayı ve yardım tek satırda --- */
+[data-kanban-basyer] {
+	display: flex;
+	align-items: baseline;
+	flex-wrap: wrap;
+	gap: var(--space-2) var(--space-3);
+	margin-bottom: var(--space-3);
+}
+[data-kanban-sayfa-basligi].ant-typography {
+	margin: 0 !important;
+	font-size: var(--text-h2) !important;
+}
+[data-kanban-toplam] {
+	font-size: var(--text-small);
+	color: var(--color-text-muted);
+	font-variant-numeric: tabular-nums;
+}
+[data-kanban-nasil] {
+	margin: 0;
+	flex: 0 0 auto;
+}
+[data-kanban-basyer] .ant-segmented {
+	flex: 0 0 auto;
+}
+[data-kanban-basyer] .ant-segmented .ant-segmented-item-label {
+	min-height: var(--hit);
+	display: flex;
+	align-items: center;
+	gap: var(--space-1);
+}
+[data-kanban-nasil] > summary {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-1);
+	min-height: var(--hit);
+	cursor: pointer;
+	color: var(--color-text-muted);
+	font-size: var(--text-small);
+}
+[data-kanban-nasil][open] {
+	flex: 1 1 100%;
+	margin-inline-start: 0;
+}
+
+/* --- Görev satırı: nokta, gövde ve kopyalama tek ızgarada --- */
+[data-kanban-satir] {
+	display: grid;
+	grid-template-columns: 28px minmax(0, 1fr) 36px;
+	align-items: start;
+	column-gap: var(--space-2);
+	padding: var(--space-2) 0 !important;
+	background: var(--color-bg) !important;
+	border: none !important;
+	border-bottom: 1px solid var(--color-hairline) !important;
+	border-radius: 0 !important;
+}
+[data-kanban-satir]:last-child {
+	border-bottom: none !important;
+}
+[data-kanban-govde] {
+	min-width: 0;
+	/* Tür ve bağlam ekran genişliğine değil sütun genişliğine göre görünür. */
+	container-type: inline-size;
+}
+
+/* Durum düğmesi: yalnız renkli nokta. Dokunma alanı 44px kalır. */
+[data-kanban-durum] {
+	appearance: none;
+	background: transparent;
+	border: none;
+	border-radius: 4px;
+	width: 28px;
+	min-height: var(--hit);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	padding: 0;
+	transition: background-color var(--motion-fast) var(--motion-ease);
+}
+[data-kanban-durum]:hover {
+	background: var(--color-card);
+}
+[data-kanban-nokta] {
+	display: block;
+	width: 10px;
+	height: 10px;
+	border-radius: 2px;
+	flex: 0 0 auto;
+}
+[data-kanban-durum-secenek] {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+}
+
+/* Başlık: telefonda en çok 2 satır, geniş ekranda 1 satır. */
+[data-kanban-baslik-bag] {
+	display: block;
+	color: var(--color-text) !important;
+	text-decoration: none !important;
+}
+[data-kanban-baslik] {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+	font-size: var(--text-body);
+	font-weight: 500;
+	line-height: 1.4;
+}
+[data-kanban-baslik-bag]:hover [data-kanban-baslik] {
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+[data-kanban-meta] {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-1) var(--space-2);
+	margin-top: 2px;
+	font-size: var(--text-small);
+	color: var(--color-text-muted);
+}
+/* Sığmayan meta görsel olarak gizlenir. Ekran okuyucu yine de okur. */
+[data-kanban-meta] [data-genis] {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+@container (min-width: 330px) {
+	[data-kanban-meta] [data-genis] {
+		position: static;
+		width: auto;
+		height: auto;
+		margin: 0;
+		overflow: visible;
+		clip-path: none;
+	}
+}
+/* Telefonda başlık iki satır olur. Geniş listede tek satıra iner. */
+@container (min-width: 430px) {
+	[data-kanban-baslik] {
+		-webkit-line-clamp: 1;
+		line-clamp: 1;
+	}
+}
+
+/* Kopyalama: sessiz ikon. Satırın ağırlık merkezi başlıktır. */
+[data-kanban-kopyala] {
+	appearance: none;
+	background: transparent;
+	border: none;
+	border-radius: 4px;
+	width: 36px;
+	min-height: var(--hit);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	color: var(--color-text-muted);
+	font-size: 15px;
+	transition: color var(--motion-fast) var(--motion-ease), background-color var(--motion-fast) var(--motion-ease);
+}
+[data-kanban-kopyala]:hover,
+[data-kanban-satir]:hover [data-kanban-kopyala] {
+	color: var(--color-text);
+	background: var(--color-card);
+}
+[data-kanban-satir]:hover {
+	background: var(--color-surface) !important;
+}
+
+/* --- Sütun sekmeleri: tek satır, yana kaydırılır --- */
+/* Dört durum ve dört sayı tek bakışta görünür. Yana kaydırma yoktur. */
+[data-kanban-tablist] {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0 var(--space-3);
+	margin-top: var(--space-2);
+	margin-bottom: var(--space-1);
+}
+@media (min-width: 560px) {
+	[data-kanban-tablist] {
+		display: flex;
+		gap: var(--space-4);
+	}
+}
+[data-kanban-tablist]::-webkit-scrollbar {
+	display: none;
+}
+[data-kanban-tab] {
+	flex: 0 0 auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--space-2);
+	min-height: var(--hit);
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	color: var(--color-text);
+	font: inherit;
+	font-size: var(--text-body);
+	line-height: 1.3;
+	white-space: nowrap;
+	cursor: pointer;
+	transition-property: background-color, color, border-color;
+	transition-duration: var(--motion-fast);
+	transition-timing-function: var(--motion-ease);
+}
+[data-kanban-tab-sayi] {
+	color: var(--color-text-muted);
+	font-variant-numeric: tabular-nums;
+}
+@media (min-width: 560px) {
+	[data-kanban-tab] {
+		justify-content: flex-start;
+	}
+}
+
+/* --- Liste görünümü: tam genişlik, meta başlığın sağında --- */
+[data-kanban-liste] {
+	margin-top: 0;
+	border-top: 1px solid var(--color-hairline);
+}
+[data-kanban-liste] [data-kanban-govde] {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-4);
+}
+[data-kanban-liste] [data-kanban-baslik-bag] {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+/* Listede meta sabit sütunlara oturur. Göz aşağı inerken kaymaz. */
+[data-kanban-liste] [data-kanban-meta] {
+	flex: 0 0 auto;
+	display: grid;
+	grid-template-columns: 56px 64px 104px 136px;
+	align-items: baseline;
+	gap: 0 var(--space-3);
+	margin-top: 0;
+}
+[data-kanban-liste] [data-kanban-meta] > [aria-hidden] {
+	display: none;
+}
+[data-kanban-liste] [data-kanban-meta] > span {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* ===================================================================
+   GÖRÜNÜM TURU: Kanban sayfasının görsel düzeni
+   Amaç: araç çubuğu tek parça, satırlar sakin, başlık ritmi net.
+   =================================================================== */
+
+/* --- Araç çubuğu: arama, süzgeçler ve görünüm tek sistem --- */
+[data-kanban-suzgec] {
+	align-items: stretch;
+}
+[data-kanban-suzgec] .ant-input-affix-wrapper,
+[data-kanban-suzgec] .ant-select .ant-select-selector {
+	background: var(--color-bg) !important;
+	border: 1px solid var(--color-hairline) !important;
+	border-radius: var(--radius-sm) !important;
+	box-shadow: none !important;
+}
+[data-kanban-suzgec] .ant-input-affix-wrapper:hover,
+[data-kanban-suzgec] .ant-select:hover .ant-select-selector {
+	border-color: var(--color-border) !important;
+}
+[data-kanban-suzgec] .ant-input-affix-wrapper-focused,
+[data-kanban-suzgec] .ant-select-focused .ant-select-selector {
+	border-color: var(--color-primary) !important;
+}
+[data-kanban-suzgec] .ant-input-prefix {
+	color: var(--color-text-muted);
+	margin-inline-end: var(--space-2);
+}
+
+/* --- Başlık ritmi: başlık bloğu içerikten ince bir çizgiyle ayrılır --- */
+[data-kanban-basyer] {
+	align-items: center;
+	margin-bottom: var(--space-1);
+}
+[data-kanban-girus] {
+	color: var(--color-text-muted);
+}
+[data-kanban-suzgec] {
+	padding-bottom: var(--space-3);
+	border-bottom: 1px solid var(--color-hairline);
+	margin-bottom: 0 !important;
+}
+
+/* --- Görünüm seçici: sade, çerçevesiz, seçili olan koyu --- */
+[data-kanban-basyer] .ant-segmented {
+	background: var(--color-surface);
+	border-radius: var(--radius-sm);
+	padding: 2px;
+}
+[data-kanban-basyer] .ant-segmented .ant-segmented-item-label {
+	font-size: var(--text-small);
+	padding-inline: var(--space-3);
+	border-radius: var(--radius-xs);
+}
+[data-kanban-basyer] .ant-segmented .ant-segmented-item-selected {
+	border-radius: var(--radius-xs);
+}
+
+/* --- Satır: sakin ama canlı. Üzerine gelince ve seçiliyken belli olur. --- */
+[data-kanban-satir] {
+	margin-inline: calc(var(--space-2) * -1);
+	padding-inline: var(--space-2) !important;
+	border-radius: var(--radius-xs);
+}
+[data-kanban-satir]:hover {
+	background: var(--color-surface) !important;
+}
+[data-kanban-satir]:focus-visible {
+	outline: none;
+	background: var(--focus-bg) !important;
+	box-shadow: inset 0 -2px 0 var(--color-ink);
+}
+[data-kanban-satir] [data-kanban-meta] {
+	color: var(--color-text-muted);
+	font-variant-numeric: tabular-nums;
+}
+
+/* --- Pano sütun başlığı: etiket gibi, ağır çizgi yok --- */
+[data-kanban-board] .ant-typography h2,
+[data-kanban-board] h2.ant-typography {
+	border-bottom: 1px solid var(--color-hairline) !important;
+	padding-bottom: var(--space-2) !important;
+}
+[data-kanban-board] h2.ant-typography > span {
+	display: inline-flex;
+	align-items: baseline;
+	gap: var(--space-2);
+	letter-spacing: 0.01em;
+}
+
+/* --- Boş sütun: kısa, sessiz, ortada --- */
+[data-kanban-empty] {
+	color: var(--color-text-muted);
+	font-size: var(--text-small);
+	max-width: 30ch;
+}
+
+/* --- Ayar turu 2: yoğunluk, araç çubuğu genişliği, sessiz öncelik --- */
+
+/* Arama kutusu sayfayı kaplamaz. Süzgeçler onu izler, kalan yer boş durur. */
+[data-kanban-suzgec] {
+	flex-wrap: wrap;
+}
+[data-kanban-suzgec] > .ant-input-affix-wrapper {
+	flex: 0 1 320px !important;
+	max-width: 320px;
+}
+[data-kanban-suzgec] .ant-input-affix-wrapper .ant-input {
+	background: transparent !important;
+}
+
+/* Satır daha sıkı. Metin ve dokunma hedefi küçülmez. */
+[data-kanban-satir] {
+	padding-block: 2px !important;
+	align-items: center;
+}
+[data-kanban-satir] [data-kanban-govde] {
+	padding-block: var(--space-1);
+}
+[data-kanban-durum],
+[data-kanban-kopyala] {
+	min-height: var(--hit);
+}
+
+/* Listede meta sağa toplanır ve kopyalama düğmesine yaslanır. */
+[data-kanban-liste] [data-kanban-meta] {
+	grid-template-columns: 52px 56px 92px 120px;
+	gap: 0 var(--space-2);
+	justify-items: start;
+}
+
+/* Öncelik etiketi: dolu blok değil, sessiz bir iz. */
+[data-kanban-meta] .ant-tag {
+	margin: 0;
+	padding: 0 6px;
+	border: none;
+	font-size: var(--text-small);
+	font-weight: 500;
+	line-height: 20px;
+	border-radius: var(--radius-xs);
+}
+
+/* --- Ayar turu 3: telefonda sol boşluğu kıs --- */
+@media (max-width: 767px) {
+	/* Görünen nokta 10 piksel kalır. Yalnız tıklama alanı 44 piksel olur. */
+	[data-kanban-satir] {
+		grid-template-columns: 44px minmax(0, 1fr) 44px;
+		column-gap: var(--space-1);
+		margin-inline: calc(var(--space-3) * -1);
+		padding-inline: 0 !important;
+	}
+	[data-kanban-durum] {
+		width: 44px;
+	}
+	[data-kanban-kopyala] {
+		width: 44px;
+	}
+}
+
+/* --- Ayar turu 4: nokta ve kopyalama ilk satırla hizalanır --- */
+[data-kanban-satir] {
+	align-items: start;
+}
+[data-kanban-durum],
+[data-kanban-kopyala] {
+	align-items: flex-start;
+	padding-top: 7px;
+}
+[data-kanban-liste] [data-kanban-satir] {
+	align-items: center;
+}
+[data-kanban-liste] [data-kanban-durum],
+[data-kanban-liste] [data-kanban-kopyala] {
+	align-items: center;
+	padding-top: 0;
+}
+
+/* ===================================================================
+   SAYFA KATMANI
+   Sayfa kâğıdı gri, içerik yaprağı beyaz. Ayrımı ton kurar, kenarlık değil.
+   =================================================================== */
+@media (min-width: 768px) {
+	:root {
+		--rhythm-section: 56px;
+	}
+}
+@media (min-width: 1280px) {
+	:root {
+		--rhythm-section: 64px;
+	}
+}
+
+/* ===================================================================
+   İÇERİK YAPRAĞI
+   Gri sayfanın üstünde beyaz bir yaprak durur. Ayrımı ton kurar.
+   =================================================================== */
+.ant-layout,
+.ant-layout-content {
+	background: transparent !important;
+}
+/* İçerik yaprağı: gri sayfanın üstünde beyaz alan. */
+.shell-main {
+	--yaprak-pad-x: var(--space-4);
+	--yaprak-pad-y: var(--space-6);
+	background: var(--bg-surface);
+	padding: var(--yaprak-pad-y) var(--yaprak-pad-x) var(--space-10);
+	min-height: 55vh;
+}
+@media (min-width: 768px) {
+	.shell-main {
+		--yaprak-pad-x: var(--space-8);
+		--yaprak-pad-y: var(--space-8);
+		padding: var(--yaprak-pad-y) var(--yaprak-pad-x) var(--space-12);
+	}
+}
+/* Alt bilgi bandı sayfa zemininde kalır. */
+.shell-footer.ant-layout-footer {
+	background: transparent !important;
+}
+
+/* --- Öncelik etiketi: yalnız Kriz ve Kritik dolu alan alır --- */
+.ant-tag[data-oncelik] {
+	margin: 0;
+	padding: 0 6px;
+	border: none !important;
+	border-radius: var(--radius-xs) !important;
+	font-size: var(--text-small);
+	font-weight: var(--weight-medium);
+	line-height: 20px;
+}
+.ant-tag[data-oncelik="Önemli"],
+.ant-tag[data-oncelik="Düşük"] {
+	background: transparent !important;
+	padding-inline: 0;
+}
+
+/* --- Faz rozeti: küçük kare, faz rengi, beyaz yazı --- */
+[data-faz-rozet] {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 24px;
+	height: 24px;
+	padding-inline: 5px;
+	border-radius: var(--radius-xs);
+	background: var(--faz-2);
+	color: #ffffff;
+	font-size: var(--text-small);
+	font-weight: var(--weight-strong);
+	font-variant-numeric: tabular-nums lining-nums;
+	line-height: 1;
+}
+[data-faz-rozet="Faz -1"],
+[data-faz-rozet="Faz \2212 1"] { background: var(--faz-eksi1); }
+[data-faz-rozet="Faz 0"] { background: var(--faz-0); }
+[data-faz-rozet="Faz 1"] { background: var(--faz-1); }
+[data-faz-rozet="Faz 2"] { background: var(--faz-2); }
+[data-faz-rozet="Faz 3"] { background: var(--faz-3); }
+[data-faz-rozet="Faz 4"] { background: var(--faz-4); }
+[data-faz-rozet="Faz 5"] { background: var(--faz-5); }
+
+/* --- Üst etiket (eyebrow) --- */
+.eyebrow {
+	display: block;
+	font-size: var(--text-eyebrow);
+	font-weight: var(--weight-strong);
+	letter-spacing: var(--track-eyebrow);
+	color: var(--color-text-muted);
+	text-transform: none;
+	margin-bottom: var(--space-1);
+}
+
+/* --- Yüzen katman: gölge yalnız burada --- */
+.ant-dropdown .ant-dropdown-menu,
+.ant-select-dropdown,
+.ant-drawer-content,
+.ant-tooltip-inner,
+.ant-float-btn-body {
+	box-shadow: var(--shadow-raised) !important;
+}
+
+/* --- DocType meta: etiketsiz dizi değil, adlandırılmış alanlar --- */
+[data-doc-meta] {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3) var(--space-6);
+	margin: 0 0 var(--rhythm-block);
+	padding-block: var(--space-3);
+	border-block: 1px solid var(--color-hairline);
+}
+[data-doc-meta] > div {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+[data-doc-meta] dt {
+	margin: 0;
+	font-size: var(--text-small);
+	color: var(--color-text-muted);
+}
+[data-doc-meta] dd {
+	margin: 0;
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	font-size: var(--text-body);
+	color: var(--color-text);
+	min-height: 24px;
+}
+
+/* --- Üst çubuktaki arama --- */
+.shell-arama {
+	flex: 0 0 280px;
+	min-width: 0;
+	margin-inline-start: auto;
+	margin-inline-end: var(--space-2);
+}
+/* Dış sarmalayıcı saydam olur. Yoksa beyaz kutu mavi çubuğu deler. */
+.shell-arama .ant-select,
+.shell-arama .ant-select-content {
+	background: transparent !important;
+}
+.shell-arama .ant-input-affix-wrapper {
+	background: rgba(255, 255, 255, 0.14) !important;
+	border: 1px solid rgba(255, 255, 255, 0.38) !important;
+	border-radius: var(--radius-sm) !important;
+	min-height: var(--hit) !important;
+	padding-block: 0 !important;
+}
+/* Dokunma alanı sarmalayıcıdan gelir. İç alan onu uzatmaz. */
+.shell-arama .ant-input-affix-wrapper .ant-input {
+	min-height: 0 !important;
+	height: auto !important;
+}
+.shell-arama .ant-input-affix-wrapper:hover,
+.shell-arama .ant-input-affix-wrapper-focused {
+	background: #ffffff !important;
+	border-color: #ffffff !important;
+}
+.shell-arama .ant-input,
+.shell-arama .ant-input-prefix,
+.shell-arama .ant-input-clear-icon {
+	background: transparent !important;
+	color: #ffffff !important;
+}
+.shell-arama .ant-input::placeholder {
+	color: #d7e1f1 !important;
+}
+.shell-arama .ant-input-affix-wrapper:hover .ant-input,
+.shell-arama .ant-input-affix-wrapper-focused .ant-input,
+.shell-arama .ant-input-affix-wrapper:hover .ant-input-prefix,
+.shell-arama .ant-input-affix-wrapper-focused .ant-input-prefix,
+.shell-arama .ant-input-affix-wrapper:hover .ant-input-clear-icon,
+.shell-arama .ant-input-affix-wrapper-focused .ant-input-clear-icon {
+	color: var(--color-text) !important;
+}
+.shell-arama .ant-input-affix-wrapper:hover .ant-input::placeholder,
+.shell-arama .ant-input-affix-wrapper-focused .ant-input::placeholder {
+	color: var(--color-text-muted) !important;
+}
+.shell-arama-btn {
+	margin-inline-start: auto;
+}
+
+/* Arama sonucu satırı: ad solda, tür sağda ve sessiz. */
+[data-arama-satir] {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-3);
+}
+[data-arama-ad] {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+[data-arama-tur] {
+	flex: 0 0 auto;
+	font-size: var(--text-small);
+	color: var(--color-text-muted);
+}
+
+/* --- Temizleme düğmesi de dokunma hedefi kadar olur --- */
+.ant-input-clear-icon,
+.ant-select-clear {
+	min-width: var(--hit-sm) !important;
+	min-height: var(--hit-sm) !important;
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	inset-inline-end: 0 !important;
+	margin: 0 !important;
+}
+@media (pointer: coarse) {
+	.ant-input-clear-icon,
+	.ant-select-clear {
+		min-width: var(--hit) !important;
+		min-height: var(--hit) !important;
+	}
+}
+
+/* ===================================================================
+   BASKI
+   Gözden geçiren bir fazı kâğıda ya da PDF'e alır. Kapalı paneller açılır,
+   gezinme ve düğmeler çıkmaz, bağlantının adresi yazılır.
+   =================================================================== */
+@media print {
+	@page {
+		margin: 16mm;
+	}
+	html,
+	body {
+		background: #ffffff !important;
+		color: #000000 !important;
+	}
+	.shell-header,
+	.shell-footer,
+	.shell-crumbs,
+	.ant-float-btn,
+	.ant-float-btn-group,
+	[data-kanban-tablist],
+	[data-kanban-suzgec],
+	[data-kanban-gorunum],
+	.faz-switch,
+	.faz-ray,
+	.shell-arama,
+	.ant-btn {
+		display: none !important;
+	}
+	.shell-main {
+		padding: 0 !important;
+		max-width: none !important;
+	}
+	/* Kapalı panel basılmaz. Baskıda hepsi açılır. */
+	.ant-collapse-content {
+		display: block !important;
+		height: auto !important;
+	}
+	.ant-collapse-content-hidden {
+		display: block !important;
+	}
+	details {
+		display: block !important;
+	}
+	details > *:not(summary) {
+		display: block !important;
+	}
+	/* Bağlantının nereye gittiği kâğıtta da okunur. */
+	.md a[href^="http"]::after {
+		content: " (" attr(href) ")";
+		font-size: 12px;
+		color: #333333;
+	}
+	h1,
+	h2,
+	h3 {
+		break-after: avoid;
+	}
+	li,
+	tr,
+	blockquote,
+	[data-task-card],
+	.gorev {
+		break-inside: avoid;
+	}
+	* {
+		box-shadow: none !important;
+	}
+}
+
+/* --- Boş alan metni: Ant Empty çizimi yerine düz satır --- */
+[data-bos-metin] {
+	margin: 0 0 var(--rhythm-block);
+	font-size: var(--text-small);
+	color: var(--color-text-muted);
+}
+
+/* --- Kanban satırında durum adı --- */
+[data-kanban-durum-adi] {
+	color: var(--color-text-muted);
+}
+
+/* --- Süzgeç kutuları tam olarak dokunma hedefi kadar yüksek olur --- */
+[data-kanban-suzgec] .ant-input-affix-wrapper,
+[data-kanban-suzgec] .ant-select,
+[data-kanban-suzgec] .ant-select .ant-select-content,
+.shell-arama .ant-input-affix-wrapper {
+	height: var(--hit) !important;
+	min-height: var(--hit) !important;
+}
+[data-kanban-suzgec] .ant-input-affix-wrapper > input,
+[data-kanban-suzgec] .ant-select-content > input,
+.shell-arama .ant-input-affix-wrapper > input {
+	height: 100% !important;
+}
+/* İçerideki temizleme düğmesi sarmalayıcıyı uzatmaz. */
+[data-kanban-suzgec] .ant-input-clear-icon,
+[data-kanban-suzgec] .ant-select-clear,
+.shell-arama .ant-input-clear-icon {
+	min-height: 0 !important;
+	height: 100% !important;
+	min-width: var(--hit-sm) !important;
+}
+
+/* --- Düz madde listesi: Ant List yerine --- */
+[data-duz-liste] {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+[data-duz-liste] > li {
+	padding-block: var(--space-2);
+}
+[data-duz-liste][data-sik] > li {
+	padding-block: var(--space-1);
+}
+[data-duz-liste] > li:first-child {
+	padding-block-start: 0;
+}
+
+/* ===================================================================
+   PANO GÖRÜNÜMÜ: satır değil kart
+   Listede satır doğrudur, çünkü göz aşağı iner. Panoda kart doğrudur,
+   çünkü göz sütunlar arasında gezer ve her görev bir parça olarak okunur.
+   Ayrımı zemin tonu kurar, kenarlık kurmaz.
+   =================================================================== */
+[data-kanban-board] [data-kanban-satir],
+[data-kanban-panel] [data-kanban-satir] {
+	background: var(--bg-sunken) !important;
+	border: none !important;
+	border-bottom: none !important;
+	border-radius: var(--radius-md) !important;
+	padding: var(--space-3) !important;
+	margin-inline: 0 !important;
+	margin-block-end: var(--space-2);
+	align-items: start;
+	column-gap: var(--space-2);
+	transition-property: background-color, transform;
+	transition-duration: var(--motion-fast);
+	transition-timing-function: var(--motion-ease);
+}
+[data-kanban-board] [data-kanban-satir]:last-child,
+[data-kanban-panel] [data-kanban-satir]:last-child {
+	margin-block-end: 0;
+}
+[data-kanban-board] [data-kanban-satir]:hover,
+[data-kanban-panel] [data-kanban-satir]:hover {
+	background: var(--color-surface-strong) !important;
+}
+/* Kartta başlık iki satıra kadar açılır. Dar sütunda tek satır yetmez. */
+[data-kanban-board] [data-kanban-baslik],
+[data-kanban-panel] [data-kanban-baslik] {
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+}
+/* Kart içinde meta alt satıra iner ve kendi aralığını alır. */
+[data-kanban-board] [data-kanban-meta],
+[data-kanban-panel] [data-kanban-meta] {
+	margin-top: var(--space-2);
+}
+/* Kopyalama düğmesi kartın sağ üst köşesinde durur. */
+[data-kanban-board] [data-kanban-kopyala],
+[data-kanban-panel] [data-kanban-kopyala] {
+	align-items: flex-start;
+	padding-top: 0;
+}
+
+/* ===================================================================
+   SANAT YÖNETİMİ
+   Uyum yetmez. Sayfanın bir grafik anı olmalı.
+   Üç araç: ölçek karşıtlığı, renk alanı ve yüzey derinliği.
+   =================================================================== */
+
+/* Ekran ölçeği. Sayfanın tepesindeki tek büyük an. */
+:root {
+	--text-display: clamp(40px, 7.5vw, 68px);
+	--track-display-xl: -0.03em;
+	--shadow-yaprak: 0 1px 2px rgba(14, 19, 25, 0.06), 0 12px 32px rgba(14, 19, 25, 0.07);
+}
+
+/* Yaprak kâğıt gibi durur. Gri sayfanın üstünde hafifçe yüzer. */
+.shell-main {
+	border-radius: var(--radius-md);
+	box-shadow: var(--shadow-yaprak);
+}
+@media (max-width: 767px) {
+	.shell-main {
+		border-radius: 0;
+		box-shadow: none;
+	}
+}
+
+/* Sayfa başı: büyük başlık, dar özet, geniş nefes. */
+/* Başlık bir bölgedir, yalnız metin değil. Yaprağın kenarına dayanır ve
+   kendi renk alanını taşır. Sayfanın üstü böylece bir yüzey olur. */
+[data-sayfa-basi] {
+	position: relative;
+	margin-inline: calc(var(--yaprak-pad-x) * -1);
+	margin-block: calc(var(--yaprak-pad-y) * -1) var(--rhythm-section);
+	padding: var(--space-12) var(--yaprak-pad-x) var(--space-10);
+	background: var(--bas-zemin, var(--bg-sunken));
+	border-start-start-radius: var(--radius-md);
+	border-start-end-radius: var(--radius-md);
+	overflow: hidden;
+}
+@media (max-width: 767px) {
+	[data-sayfa-basi] {
+		padding-block: var(--space-8) var(--space-6);
+		border-radius: 0;
+	}
+}
+/* Dev gölge rakam: editoryal bir işaret. Metni hiç engellemez. */
+[data-hayalet] {
+	position: absolute;
+	inset-block-start: 50%;
+	inset-inline-end: var(--space-4);
+	transform: translateY(-50%);
+	font-size: clamp(120px, 20vw, 260px);
+	font-weight: var(--weight-strong);
+	line-height: 1;
+	letter-spacing: -0.04em;
+	color: var(--hayalet-renk, var(--color-ink));
+	opacity: 0.07;
+	pointer-events: none;
+	user-select: none;
+	font-variant-numeric: tabular-nums lining-nums;
+}
+@media (max-width: 767px) {
+	[data-hayalet] {
+		font-size: 120px;
+		inset-inline-end: calc(var(--space-2) * -1);
+	}
+}
+[data-sayfa-basi] h1.ant-typography {
+	font-size: var(--text-display) !important;
+	line-height: 0.98 !important;
+	letter-spacing: var(--track-display-xl);
+	margin-bottom: var(--space-4) !important;
+	max-width: 14ch;
+}
+[data-sayfa-basi] [data-ozet] {
+	font-size: var(--text-lead);
+	line-height: var(--leading-lead);
+	color: var(--color-text-muted);
+	max-width: var(--measure);
+	margin: 0;
+}
+
+/* Sayı şeridi: küçük etiket, büyük rakam. Ölçek karşıtlığı buradan gelir. */
+[data-sayi-serit] {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	gap: var(--space-4) var(--space-8);
+	margin: 0 0 var(--rhythm-section);
+	padding: 0;
+}
+[data-sayi-serit] > div {
+	display: flex;
+	flex-direction: column-reverse;
+	gap: 2px;
+}
+[data-sayi-serit] dt {
+	margin: 0;
+	font-size: var(--text-small);
+	font-weight: var(--weight-medium);
+	letter-spacing: var(--track-eyebrow);
+	color: var(--color-text-muted);
+}
+[data-sayi-serit] dd {
+	margin: 0;
+	font-size: clamp(28px, 4.4vw, 40px);
+	font-weight: var(--weight-strong);
+	line-height: 1;
+	letter-spacing: -0.02em;
+	color: var(--color-text-strong);
+	font-variant-numeric: tabular-nums lining-nums;
+}
+[data-sayi-serit] dd span {
+	font-size: var(--text-lead);
+	font-weight: var(--weight-normal);
+	color: var(--color-text-muted);
+	letter-spacing: 0;
+}
+
+/* Faz satırı: rakam büyük bir renk alanı olur, küçük bir rozet değil. */
+[data-faz-satir] {
+	display: grid;
+	grid-template-columns: 64px minmax(0, 1fr);
+	grid-template-rows: auto auto;
+	column-gap: var(--space-4);
+	align-items: start;
+	padding-block: var(--space-5, 20px);
+	color: var(--color-text);
+	text-decoration: none;
+	border-radius: var(--radius-md);
+	transition-property: background-color;
+	transition-duration: var(--motion-fast);
+	transition-timing-function: var(--motion-ease);
+}
+[data-faz-satir]:hover {
+	background: var(--bg-sunken);
+}
+[data-faz-satir] > *:not([data-faz-rakam]) {
+	grid-column: 2;
+}
+[data-faz-rakam] {
+	grid-row: 1 / -1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 64px;
+	border-radius: var(--radius-md);
+	background: var(--faz-renk, var(--color-ink));
+	color: #ffffff;
+	font-size: 30px;
+	font-weight: var(--weight-strong);
+	line-height: 1;
+	letter-spacing: -0.02em;
+	font-variant-numeric: tabular-nums lining-nums;
+}
+@media (max-width: 374px) {
+	[data-faz-satir] {
+		grid-template-columns: 48px minmax(0, 1fr);
+		column-gap: var(--space-3);
+	}
+	[data-faz-rakam] {
+		height: 48px;
+		font-size: 22px;
+	}
+}
+
+/* DocType başlığı uzun olabilir. Ekran ölçeği burada biraz iner. */
+[data-doc-bas] h1.ant-typography {
+	font-size: clamp(32px, 5.5vw, 52px) !important;
+	max-width: 20ch;
+}
+
+/* --- Kanban üst alanı: başlık bölgesi --- */
+[data-kanban-bas] {
+	--bas-zemin: var(--bg-sunken);
+	padding-block: var(--space-10) var(--space-8);
+}
+@media (max-width: 767px) {
+	[data-kanban-bas] {
+		padding-block: var(--space-6) var(--space-4);
+	}
+}
+[data-kanban-bas] [data-kanban-basyer] {
+	position: relative;
+	z-index: 1;
+	margin-bottom: 0;
+}
+[data-kanban-bas] [data-kanban-sayfa-basligi].ant-typography {
+	font-size: var(--text-display) !important;
+	line-height: 0.98 !important;
+	letter-spacing: var(--track-display-xl);
+}
+[data-kanban-bas] [data-kanban-toplam] {
+	font-size: var(--text-lead);
+	color: var(--color-text-muted);
+}
+
+/* --- Araç çubuğu: üç ayrı kutu değil, tek bir yüzey --- */
+[data-kanban-suzgec] {
+	padding-bottom: var(--rhythm-block);
+	border-bottom: none !important;
+	margin-bottom: 0 !important;
+}
+[data-kanban-suzgec] .ant-input-affix-wrapper,
+[data-kanban-suzgec] .ant-select .ant-select-content {
+	background: var(--bg-sunken) !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--radius-md) !important;
+}
+[data-kanban-suzgec] .ant-input-affix-wrapper:hover,
+[data-kanban-suzgec] .ant-select:hover .ant-select-content {
+	background: var(--color-surface-strong) !important;
+}
+[data-kanban-suzgec] .ant-input-affix-wrapper-focused,
+[data-kanban-suzgec] .ant-select-focused .ant-select-content {
+	background: var(--bg-surface) !important;
+	border-color: var(--color-primary) !important;
+}
+
+/* --- Açılır menü: Ant'ın solgun varsayılanı yerine kendi dilimiz --- */
+.ant-select-dropdown,
+.ant-dropdown .ant-dropdown-menu {
+	padding: var(--space-1) !important;
+	border-radius: var(--radius-md) !important;
+}
+.ant-select-dropdown .ant-select-item,
+.ant-dropdown .ant-dropdown-menu-item {
+	min-height: var(--hit-sm);
+	display: flex;
+	align-items: center;
+	padding: var(--space-2) var(--space-3) !important;
+	border-radius: var(--radius-sm) !important;
+	font-size: var(--text-body);
+	color: var(--color-text) !important;
+}
+.ant-select-dropdown .ant-select-item-option-active:not(.ant-select-item-option-selected),
+.ant-dropdown .ant-dropdown-menu-item:hover {
+	background: var(--bg-sunken) !important;
+}
+.ant-select-dropdown .ant-select-item-option-selected,
+.ant-dropdown .ant-dropdown-menu-item-selected {
+	background: var(--color-ink) !important;
+	color: #ffffff !important;
+	font-weight: var(--weight-medium);
+}
+.ant-select-dropdown .ant-select-item-option-selected .ant-select-item-option-state,
+.ant-select-dropdown .ant-select-item-option-selected .anticon {
+	color: #ffffff !important;
+}
+
+/* ===================================================================
+   BAĞLANTI DİLİ
+   Mavi yalnız düz yazı içindeki bağlantıda kalır.
+   Liste, ray, kart ve tablo bağlantısı mürekkep rengindedir.
+   Etkileşim rengi değil, zemini ve ağırlığı değiştirir.
+   =================================================================== */
+.shell-main :where(nav, aside, [data-liste-bag], .ant-table) a:not(.ant-btn):not([class*="md"]):not([aria-current]) {
+	color: var(--color-text) !important;
+	text-decoration: none !important;
+}
+/* Açık olan sayfa dolu mürekkep blok olur, yazısı beyaz kalır. */
+.shell-main :where(nav, aside) a[aria-current="page"]:not(.ant-btn) {
+	color: #ffffff !important;
+	text-decoration: none !important;
+}
+.shell-main :where(nav, aside, [data-liste-bag], .ant-table) a:not(.ant-btn):hover {
+	text-decoration: underline !important;
+	text-underline-offset: 3px;
+}
+/* Tablo içindeki DocType bağlantıları da mürekkep olur. */
+.ant-table a.ant-btn-link,
+.ant-table .ant-btn-link > span {
+	color: var(--color-text-strong) !important;
+	font-weight: var(--weight-medium);
+}
+/* Yönerge listesi: mavi yığını değil, sessiz satırlar. */
+.guide-link,
+.guide-nav-link {
+	color: var(--color-text-strong) !important;
+}
+
+/* --- Süzgeç kutusu tek bir yüzeydir. İç içe iki çerçeve kalkar. --- */
+[data-kanban-suzgec] .ant-select {
+	background: var(--bg-sunken) !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--radius-md) !important;
+}
+[data-kanban-suzgec] .ant-select:hover {
+	background: var(--color-surface-strong) !important;
+}
+[data-kanban-suzgec] .ant-select-focused {
+	background: var(--bg-surface) !important;
+	border-color: var(--color-primary) !important;
+}
+[data-kanban-suzgec] .ant-select .ant-select-content,
+[data-kanban-suzgec] .ant-select:hover .ant-select-content,
+[data-kanban-suzgec] .ant-select-focused .ant-select-content {
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+[data-kanban-suzgec] .ant-select .ant-select-arrow {
+	color: var(--color-text-muted);
+}
+[data-kanban-suzgec] .ant-input-affix-wrapper {
+	border-color: transparent !important;
+}
+
+/* --- Liste satırı: ızgara çizgisi yok. Ayrımı boşluk ve üzerine gelme kurar. --- */
+[data-kanban-liste] {
+	border-top: none !important;
+	margin-top: var(--space-2);
+}
+[data-kanban-liste] [data-kanban-satir] {
+	border-bottom: none !important;
+	border-radius: var(--radius-sm);
+	padding-block: var(--space-2) !important;
+}
+[data-kanban-liste] [data-kanban-satir]:hover {
+	background: var(--bg-sunken) !important;
+}
+/* Faz değişince ince bir ayrım kalır. Her satırda değil. */
+[data-kanban-liste] [data-kanban-satir][data-faz-basi] {
+	border-top: 1px solid var(--color-hairline) !important;
+	margin-top: var(--space-3);
+	padding-top: var(--space-3) !important;
+}
+
+/* --- Açılır menüde seçili satır: yazı da beyaz olur --- */
+.ant-select-dropdown .ant-select-item-option-selected,
+.ant-select-dropdown .ant-select-item-option-selected *,
+.ant-dropdown .ant-dropdown-menu-item-selected,
+.ant-dropdown .ant-dropdown-menu-item-selected * {
+	color: #ffffff !important;
+}
+.ant-select-dropdown .ant-select-item-option-selected [data-kanban-nokta],
+.ant-dropdown .ant-dropdown-menu-item-selected [data-kanban-nokta] {
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+/* --- Kutu içindeki yazı dikeyde ortalanır --- */
+[data-kanban-suzgec] .ant-select,
+[data-kanban-suzgec] .ant-select .ant-select-content,
+[data-kanban-suzgec] .ant-input-affix-wrapper,
+.shell-arama .ant-input-affix-wrapper {
+	display: flex !important;
+	align-items: center !important;
+}
+[data-kanban-suzgec] .ant-select .ant-select-content,
+[data-kanban-suzgec] .ant-select .ant-select-selection-item,
+[data-kanban-suzgec] .ant-select .ant-select-selection-placeholder {
+	height: 100% !important;
+	display: flex !important;
+	align-items: center !important;
+	line-height: normal !important;
+}
+[data-kanban-suzgec] .ant-input-affix-wrapper > input,
+.shell-arama .ant-input-affix-wrapper > input {
+	align-self: center !important;
+	height: auto !important;
+	line-height: 1.4 !important;
+}
+[data-kanban-suzgec] .ant-select .ant-select-arrow {
+	inset-block-start: 50% !important;
+	transform: translateY(-50%);
+	margin-top: 0 !important;
+}
+
+/* --- Yer tutucu yazı da okunur olur --- */
+.ant-input::placeholder,
+.ant-select-selection-placeholder,
+[data-kanban-suzgec] .ant-select-selection-placeholder {
+	color: var(--color-text-muted) !important;
+	opacity: 1 !important;
+}
+
+/* --- DocType rayı: faz rayıyla aynı dil --- */
+@media (min-width: 1024px) {
+	[data-doc-duzen] {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 288px;
+		column-gap: var(--space-12);
+		align-items: start;
+	}
+	[data-doc-ray] {
+		position: sticky;
+		top: calc(48px + var(--space-6));
+	}
+}
+[data-doc-ray] section {
+	background: var(--bg-sunken);
+	border-radius: var(--radius-md);
+	padding: var(--space-4);
+}
+[data-doc-ray] section + section {
+	margin-top: var(--space-3);
+}
+[data-doc-ray] h2 {
+	font-size: var(--text-eyebrow) !important;
+	font-weight: var(--weight-strong) !important;
+	letter-spacing: var(--track-eyebrow);
+	color: var(--color-text-muted) !important;
+	margin: 0 0 var(--space-3) !important;
+}
+[data-doc-ray] [data-ray-not] {
+	margin: var(--space-3) 0 0;
+	font-size: var(--text-small);
+	color: var(--color-text-muted);
+}
+[data-doc-ray] [data-doc-meta] {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: var(--space-3) var(--space-3);
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+[data-doc-ray] [data-doc-meta] > div {
+	display: contents;
+}
+[data-doc-ray] [data-doc-meta] dt {
+	font-size: var(--text-small);
+	color: var(--color-text-muted);
+	white-space: nowrap;
+}
+[data-doc-ray] [data-doc-meta] dd {
+	font-size: var(--text-small);
+	justify-content: flex-start;
+}
+[data-doc-ray] .ant-btn {
+	margin-bottom: var(--space-2);
+}
+
+/* --- Liste başlığı: değerlerin ne olduğunu söyler --- */
+[data-kanban-liste-baslik] {
+	display: none;
+}
+@media (min-width: 1024px) {
+	[data-kanban-liste-baslik] {
+		display: grid;
+		grid-template-columns: 28px minmax(0, 1fr) 72px 72px 104px 136px 36px;
+		column-gap: var(--space-2);
+		align-items: center;
+		position: sticky;
+		top: 48px;
+		z-index: 2;
+		background: var(--bg-surface);
+		padding-block: var(--space-2);
+		margin-inline: calc(var(--space-2) * -1);
+		padding-inline: var(--space-2);
+		border-bottom: 1px solid var(--color-hairline);
+		font-size: var(--text-small);
+		font-weight: var(--weight-medium);
+		letter-spacing: var(--track-eyebrow);
+		color: var(--color-text-muted);
+	}
+	/* Başlık sütunları satır sütunlarıyla aynı yerde durur. */
+	[data-kanban-liste] [data-kanban-satir] {
+		grid-template-columns: 28px minmax(0, 1fr) 36px;
+	}
+	[data-kanban-liste] [data-kanban-govde] {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 72px 72px 104px 136px;
+		column-gap: var(--space-2);
+		align-items: center;
+	}
+	[data-kanban-liste] [data-kanban-meta] {
+		display: contents;
+	}
+	[data-kanban-liste] [data-kanban-meta] > [aria-hidden] {
+		display: none;
+	}
+}
+
+/* Başlık yazıları bölünmez. Satırlar sıkı durur. */
+[data-kanban-liste-baslik] > span {
+	white-space: nowrap;
+}
+[data-kanban-liste] [data-kanban-satir] {
+	padding-block: var(--space-1) !important;
+	min-height: 40px;
+	align-items: center;
+}
+[data-kanban-liste] [data-kanban-baslik] {
+	-webkit-line-clamp: 1;
+	line-clamp: 1;
+}
+[data-kanban-liste] [data-kanban-durum],
+[data-kanban-liste] [data-kanban-kopyala] {
+	min-height: 36px;
+	padding-top: 0;
+	align-items: center;
+}
+
+/* Öncelik etiketi sütunu doldurmaz, içeriği kadar durur. */
+[data-kanban-liste] [data-kanban-meta] .ant-tag {
+	justify-self: start;
+	width: fit-content;
 }

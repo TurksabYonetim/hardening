@@ -8,9 +8,13 @@ export function getStaticPaths() {
 }
 const { i } = Astro.props;
 const d = all[i];
+// Komşu kayıt aynı bağlamdan seçilir. Önceden dizinin tamamı kullanılıyordu,
+// bu yüzden bağlamın son kaydında "Sonraki" sessizce başka bağlama geçiyordu.
+const kardesler = all.filter((x) => x.ctx === d.ctx);
+const k = kardesler.findIndex((x) => x.id === d.id);
 const strip = (x) => (x ? (({ md, sections, ...rest }) => rest)(x) : undefined);
 const task = tasks.find((t) => t.id === d.id);
 ---
 <Base title={d.title}>
-	<DoctypePage client:only="react" doc={strip(d)} sections={d.sections} md={d.md} task={task} prev={strip(all[i - 1])} next={strip(all[i + 1])} />
+	<DoctypePage client:only="react" doc={strip(d)} sections={d.sections} md={d.md} task={task} prev={strip(kardesler[k - 1])} next={strip(kardesler[k + 1])} />
 </Base>

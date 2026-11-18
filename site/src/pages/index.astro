@@ -8,5 +8,5 @@ import contexts from "../data/contexts.json";
 const counts = { doctypes: docs.length, contexts: contexts.length, tasks: tasks.length, epics: docs.filter((d) => d.epic).length };
 ---
 <Base title="Genel bakış">
-	<HomePage client:only="react" phases={phases.phases.map(({ id, label, slug, title, summary, tasks }) => ({ id, label, slug, title, summary, count: tasks.length }))} overviewHtml={phases.overviewHtml} counts={counts} />
+	<HomePage client:only="react" phases={phases.phases.map(({ id, label, slug, title, summary, tasks }) => ({ id, label, slug, title, summary, count: tasks.length, taskIds: tasks.map((t) => t.id), epic: docs.filter((d) => (d.epic?.phase || "Faz 4") === label).length }))} overviewHtml={phases.overviewHtml} counts={counts} />
 </Base>

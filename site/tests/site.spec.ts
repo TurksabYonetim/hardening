@@ -80,8 +80,8 @@ test.describe("kanban", () => {
 		await ready(page, "/kanban/");
 		const card = page.locator("[data-task-card]").first();
 		const id = (await card.getAttribute("data-task-card"))!;
-		await card.getByRole("combobox", { name: /durum/i }).click();
-		await page.locator('.ant-select-dropdown:visible .ant-select-item-option[title="Devam ediyor"]').click();
+		await card.getByRole("button", { name: /^Durum: / }).click();
+		await page.getByRole("menuitem", { name: "Devam ediyor", exact: true }).click();
 		await expect(page.getByText(/Devam ediyor sütununa taşındı/)).toBeVisible();
 		const showColumn = async () => {
 			const tab = page.getByRole("tab", { name: /^Devam ediyor/ });
@@ -138,7 +138,7 @@ test.describe("odak ve hareket", () => {
 
 	test("düğme geçişi simetrik eğri ve pozitif süre kullanıyor", async ({ page }) => {
 		await ready(page, "/kanban/");
-		const t = await page.locator("[data-task-card] .ant-btn").first().evaluate((el) => {
+		const t = await page.locator("[data-task-card] [data-kanban-kopyala]").first().evaluate((el) => {
 			const cs = getComputedStyle(el);
 			return { fn: cs.transitionTimingFunction, dur: cs.transitionDuration };
 		});
@@ -149,7 +149,7 @@ test.describe("odak ve hareket", () => {
 	test("azaltılmış hareket tercihinde geçiş kalkıyor", async ({ page }) => {
 		await page.emulateMedia({ reducedMotion: "reduce" });
 		await ready(page, "/kanban/");
-		const dur = await page.locator("[data-task-card] .ant-btn").first().evaluate((el) => getComputedStyle(el).transitionDuration);
+		const dur = await page.locator("[data-task-card] [data-kanban-kopyala]").first().evaluate((el) => getComputedStyle(el).transitionDuration);
 		expect(dur.split(",").every((d) => parseFloat(d) === 0)).toBe(true);
 	});
 });
@@ -189,16 +189,16 @@ test.describe("inceleme bulguları", () => {
 
 	test("düğmeler 'transition: all' kullanmıyor", async ({ page }) => {
 		await ready(page, "/kanban/");
-		const props = await page.locator("[data-task-card] .ant-btn").first().evaluate((el) => getComputedStyle(el).transitionProperty);
+		const props = await page.locator("[data-task-card] [data-kanban-kopyala]").first().evaluate((el) => getComputedStyle(el).transitionProperty);
 		expect(props).not.toContain("all");
 	});
 
 	test("kanban düğmelerinin adı görevi içeriyor", async ({ page }) => {
 		await ready(page, "/kanban/");
 		const card = page.locator("[data-task-card]").first();
-		const title = (await card.locator(".ant-typography").first().innerText()).trim();
+		const title = (await card.locator("[data-kanban-baslik]").innerText()).trim();
 		await expect(card.getByRole("button", { name: new RegExp(`Kopyala: ${title.slice(0, 15).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`) })).toHaveCount(1);
-		await expect(card.getByRole("combobox", { name: /^Durum: / })).toHaveCount(1);
+		await expect(card.getByRole("button", { name: /^Durum: / })).toHaveCount(1);
 	});
 
 	test("faz seçimi bağlantılarla yapılıyor", async ({ page }) => {

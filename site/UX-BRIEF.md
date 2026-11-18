@@ -13,7 +13,7 @@ An Astro 7 + React 19 + Ant Design 6 static site. It holds the plan for migratin
 
 Do FIVE complete passes over your scope. Not one. Each pass:
 
-1. **Look.** Open every page in your scope in the browser at 320, 375, 768 and 1280 CSS px. Look at every element, every component, every block, every section, one by one. Use the running dev server.
+1. **Look.** Open every page in your scope in the browser at 320, 375, 768 and 1280 CSS px. 320 comes first and is non-negotiable. Do not test 390. Look at every element, every component, every block, every section, one by one. Use the running dev server.
 2. **List.** Write down what is wrong or weak. Be specific: which element, which width, what exactly is bad.
 3. **Fix.** Change only the files you own (below).
 4. **Prove.** Run `npm run test:dev` and make sure nothing broke.
