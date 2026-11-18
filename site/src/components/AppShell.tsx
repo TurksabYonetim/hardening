@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { App as AntApp, Button, ConfigProvider, Drawer, FloatButton, Grid, Layout } from "antd";
+import { App as AntApp, Button, ConfigProvider, Drawer, FloatButton, Grid } from "antd";
 import { MenuOutlined, HomeOutlined, ProjectOutlined, ApartmentOutlined, SafetyCertificateOutlined, VerticalAlignTopOutlined, SearchOutlined, CloseOutlined } from "@ant-design/icons";
 import trTR from "antd/locale/tr_TR";
 import { buildTheme } from "../lib/theme";
@@ -94,13 +94,34 @@ function Shell({ active, crumbs, reduced, children }: { active: string; crumbs: 
 	const [aramaAcik, setAramaAcik] = useState(false);
 	const [readyFlag, setReady] = useState(false);
 	useEffect(() => setReady(true), []);
+
+	const marka = (
+		<a className="yan-marka" href={url("/")}>
+			<span className="yan-marka-im" aria-hidden>
+				İ
+			</span>
+			<span className="yan-marka-ad">İstoç mimari planı</span>
+		</a>
+	);
+
 	return (
-		<Layout style={{ minHeight: "100vh", background: "var(--color-bg)" }} data-app-ready={readyFlag ? "" : undefined}>
-			<Layout.Header className="shell-header">
-				<div className="shell-bar shell-topbar">
+		<div className="kabuk" data-app-ready={readyFlag ? "" : undefined}>
+			{/* Gezinme solda durur. İçerik bütün genişliği kullanır. */}
+			{wide && (
+				<aside className="yan" aria-label="Ana gezinme">
+					{marka}
+					<NavLinks active={active} className="yan-nav" />
+					<p className="yan-dip">
+						<code>mimari/</code> raporlarından üretilir.
+					</p>
+				</aside>
+			)}
+
+			<div className="govde">
+				<header className="ust">
 					{!wide && (
 						<Button
-							className="shell-menu-btn"
+							className="ust-btn"
 							type="text"
 							aria-label="Menüyü aç"
 							aria-expanded={open}
@@ -109,17 +130,17 @@ function Shell({ active, crumbs, reduced, children }: { active: string; crumbs: 
 							onClick={() => setOpen(true)}
 						/>
 					)}
-					<a className="shell-logo" href={url("/")}>
-						İstoç mimari planı
-					</a>
-					{wide && <NavLinks active={active} className="shell-nav" />}
+					{!wide && <span className="ust-ad">İstoç mimari planı</span>}
+					<div className="ust-iz">
+						<Crumbs crumbs={crumbs} />
+					</div>
 					{wide ? (
-						<div className="shell-arama">
+						<div className="ust-arama">
 							<SiteSearch />
 						</div>
 					) : (
 						<Button
-							className="shell-menu-btn shell-arama-btn"
+							className="ust-btn"
 							type="text"
 							aria-label="Sitede ara"
 							aria-expanded={aramaAcik}
@@ -127,8 +148,13 @@ function Shell({ active, crumbs, reduced, children }: { active: string; crumbs: 
 							onClick={() => setAramaAcik(true)}
 						/>
 					)}
-				</div>
-			</Layout.Header>
+				</header>
+
+				<main id="icerik" tabIndex={-1} className="icerik">
+					{children}
+				</main>
+			</div>
+
 			{!wide && (
 				<Drawer
 					title="Sitede ara"
@@ -157,22 +183,6 @@ function Shell({ active, crumbs, reduced, children }: { active: string; crumbs: 
 					</div>
 				</Drawer>
 			)}
-			<Layout.Content id="icerik" tabIndex={-1} className="shell-content">
-				<div className="shell-bar shell-main">
-					<Crumbs crumbs={crumbs} />
-					{children}
-				</div>
-			</Layout.Content>
-			<Layout.Footer className="shell-footer">
-				<div className="shell-bar shell-footer-inner">
-					<p>
-						Bu site <code>mimari/</code> klasöründeki raporlardan üretilir.
-					</p>
-					<p>
-						Geçiş çalışması <code>tradehub-tr/tradehub_core</code> deposunun <code>version-15</code> dalında yapılır.
-					</p>
-				</div>
-			</Layout.Footer>
 			<FloatButton.BackTop
 				aria-label="Sayfanın başına dön"
 				shape="square"
@@ -181,6 +191,6 @@ function Shell({ active, crumbs, reduced, children }: { active: string; crumbs: 
 				duration={reduced ? 0 : 400}
 				style={{ insetInlineEnd: "var(--gutter)", insetBlockEnd: "var(--space-4)" }}
 			/>
-		</Layout>
+		</div>
 	);
 }
