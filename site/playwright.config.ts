@@ -2,6 +2,9 @@ import { defineConfig, devices } from "@playwright/test";
 
 // Site bir alt yolda yayınlanabilir. SITE_BASE ile testler de o yolu kullanır.
 const BASE = process.env.SITE_BASE || "/";
+// PW_URL verilirse testler calisan bir gelistirme sunucusuna baglanir ve derleme yapilmaz.
+// Birden cok ajan ayni worktree icinde calisirken dist klasoru cakismasin diye gereklidir.
+const EXISTING = process.env.PW_URL;
 
 // Firefox kullanıcı kararıyla kapsam dışıdır. Chromium ve WebKit çalışır.
 export default defineConfig({
@@ -9,13 +12,15 @@ export default defineConfig({
 	timeout: 30_000,
 	fullyParallel: true,
 	reporter: [["list"]],
-	use: { baseURL: `http://localhost:4322${BASE}`.replace(/\/$/, "") + "/", trace: "retain-on-failure" },
-	webServer: {
-		command: "npm run build && npm run preview:test",
-		url: `http://localhost:4322${BASE}`,
-		reuseExistingServer: !process.env.CI,
-		timeout: 240_000,
-	},
+	use: { baseURL: EXISTING ? EXISTING.replace(/\/$/, "") + "/" : `http://localhost:4322${BASE}`.replace(/\/$/, "") + "/", trace: "retain-on-failure" },
+	webServer: EXISTING
+		? undefined
+		: {
+				command: "npm run build && npm run preview:test",
+				url: `http://localhost:4322${BASE}`,
+				reuseExistingServer: !process.env.CI,
+				timeout: 240_000,
+			},
 	projects: [
 		{ name: "chromium-320", use: { ...devices["Desktop Chrome"], viewport: { width: 320, height: 700 }, hasTouch: true } },
 		{ name: "chromium-390", use: { ...devices["Pixel 7"], viewport: { width: 390, height: 844 } } },
