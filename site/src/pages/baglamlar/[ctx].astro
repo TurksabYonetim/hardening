@@ -1,0 +1,14 @@
+---
+import Base from "../../layouts/Base.astro";
+import { ContextPage } from "../../components/ContextPages.tsx";
+import contexts from "../../data/contexts.json";
+import docs from "../../data/doctype-summary.json";
+export function getStaticPaths() {
+	return contexts.map((c) => ({ params: { ctx: c.ctx }, props: { c } }));
+}
+const { c } = Astro.props;
+const ds = docs.filter((d) => d.ctx === c.ctx);
+---
+<Base title={c.ctx}>
+	<ContextPage client:only="react" c={{ ctx: c.ctx, title: c.title, sections: c.sections.map(({ title, html }) => ({ title, html })) }} docs={ds} />
+</Base>

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+test-results/
+playwright-report/
+.DS_Store
+
+# Üretim sırasında kullanılan ara dosyalar. Betiklerle yeniden üretilir.
+mimari/_veri/is6/
+mimari/_veri/is-*.tsv
+mimari/_veri/ilerleme-*.txt
+mimari/_veri/kaynak/

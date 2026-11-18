@@ -1,0 +1,19 @@
+---
+import Base from "../../layouts/Base.astro";
+import PhasePage from "../../components/PhasePage.tsx";
+import data from "../../data/phases.json";
+import tasks from "../../data/tasks.json";
+import docs from "../../data/doctype-summary.json";
+import guides from "../../data/guides.json";
+export function getStaticPaths() {
+	return data.phases.map((p) => ({ params: { id: p.slug }, props: { phaseId: p.id } }));
+}
+const { phaseId } = Astro.props;
+const phase = data.phases.find((p) => p.id === phaseId);
+const docMap = new Map(docs.map((d) => [d.id, d]));
+const epics = tasks.filter((t) => t.kind === "Epic" && t.phase === phaseId).map((t) => ({ task: t, doc: docMap.get(t.id) }));
+const phases = data.phases.map(({ id, label, slug }) => ({ id, label, slug }));
+---
+<Base title={`${phase.label}: ${phase.title}`}>
+	<PhasePage client:only="react" phase={phase} phases={phases} guides={guides.map(({ slug, title }) => ({ slug, title }))} epics={epics} />
+</Base>

@@ -1,0 +1,16 @@
+---
+import Base from "../../../layouts/Base.astro";
+import DoctypePage from "../../../components/DoctypePage.tsx";
+import all from "../../../data/doctypes.json";
+import tasks from "../../../data/tasks.json";
+export function getStaticPaths() {
+	return all.map((d, i) => ({ params: { ctx: d.ctx, slug: d.slug }, props: { i } }));
+}
+const { i } = Astro.props;
+const d = all[i];
+const strip = (x) => (x ? (({ md, sections, ...rest }) => rest)(x) : undefined);
+const task = tasks.find((t) => t.id === d.id);
+---
+<Base title={d.title}>
+	<DoctypePage client:only="react" doc={strip(d)} sections={d.sections} md={d.md} task={task} prev={strip(all[i - 1])} next={strip(all[i + 1])} />
+</Base>

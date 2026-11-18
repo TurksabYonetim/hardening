@@ -1,0 +1,253 @@
+/* Tek kaynak: renk, tipografi, köşe, boşluk ve hareket tokenları.
+   Ant Design teması (src/lib/theme.ts) aynı değerleri kullanır. */
+:root {
+	--font-sans: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+	--font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+	--text-body: 16px;
+	--text-small: 14px;
+	--text-h1: 28px;
+	--text-h2: 22px;
+	--text-h3: 18px;
+
+	--color-bg: #ffffff;
+	--color-surface: #f4f5f7;
+	--color-surface-strong: #e6e8ec;
+	--color-text: #0b0b0c;
+	--color-text-muted: #2e3136;
+	--color-primary: #0a3d91;
+	--color-primary-hover: #072c69;
+	--color-border: #6b6f76;
+	--color-divider: #c9ccd1;
+
+	--focus-bg: #ffd60a;
+	--focus-fg: #000000;
+
+	--radius-xs: 2px;
+	--radius-sm: 4px;
+	--radius-md: 6px;
+
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-6: 24px;
+	--page-gutter: 16px;
+
+	--motion-ease: cubic-bezier(0.65, 0, 0.35, 1);
+	--motion-fast: 120ms;
+	--motion-mid: 200ms;
+	--motion-slow: 300ms;
+
+	--hit-min: 44px;
+}
+
+@media (min-width: 768px) {
+	:root {
+		--page-gutter: 24px;
+	}
+}
+
+html {
+	font-family: var(--font-sans);
+	color: var(--color-text);
+	background: var(--color-bg);
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	font-size: var(--text-body);
+	line-height: 1.6;
+	background: var(--color-bg);
+	overflow-wrap: break-word;
+}
+
+code,
+kbd,
+samp {
+	font-family: var(--font-mono);
+	font-size: var(--text-small) !important;
+}
+
+/* Hareket: Ant Design "transition: all" kullanır. Yalnız boyanan özellikleri geçiririz. */
+[class^="ant-"],
+[class*=" ant-"],
+[class^="ant-"]::before,
+[class*=" ant-"]::before,
+[class^="ant-"]::after,
+[class*=" ant-"]::after {
+	transition-property: color, background-color, border-color, opacity, transform, fill !important;
+	transition-timing-function: var(--motion-ease) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0s !important;
+		animation-duration: 0s !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* Odak: çevreleyen halka yok. Klavye modunda tek, çevrelemeyen gösterge var. */
+:focus,
+:focus-visible {
+	outline: none !important;
+}
+
+html[data-focus-mode="keyboard"] :focus-visible {
+	outline: none !important;
+	box-shadow: none !important;
+	background-color: var(--focus-bg) !important;
+	color: var(--focus-fg) !important;
+	text-decoration-line: underline !important;
+	text-decoration-thickness: 3px !important;
+	text-underline-offset: 4px;
+}
+
+/* Gizli girdili bileşenlerde göstergeyi görünen kapsayıcı taşır. */
+html[data-focus-mode="keyboard"] .ant-checkbox-wrapper:has(.ant-checkbox-input:focus-visible),
+html[data-focus-mode="keyboard"] .ant-select:has(input:focus-visible),
+html[data-focus-mode="keyboard"] .ant-input-affix-wrapper:has(input:focus-visible) {
+	background-color: var(--focus-bg) !important;
+	color: var(--focus-fg) !important;
+	text-decoration-line: underline !important;
+	text-decoration-thickness: 3px !important;
+	text-underline-offset: 4px;
+}
+html[data-focus-mode="keyboard"] :focus-visible .anticon,
+html[data-focus-mode="keyboard"] :focus-visible .anticon * {
+	color: var(--focus-fg) !important;
+}
+
+@media (forced-colors: active) {
+	html[data-focus-mode="keyboard"] .ant-checkbox-wrapper:has(.ant-checkbox-input:focus-visible),
+	html[data-focus-mode="keyboard"] .ant-select:has(input:focus-visible) {
+		outline: 2px solid CanvasText !important;
+	}
+}
+
+@media (forced-colors: active) {
+	html[data-focus-mode="keyboard"] :focus-visible {
+		outline: 2px solid CanvasText !important;
+	}
+}
+
+/* Ant Design'ın odakta eklediği çevre gölgesini kaynağında kapatır. */
+.ant-btn,
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-select,
+.ant-checkbox-inner,
+.ant-segmented,
+.ant-tabs-tab-btn,
+.ant-collapse-header {
+	box-shadow: none !important;
+}
+
+.skip-link {
+	position: absolute;
+	left: var(--space-2);
+	top: -100px;
+	padding: var(--space-2) var(--space-3);
+	background: var(--color-text);
+	color: #fff;
+	font-size: var(--text-small);
+	border-radius: var(--radius-sm);
+	z-index: 1000;
+}
+.skip-link:focus-visible {
+	top: var(--space-2);
+}
+
+/* Rapor içeriği (Markdown'dan gelen HTML). */
+.md {
+	font-size: var(--text-body);
+	color: var(--color-text);
+	max-width: 76ch;
+}
+.md h1,
+.md h2,
+.md h3 {
+	line-height: 1.3;
+	margin: var(--space-6) 0 var(--space-2);
+}
+.md h1 {
+	font-size: var(--text-h1);
+}
+.md h2 {
+	font-size: var(--text-h2);
+}
+.md h3 {
+	font-size: var(--text-h3);
+}
+.md p,
+.md li {
+	margin: var(--space-2) 0;
+}
+.md ul,
+.md ol {
+	padding-left: var(--space-6);
+}
+.md a {
+	color: var(--color-primary);
+	text-decoration: underline;
+}
+.md code {
+	font-family: var(--font-mono);
+	font-size: var(--text-small);
+	background: var(--color-surface);
+	padding: 1px var(--space-1);
+	border-radius: var(--radius-xs);
+	overflow-wrap: break-word;
+}
+.md pre {
+	background: var(--color-surface);
+	padding: var(--space-3);
+	border-radius: var(--radius-sm);
+	overflow-x: auto;
+	font-size: var(--text-small);
+}
+.md pre code {
+	background: none;
+	padding: 0;
+}
+.md table {
+	display: block;
+	overflow-x: auto;
+	border-collapse: collapse;
+}
+.md th,
+.md td {
+	border: 1px solid var(--color-divider);
+	padding: var(--space-2);
+	text-align: left;
+	min-width: 8ch;
+}
+
+.md-inline code {
+	background: var(--color-surface-strong);
+	padding: 0 var(--space-1);
+	border-radius: var(--radius-xs);
+	overflow-wrap: break-word;
+}
+
+.story {
+	margin: 0;
+	padding: var(--space-3) var(--space-4);
+	background: var(--color-surface);
+	border-radius: var(--radius-md);
+	font-size: 18px;
+}
+
+/* Uzun dosya yolları dar ekranda taşmasın. Esnek kutu içindeki etiket küçülebilmeli. */
+.ant-checkbox-wrapper,
+.ant-checkbox-label {
+	min-width: 0;
+	max-width: 100%;
+}
+.md-inline code {
+	overflow-wrap: anywhere;
+}

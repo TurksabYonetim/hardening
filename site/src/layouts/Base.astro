@@ -1,0 +1,44 @@
+---
+import "@fontsource/outfit/400.css";
+import "@fontsource/outfit/600.css";
+import "../styles/tokens.css";
+
+interface Props {
+	title: string;
+	description?: string;
+}
+const { title, description = "tradehub_core modüler monolit geçiş planı" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="tr" data-focus-mode="pointer">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#0a3d91" />
+		<title>{title} | İstoç mimari</title>
+		<script is:inline>
+			// Merkezi odak modu: yalnız Tab ve Shift+Tab klavye modunu açar.
+			// İşaretçi ve dokunma yalnız görsel modu kapatır. Odak ve klavye erişimi korunur.
+			(function () {
+				var root = document.documentElement;
+				var set = function (mode) {
+					if (root.dataset.focusMode !== mode) root.dataset.focusMode = mode;
+				};
+				window.addEventListener("keydown", function (e) {
+					if (e.key === "Tab") set("keyboard");
+				}, true);
+				window.addEventListener("pointerdown", function () { set("pointer"); }, true);
+				window.addEventListener("touchstart", function () { set("pointer"); }, { capture: true, passive: true });
+			})();
+		</script>
+	</head>
+	<body>
+		<a class="skip-link" href="#icerik">İçeriğe geç</a>
+		<slot />
+		<noscript>
+			<p style="padding:16px">Bu sayfa JavaScript ile çalışır. Raporların Markdown hâli <code>mimari/</code> klasöründedir.</p>
+		</noscript>
+	</body>
+</html>

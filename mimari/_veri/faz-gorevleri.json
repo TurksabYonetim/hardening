@@ -1,0 +1,1394 @@
+[
+ {
+  "id": "Faz -1",
+  "ad": "Güvenlik ağı",
+  "ozet": "Kod taşınmadan önce bugünkü davranış testlerle dondurulur. Bu faz bitmeden hiçbir kod taşınmaz.",
+  "gorevler": [
+   {
+    "baslik": "Test altyapısını kurun: `pytest`, `syrupy`, `hypothesis`, `time-machine` ve test veri fabrikaları",
+    "story": "Bir geliştirici olarak, testleri tek komutla çalıştırmak istiyorum. Böylece her değişikliği hemen kontrol ederim.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "`pytest` tek komutla yerelde ve CI'da çalışıyor.",
+     "`tests/factories.py` satıcı, ürün, sepet ve sipariş üretiyor.",
+     "Araç sürümleri `pyproject.toml` dosyasında sabit.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Canlı veritabanına bağlanan test yazmayın.",
+     "Rastgele veri ya da gerçek saat kullanan test yazmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/01-tdd.md"
+    ],
+    "id": "faz/faz-eksi-1/1"
+   },
+   {
+    "baslik": "12 ana akış için characterization test yazın",
+    "story": "Bir geliştirici olarak, bugünkü davranışın kaydını istiyorum. Böylece taşıma sırasında bir şey bozulursa hemen görürüm.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "Şu 12 akışın her biri için snapshot testi var: satıcı başvurusu ve onayı, tek ürün oluşturma, CSV ile toplu yükleme, XML akışı, sepete ekleme, sepetten sipariş, ödeme tahsilatı ve stok düşümü, vergi hesabı, sevkiyat oluşturma ve teslim, tam iptal, kısmi iptal ve iade, fatura belgesi.",
+     "Her test iki kez çalıştırıldı ve aynı sonucu verdi.",
+     "Snapshot dosyaları repoda.",
+     "Characterization test: Bu görevin kendisi bu testleri yazar. 12 akışın 12'si kapsandı.",
+     "Shadow mode: Testler önce yalnız rapor verdi. Üç ardışık CI çalışmasında sonuç aynı çıktı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Bu görevde uygulama kodunu değiştirmeyin. Yalnız test ekleyin.",
+     "Hatalı davranışı düzeltmeyin. Hatalı sonucu kaydedin ve issue numarasını yazın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/02-characterization-test.md"
+    ],
+    "id": "faz/faz-eksi-1/2"
+   },
+   {
+    "baslik": "Bilinen hatalar için `xfail` testleri yazın (#370, #371, #374 ve diğer kriz ve kritik issue'lar)",
+    "story": "Bir geliştirici olarak, bilinen hataların testini istiyorum. Böylece hata düzelince ya da geri gelince haberim olur.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "`öncelik: kriz` ve `öncelik: kritik` etiketli her issue için bir `xfail` testi var.",
+     "Her testte issue numarası yazılı.",
+     "CI, beklenmedik biçimde geçen `xfail` testini raporluyor.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Bu görevde hatayı düzeltmeyin.",
+     "`xfail` yerine testi atlamayın (`skip`)."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/01-tdd.md"
+    ],
+    "id": "faz/faz-eksi-1/3"
+   },
+   {
+    "baslik": "Feature flag altyapısını ekleyin",
+    "story": "Bir platform yöneticisi olarak, yeni kodu bir anahtarla açıp kapatmak istiyorum. Böylece sorun çıkınca kod geri alınmadan eski yola dönerim.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "`tradehub_core/shared/flags.py` içinde `is_enabled(ad)` fonksiyonu var.",
+     "Bayraklar `TH Feature Flag` kaydında tutuluyor ve ortam bazında ayarlanıyor.",
+     "Bayrağı değiştirmek yeniden yayın gerektirmiyor.",
+     "Her bayrak değişikliği kayda geçiyor.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Bayrağı kod içine sabit yazmayın.",
+     "Bayrağı yapay zekâ ajanına açtırmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/03-shadow-mode.md"
+    ],
+    "id": "faz/faz-eksi-1/4"
+   },
+   {
+    "baslik": "Canlı veritabanının anonimleştirilmiş kopyasını hazırlayın",
+    "story": "Bir DevOps mühendisi olarak, gerçek veriye benzeyen güvenli bir kopya istiyorum. Böylece her patch canlıdan önce bu kopyada denenir.",
+    "sahip": "Hüseyin Cengiz",
+    "altyapi": true,
+    "kabul": [
+     "Kopya Colima üzerindeki MariaDB konteynerinde çalışıyor.",
+     "E-posta, telefon, vergi numarası ve banka bilgileri değiştirildi.",
+     "Kopya haftada bir yenileniyor.",
+     "Yedekten geri yükleme test sitesinde denendi.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Anonimleştirilmemiş veriyi geliştirici makinesine kopyalamayın.",
+     "Kopyayı herkese açık bir yere koymayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-eksi-1/5"
+   },
+   {
+    "baslik": "Geri alma tatbikatı yapın",
+    "story": "Bir DevOps mühendisi olarak, geri almayı önceden denemek istiyorum. Böylece gerçek sorunda ne yapacağımı bilirim.",
+    "sahip": "Hüseyin Cengiz",
+    "altyapi": true,
+    "kabul": [
+     "Alpha ortamında bir yayın geri alındı ve süre ölçüldü.",
+     "Geri alma adımları yazılı.",
+     "Yedekten geri yükleme süresi ölçüldü.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Tatbikatı canlı ortamda yapmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-eksi-1/6"
+   }
+  ]
+ },
+ {
+  "id": "Faz 0",
+  "ad": "CI kapısı ve kurallar",
+  "ozet": "Kuralları makine uygular. Her kontrol önce yalnız rapor verir, sonra zorunlu olur.",
+  "gorevler": [
+   {
+    "baslik": "CI'a uygulama testlerini ekleyin",
+    "story": "Bir geliştirici olarak, her PR'da testlerin çalışmasını istiyorum. Böylece kırık kod Alpha'ya çıkmaz.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "Her PR'da `pytest` çalışıyor.",
+     "\"Alpha Release\" işi testlerin başarısına bağlı.",
+     "CI süresi 15 dakikayı geçmiyor.",
+     "Bu görev #372 issue'sunu kapatıyor.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Başarısız testi geçirmek için testi silmeyin.",
+     "CI süresini kısaltmak için test atlamayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/01-tdd.md",
+     "YONERGELER/08-pr-sablonu.md"
+    ],
+    "id": "faz/faz-0/1"
+   },
+   {
+    "baslik": "CI'a Ruff kontrolünü ekleyin",
+    "story": "Bir geliştirici olarak, kod biçiminin otomatik kontrolünü istiyorum. Böylece incelemede biçim tartışılmaz.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "`ruff check` ve `ruff format --check` her PR'da çalışıyor.",
+     "Mevcut ihlaller bir taban dosyasında kayıtlı. Yeni ihlal PR'ı durduruyor.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Bu görevde bütün eski kodu yeniden biçimlendirmeyin.",
+     "Kuralı kapatmak için `noqa` eklemeyin."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/08-pr-sablonu.md"
+    ],
+    "id": "faz/faz-0/2"
+   },
+   {
+    "baslik": "`import-linter` kontrolünü ekleyin",
+    "story": "Bir geliştirici olarak, bağlam sınırlarının otomatik kontrolünü istiyorum. Böylece başka bağlamın iç koduna kazayla bağlanmam.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "Her bağlam için bir sözleşme tanımlı.",
+     "Mevcut ihlaller `architecture/exceptions.toml` dosyasında kayıtlı.",
+     "Yeni ihlal PR'ı durduruyor.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "İhlali gizlemek için `ignore_imports` listesine genel kalıp eklemeyin."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-0/3"
+   },
+   {
+    "baslik": "`semgrep` ile bağlamlar arası yazım kurallarını ekleyin",
+    "story": "Bir geliştirici olarak, başka bağlamın tablosuna yazan kodun yakalanmasını istiyorum. Böylece veri sahipliği korunur.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "`architecture/ownership.toml` her DocType'ın sahibini yazıyor.",
+     "Kurallar `set_value`, `db.sql` ve `get_doc().save()` kalıplarını yakalıyor.",
+     "f-string ile kurulan SQL yakalanıyor.",
+     "Mevcut ihlaller istisna dosyasında kayıtlı.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Kuralı geçmek için SQL metnini parçalara bölmeyin."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-0/4"
+   },
+   {
+    "baslik": "Testlerde çalışan yazma koruyucusunu ekleyin",
+    "story": "Bir geliştirici olarak, sahibi olmayan kodun yazımını testte görmek istiyorum. Böylece kod taramasının kaçırdığı yazımlar da yakalanır.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "Koruyucu her veritabanı yazımında yazan paketi buluyor.",
+     "Sahip olmayan yazım testi başarısız yapıyor.",
+     "Koruyucu canlıda yalnız kayıt tutuyor.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Koruyucuyu canlıda hata verecek biçimde açmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-0/5"
+   },
+   {
+    "baslik": "Olay sözleşmesi kontrolünü ekleyin",
+    "story": "Bir geliştirici olarak, kırıcı sözleşme değişikliğinin durdurulmasını istiyorum. Böylece dinleyen bağlamlar bozulmaz.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "CI, Pydantic modellerinden JSON Schema üretiyor.",
+     "CI, eski ve yeni şemayı karşılaştırıyor.",
+     "Kırıcı değişiklik PR'ı durduruyor.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Üretilen şema dosyasını elle düzenlemeyin."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/05-olay-sozlesmesi.md"
+    ],
+    "id": "faz/faz-0/6"
+   },
+   {
+    "baslik": "CI'a `bench migrate` denemesini ve migration rehearsal'ı ekleyin",
+    "story": "Bir DevOps mühendisi olarak, her patch'in kopyada denenmesini istiyorum. Böylece hatalı patch canlı veriyi bozmaz.",
+    "sahip": "Hüseyin Cengiz",
+    "altyapi": true,
+    "kabul": [
+     "Patch içeren her PR'da `bench migrate` boş sitede çalışıyor.",
+     "Patch anonimleştirilmiş kopyada çalışıyor.",
+     "Patch iki kez çalışıyor ve ikinci çalıştırma veri değiştirmiyor.",
+     "Satır sayıları öncesi ve sonrası karşılaştırılıyor.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Denemeyi canlı veritabanında yapmayın.",
+     "Başarısız denemeyi atlamak için patch'i `try/except` içine almayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-0/7"
+   },
+   {
+    "baslik": "`diff-cover` ile değişen satır kapsamını zorunlu yapın",
+    "story": "Bir geliştirici olarak, testsiz kodun birleştirilmemesini istiyorum. Böylece TDD kuralı kendiliğinden uygulanır.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "Değişen satırların kapsamı %90'ın altındaysa PR duruyor.",
+     "Silinen ya da atlanan test PR'ı durduruyor.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Kapsamı artırmak için hiçbir şey kontrol etmeyen test yazmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/01-tdd.md"
+    ],
+    "id": "faz/faz-0/8"
+   },
+   {
+    "baslik": "Metrik betiğini ve ratchet kontrolünü ekleyin",
+    "story": "Bir platform yöneticisi olarak, sayıların kötüleşmemesini istiyorum. Böylece yapının eski hâline dönmesini engellerim.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "`scripts/architecture_metrics.py` metrik yönergesindeki bütün sayıları üretiyor.",
+     "Bir sayı kötüleşirse PR duruyor.",
+     "Haftalık rapor her pazartesi oluşuyor.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Sayıyı düzeltmek için ölçümü değiştirmeyin."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/07-metrikler.md"
+    ],
+    "id": "faz/faz-0/9"
+   },
+   {
+    "baslik": "`CODEOWNERS`, PR şablonu ve dal korumasını ekleyin",
+    "story": "Bir platform yöneticisi olarak, kuralların atlanamamasını istiyorum. Böylece disiplin kişilere bağlı kalmaz.",
+    "sahip": "Hüseyin Cengiz",
+    "altyapi": true,
+    "kabul": [
+     "`CODEOWNERS` her bağlamı bir sahibe bağlıyor.",
+     "PR şablonu repoda. CI boş bölümü durduruyor.",
+     "`version-15` dalında zorunlu kontroller açık. Yönetici de atlayamıyor.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "Dal korumasını geçici olarak kapatmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/08-pr-sablonu.md"
+    ],
+    "id": "faz/faz-0/10"
+   }
+  ]
+ },
+ {
+  "id": "Faz 1",
+  "ad": "Ortak çekirdek ve olay sistemi",
+  "ozet": "Para tipi, olay sistemi, shadow mode yardımcısı ve sözleşme araçları kurulur.",
+  "gorevler": [
+   {
+    "baslik": "`Money` value object sınıfını ekleyin",
+    "story": "Bir geliştirici olarak, parayı tek bir güvenli tiple taşımak istiyorum. Böylece yuvarlama ve para birimi hataları oluşmaz.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "`shared/money.py` içinde değişmez `Money` sınıfı var.",
+     "Farklı para birimlerini toplamak hata veriyor.",
+     "Yuvarlama kuralı tek yerde ve property-based testle korunuyor.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Yeni kodda tutar için `float` kullanmayın.",
+     "Bu görevde mevcut alanların tipini değiştirmeyin."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/04-is-kurallari.md"
+    ],
+    "id": "faz/faz-1/1"
+   },
+   {
+    "baslik": "`Domain Event` outbox kaydını ve `publish` fonksiyonunu ekleyin",
+    "story": "Bir geliştirici olarak, olayı işle aynı işlemde kaydetmek istiyorum. Böylece olay kaybolmaz.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Olay, işi yapan kayıtla aynı işlemde yazılıyor.",
+     "İşlem geri alınınca olay da geri alınıyor. Bunun testi var.",
+     "Her olayın değişmeyen `event_id` değeri var.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Olayı `frappe.enqueue` ile doğrudan göndermeyin. Önce outbox'a yazın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-1/2"
+   },
+   {
+    "baslik": "Dağıtıcıyı, tekrar denemeyi ve dead letter listesini ekleyin",
+    "story": "Bir geliştirici olarak, başarısız olayın yeniden denenmesini istiyorum. Böylece geçici hatalar veri kaybına yol açmaz.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Başarısız olay artan aralıklarla en çok 8 kez deneniyor.",
+     "8 denemeden sonra olay dead letter listesine geçiyor.",
+     "Dead letter kaydı ekibe bildirim gönderiyor.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Başarısız olayı silmeyin.",
+     "Hatayı sessizce yutmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-1/3"
+   },
+   {
+    "baslik": "`Processed Event` kaydı ile idempotent dinleyici altyapısını ekleyin",
+    "story": "Bir geliştirici olarak, aynı olayın iki kez işlenmemesini istiyorum. Böylece stok ve para iki kez hareket etmez.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "`(dinleyici, event_id)` çifti veritabanında benzersiz.",
+     "Aynı olay iki kez gönderilince ikinci gönderim iş yapmıyor. Bunun testi var.",
+     "`@subscriber` dekoratörü bu kontrolü kendiliğinden yapıyor.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Tekrar kontrolünü dinleyicinin içine elle yazmayın. Dekoratörü kullanın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-1/4"
+   },
+   {
+    "baslik": "`shadow_compare` yardımcısını ve `Shadow Mismatch Log` kaydını ekleyin",
+    "story": "Bir geliştirici olarak, eski ve yeni yolu güvenle karşılaştırmak istiyorum. Böylece yeni yola kanıtla geçerim.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Yeni kodun hatası kullanıcıya gitmiyor.",
+     "Yeni kod arka planda çalışıyor ve isteği yavaşlatmıyor.",
+     "Fark `Shadow Mismatch Log` kaydına yazılıyor.",
+     "Geçiş koşullarını gösteren bir rapor var.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yardımcının kendisi örnek bir hesapta 7 gün çalıştı. Yanlış fark kaydı çıkmadı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Shadow mode'da yeni kodun veritabanına yazmasına izin vermeyin."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/03-shadow-mode.md"
+    ],
+    "id": "faz/faz-1/5"
+   },
+   {
+    "baslik": "Pydantic olay modellerini ve şema kaydını kurun",
+    "story": "Bir geliştirici olarak, olayların yazılı sözleşmesini istiyorum. Böylece olayın anlamı kazara değişmez.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Olaylar Pydantic modeli. Her modelin docstring'inde \"Anlam\" satırı var.",
+     "JSON Schema dosyaları `contracts/schemas/` klasöründe.",
+     "Her olay için en az üç örnek veri dosyası var.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Olay verisini düz sözlük olarak göndermeyin."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/05-olay-sozlesmesi.md"
+    ],
+    "id": "faz/faz-1/6"
+   },
+   {
+    "baslik": "TypeScript tiplerini ve `zod` doğrulamasını üretin",
+    "story": "Bir ön yüz geliştiricisi olarak, API tiplerinin otomatik gelmesini istiyorum. Böylece arka uç değişince derleme hata verir.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "`json-schema-to-typescript` tipleri üretiyor.",
+     "`tradehubfront` ve `admin-panel` üretilen tipleri kullanıyor.",
+     "API cevapları `zod` ile doğrulanıyor.",
+     "CI, üretilen dosyaların güncel olduğunu kontrol ediyor.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Üretilen tip dosyasını elle düzenlemeyin."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/05-olay-sozlesmesi.md"
+    ],
+    "id": "faz/faz-1/7"
+   },
+   {
+    "baslik": "Saatlik uzlaştırma işini ekleyin",
+    "story": "Bir platform yöneticisi olarak, kaybolan olayların bulunmasını istiyorum. Böylece eksik iş fark edilmeden kalmaz.",
+    "sahip": "Hüseyin Cengiz",
+    "altyapi": false,
+    "kabul": [
+     "İş, olayı yayınlanmamış kayıtları buluyor.",
+     "İş, bulduklarını raporluyor ve bildirim gönderiyor.",
+     "İş hiçbir veriyi kendiliğinden değiştirmiyor.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Uzlaştırma işine otomatik düzeltme yaptırmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-1/8"
+   }
+  ]
+ },
+ {
+  "id": "Faz 2",
+  "ad": "hooks.py dosyasını bölme",
+  "ozet": "Ortak dosyalar bağlamlara bölünür. Merge çakışmaları azalır.",
+  "gorevler": [
+   {
+    "baslik": "`hooks_merge.py` yardımcısını ekleyin",
+    "story": "Bir geliştirici olarak, bağlam kayıtlarının otomatik birleşmesini istiyorum. Böylece `hooks.py` dosyasına elle yazmam.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Yardımcı `doc_events`, `scheduler_events` ve yetki kayıtlarını birleştiriyor.",
+     "Aynı anahtara iki bağlam yazarsa yardımcı hata veriyor.",
+     "Characterization test: Birleşmiş `doc_events` sözlüğü eski sözlükle bire bir aynı. Bunun testi var.",
+     "Shadow mode: Yeni birleşmiş sözlük açılışta eski sözlükle karşılaştırıldı. 7 gün boyunca fark 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Birleştirme sırasını rastgele bırakmayın. Sıra sabit olmalı."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [],
+    "id": "faz/faz-2/1"
+   },
+   {
+    "baslik": "Her bağlam için `hooks_fragment.py` oluşturun ve kayıtları taşıyın",
+    "story": "Bir geliştirici olarak, kendi bağlamımın kayıtlarını kendi dosyamda tutmak istiyorum. Böylece başka geliştiriciyle çakışmam.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Her bağlamın kendi `hooks_fragment.py` dosyası var.",
+     "`hooks.py` içinde doğrudan kayıt kalmadı.",
+     "Her bağlam ayrı bir PR ile taşındı.",
+     "Characterization test: Her taşımadan sonra birleşmiş sözlük eski sözlükle aynı.",
+     "Shadow mode: Yeni birleşmiş sözlük açılışta eski sözlükle karşılaştırıldı. 7 gün boyunca fark 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Taşıma sırasında bir kaydın davranışını değiştirmeyin.",
+     "Bir PR'da iki bağlamı taşımayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [],
+    "id": "faz/faz-2/2"
+   },
+   {
+    "baslik": "`permissions.py` dosyasını bağlamlara bölün",
+    "story": "Bir geliştirici olarak, yetki kurallarımı kendi bağlamımda tutmak istiyorum. Böylece yetki değişiklikleri çakışmaz.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Her bağlamın yetki fonksiyonları kendi paketinde.",
+     "Satıcı izolasyonu testleri her DocType için var.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Eski ve yeni yetki fonksiyonu aynı sorgu için karşılaştırıldı. 7 gün ve 500 sorguda fark 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Yetki kuralını gevşetmeyin.",
+     "`ignore_permissions=True` eklemeyin."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [],
+    "id": "faz/faz-2/3"
+   },
+   {
+    "baslik": "`patches.txt` dosyasını bölümlere ayırın ve patch klasörlerini taşıyın",
+    "story": "Bir geliştirici olarak, patch'imi kendi bölümüme eklemek istiyorum. Böylece `patches.txt` çakışması azalır.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Her bağlamın `patches.txt` içinde kendi bölümü var.",
+     "Yeni patch'ler `tradehub_core/<bağlam>/patches/` klasöründe.",
+     "Çalışmış patch'lerin yolu değişmedi.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni düzen anonimleştirilmiş kopyada `bench migrate` ile denendi. Hiçbir eski patch yeniden çalışmadı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Çalışmış bir patch'in adını ya da yolunu değiştirmeyin. Frappe onu yeniden çalıştırır."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [],
+    "id": "faz/faz-2/4"
+   }
+  ]
+ },
+ {
+  "id": "Faz 3",
+  "ad": "Sipariş, vergi, ödeme ve lojistik",
+  "ozet": "En çok hata üreten alan olaylarla ayrılır. Her adım shadow mode ile doğrulanır.",
+  "gorevler": [
+   {
+    "baslik": "Dört bağlama `api.py` ve `contracts.py` ekleyin",
+    "story": "Bir geliştirici olarak, her bağlamın tek bir dış kapısını istiyorum. Böylece neyi çağırabileceğimi bilirim.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "`ordering`, `tax`, `payments` ve `logistics` paketlerinde `api.py` ve `contracts.py` var.",
+     "Fonksiyonlar tipli girdi ve çıktı kullanıyor.",
+     "Her fonksiyonun sözleşme testi var.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "`api.py` içine iş kuralı yazmayın. Yalnız iç servisi çağırın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [],
+    "id": "faz/faz-3/1"
+   },
+   {
+    "baslik": "Sipariş durumunu durum makinesine taşıyın",
+    "story": "Bir geliştirici olarak, sipariş durumunu tek yerden değiştirmek istiyorum. Böylece #370 türü hatalar oluşmaz.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "`ordering/state.py` bütün geçişleri tanımlıyor.",
+     "İzin verilmeyen geçiş hata veriyor.",
+     "Her geçişin testi var. Her durum çifti için property-based test var.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "`Order.status` alanına başka bir yerden yazmayın.",
+     "`frappe.db.set_value(\"Order\", ...)` kullanmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-3/2"
+   },
+   {
+    "baslik": "Vergi hesabını `tax.api` üzerinden sorgu olarak sunun",
+    "story": "Bir alıcı olarak, sepette doğru vergiyi hemen görmek istiyorum. Böylece ödeyeceğim tutarı bilirim.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Sipariş denetleyicisi `tax_core` iç modüllerini çağırmıyor.",
+     "Vergi kuralları karar tablosunda. Mali müşavir onayı PR'da.",
+     "Vergi invariant'ları için property-based test var.",
+     "Vergi paketinde mutation skoru en az %80.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Vergi hesabını olaya taşımayın. Sonuç hemen gerekiyor.",
+     "Tutar için `float` kullanmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/04-is-kurallari.md"
+    ],
+    "id": "faz/faz-3/3"
+   },
+   {
+    "baslik": "İade hesabını vergi sözleşmesine bağlayın (#371)",
+    "story": "Bir alıcı olarak, iptalde doğru tutarın iade edilmesini istiyorum. Böylece az ya da fazla iade almam.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "İade tutarı kalemin dondurulmuş brüt tutarından hesaplanıyor.",
+     "Çoklu vergi ve vergi dahil fiyat için test var.",
+     "#371 için yazılan `xfail` testi normal teste döndü.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "İade formülünü lojistik paketinde tutmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/04-is-kurallari.md"
+    ],
+    "id": "faz/faz-3/4"
+   },
+   {
+    "baslik": "`payment.collected` olayını ekleyin ve ödeme kodunun sipariş yazımını kaldırın",
+    "story": "Bir geliştirici olarak, ödemenin siparişe olayla haber vermesini istiyorum. Böylece ödeme kodu sipariş durumlarını bilmek zorunda kalmaz.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "`payments/service.py` içinde `Order` yazımı kalmadı.",
+     "Sipariş bağlamı `payment.collected` olayını idempotent işliyor.",
+     "Olay iki kez gelince sipariş bir kez onaylanıyor. Bunun testi var.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Ödeme kodundan sipariş durumuna bakmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/05-olay-sozlesmesi.md",
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-3/5"
+   },
+   {
+    "baslik": "`order.confirmed` olayı ile stok düşümünü ayırın (#370)",
+    "story": "Bir satıcı olarak, ödenen siparişte stoğun her durumda düşmesini istiyorum. Böylece olmayan ürünü satmam.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Stok, `order.confirmed` olayıyla düşüyor.",
+     "Stok defterinde `(sipariş, kalem, hareket türü)` benzersiz.",
+     "Stok hiçbir girdide eksiye düşmüyor. Property-based test var.",
+     "#370 için yazılan `xfail` testi normal teste döndü.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Stok düşümünü sipariş durumuna bağlamayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-3/6"
+   },
+   {
+    "baslik": "Lojistiğin sipariş yazımını olaylarla değiştirin",
+    "story": "Bir geliştirici olarak, lojistiğin siparişe olayla haber vermesini istiyorum. Böylece lojistik geliştiricisi sipariş kaydına dokunmaz.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "`logistics/hooks.py` içinde `Order` yazımı kalmadı.",
+     "Lojistik `shipment.handed_over` ve `shipment.delivered` olaylarını yayınlıyor.",
+     "Sevkiyat taslağı `order.confirmed` olayıyla oluşuyor.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "`Order.status` ve `fulfillment_status` alanlarına lojistikten yazmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/05-olay-sozlesmesi.md"
+    ],
+    "id": "faz/faz-3/7"
+   },
+   {
+    "baslik": "Dört bağlamda `import-linter` ve yazım kurallarını zorunlu yapın",
+    "story": "Bir platform yöneticisi olarak, bu dört bağlamda sınırın kilitlenmesini istiyorum. Böylece yapı geri bozulmaz.",
+    "sahip": "Geliştirici",
+    "altyapi": true,
+    "kabul": [
+     "Dört bağlam için istisna sayısı 0.",
+     "Kontroller PR'ı durduruyor.",
+     "Characterization test: Değişiklikten önce bütün mevcut testlerin sonucu kaydedildi. Değişiklikten sonra sonuçlar aynı.",
+     "Shadow mode: Yeni kontrol önce yalnız rapor verdi. En az 10 PR boyunca yanlış uyarı çıkmadı. Sonra zorunlu yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var."
+    ],
+    "yapma": [
+     "İstisna dosyasına yeni satır eklemeyin."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/07-metrikler.md"
+    ],
+    "id": "faz/faz-3/8"
+   }
+  ]
+ },
+ {
+  "id": "Faz 4",
+  "ad": "Diğer bağlamlar",
+  "ozet": "Kalan bağlamlar aynı yöntemle taşınır. Her DocType'ın epic'i bu fazdadır.",
+  "gorevler": [
+   {
+    "baslik": "Katalog bağlamını taşıyın",
+    "story": "Bir geliştirici olarak, bu bağlamın kendi modülünde durmasını istiyorum. Böylece başka geliştiricilerin işini bozmam.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Bağlamın `api.py`, `contracts.py` ve `hooks_fragment.py` dosyaları var.",
+     "Bağlamın bütün epic'leri \"Bitti\" durumunda.",
+     "Bağlam için istisna sayısı 0.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Bir PR'da birden fazla DocType taşımayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [],
+    "id": "faz/faz-4/1"
+   },
+   {
+    "baslik": "Satıcı ve mağaza bağlamını taşıyın",
+    "story": "Bir geliştirici olarak, bu bağlamın kendi modülünde durmasını istiyorum. Böylece başka geliştiricilerin işini bozmam.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Bağlamın `api.py`, `contracts.py` ve `hooks_fragment.py` dosyaları var.",
+     "Bağlamın bütün epic'leri \"Bitti\" durumunda.",
+     "Bağlam için istisna sayısı 0.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Bir PR'da birden fazla DocType taşımayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [],
+    "id": "faz/faz-4/2"
+   },
+   {
+    "baslik": "Medya bağlamını taşıyın",
+    "story": "Bir geliştirici olarak, bu bağlamın kendi modülünde durmasını istiyorum. Böylece başka geliştiricilerin işini bozmam.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Bağlamın `api.py`, `contracts.py` ve `hooks_fragment.py` dosyaları var.",
+     "Bağlamın bütün epic'leri \"Bitti\" durumunda.",
+     "Bağlam için istisna sayısı 0.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Bir PR'da birden fazla DocType taşımayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [],
+    "id": "faz/faz-4/3"
+   },
+   {
+    "baslik": "İçe aktarma bağlamını taşıyın",
+    "story": "Bir geliştirici olarak, bu bağlamın kendi modülünde durmasını istiyorum. Böylece başka geliştiricilerin işini bozmam.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Bağlamın `api.py`, `contracts.py` ve `hooks_fragment.py` dosyaları var.",
+     "Bağlamın bütün epic'leri \"Bitti\" durumunda.",
+     "Bağlam için istisna sayısı 0.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Bir PR'da birden fazla DocType taşımayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [],
+    "id": "faz/faz-4/4"
+   },
+   {
+    "baslik": "Değerlendirme bağlamını taşıyın",
+    "story": "Bir geliştirici olarak, bu bağlamın kendi modülünde durmasını istiyorum. Böylece başka geliştiricilerin işini bozmam.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Bağlamın `api.py`, `contracts.py` ve `hooks_fragment.py` dosyaları var.",
+     "Bağlamın bütün epic'leri \"Bitti\" durumunda.",
+     "Bağlam için istisna sayısı 0.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Bir PR'da birden fazla DocType taşımayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [],
+    "id": "faz/faz-4/5"
+   },
+   {
+    "baslik": "Bildirim ve iletişim bağlamını taşıyın",
+    "story": "Bir geliştirici olarak, bu bağlamın kendi modülünde durmasını istiyorum. Böylece başka geliştiricilerin işini bozmam.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Bağlamın `api.py`, `contracts.py` ve `hooks_fragment.py` dosyaları var.",
+     "Bağlamın bütün epic'leri \"Bitti\" durumunda.",
+     "Bağlam için istisna sayısı 0.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Bir PR'da birden fazla DocType taşımayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [],
+    "id": "faz/faz-4/6"
+   },
+   {
+    "baslik": "Kalan bağlamını taşıyın",
+    "story": "Bir geliştirici olarak, bu bağlamın kendi modülünde durmasını istiyorum. Böylece başka geliştiricilerin işini bozmam.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Bağlamın `api.py`, `contracts.py` ve `hooks_fragment.py` dosyaları var.",
+     "Bağlamın bütün epic'leri \"Bitti\" durumunda.",
+     "Bağlam için istisna sayısı 0.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Bir PR'da birden fazla DocType taşımayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [],
+    "id": "faz/faz-4/7"
+   }
+  ]
+ },
+ {
+  "id": "Faz 5",
+  "ad": "DocType modüllerini taşıma",
+  "ozet": "DocType'ın modül alanı değişir. Bu adım veritabanını etkiler ve en sona kalır.",
+  "gorevler": [
+   {
+    "baslik": "Modül taşıma patch şablonunu yazın",
+    "story": "Bir geliştirici olarak, güvenli bir patch şablonu istiyorum. Böylece her taşıma aynı güvenli yolla yapılır.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Şablon `--dry-run` modunu destekliyor.",
+     "Şablon iki kez çalışınca veri değiştirmiyor.",
+     "Şablonun geri dönüş dosyası var ve denendi.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Şablon anonimleştirilmiş kopyada `--dry-run` ile çalıştı. Rapor beklenen değişiklikle aynı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Şablonda veri silen komut kullanmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-5/1"
+   },
+   {
+    "baslik": "DocType'ları bağlam bağlam yeni modüle taşıyın",
+    "story": "Bir geliştirici olarak, her DocType'ın kendi modülünde görünmesini istiyorum. Böylece sahiplik klasörden belli olur.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "Her bağlam ayrı bir yayında taşındı.",
+     "Her taşıma migration rehearsal'dan geçti.",
+     "Satır sayıları öncesi ve sonrası aynı.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Taşıma önce Alpha, Beta ve RC ortamlarında 7'şer gün çalıştı. Hata sayısı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Aynı yayında iki bağlamı taşımayın.",
+     "Taşımayı davranış değişikliğiyle birleştirmeyin."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-5/2"
+   },
+   {
+    "baslik": "Canlıda taşımayı yedekle birlikte yapın",
+    "story": "Bir DevOps mühendisi olarak, canlı taşımayı geri alınabilir yapmak istiyorum. Böylece sorun çıkarsa veri kaybolmaz.",
+    "sahip": "Hüseyin Cengiz",
+    "altyapi": false,
+    "kabul": [
+     "Taşımadan önce yedek alındı ve geri yükleme denendi.",
+     "Taşıma sonrası satır sayıları kontrol edildi.",
+     "Geri alma süresi ölçüldü.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Canlı taşıma, RC ortamındaki 7 günlük hatasız çalışmadan sonra yapıldı.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Yedek olmadan canlıda patch çalıştırmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/06-veri-sahipligi-ve-olaylar.md"
+    ],
+    "id": "faz/faz-5/3"
+   },
+   {
+    "baslik": "\"Tradehub Core\" modülünü boşaltın ve eski yolları kaldırın",
+    "story": "Bir geliştirici olarak, eski yönlendirmelerin temizlenmesini istiyorum. Böylece iki yol birden bakım gerektirmez.",
+    "sahip": "Geliştirici",
+    "altyapi": false,
+    "kabul": [
+     "\"Tradehub Core\" modülünde DocType kalmadı.",
+     "Eski import yolları en az iki yayın sonra kaldırıldı.",
+     "Kapalı kalan feature flag'ler temizlendi.",
+     "Characterization test: Görevin dokunduğu her akış için test yazıldı. Testler değişiklikten önce ve sonra geçti.",
+     "Shadow mode: Yeni yol eski yolla birlikte çalıştı. En az 7 gün ve 500 işlemde `Shadow Mismatch Log` kaydı 0.",
+     "TDD: Yeni davranışın testi önce başarısız oldu. Başarısız çıktı PR açıklamasında var.",
+     "Feature flag: Yeni yol bir bayrağın arkasında. Bayrak kapalı başlıyor."
+    ],
+    "yapma": [
+     "Eski yolu aynı yayında kaldırmayın."
+    ],
+    "kontrol": [
+     "PR şablonunun her bölümü dolu.",
+     "Bütün zorunlu CI kontrolleri yeşil.",
+     "`architecture/metrics.json` kötüleşmedi.",
+     "`CODEOWNERS` onayı alındı.",
+     "Hiçbir test silinmedi ya da atlanmadı."
+    ],
+    "yonerge": [
+     "YONERGELER/07-metrikler.md"
+    ],
+    "id": "faz/faz-5/4"
+   }
+  ]
+ }
+]

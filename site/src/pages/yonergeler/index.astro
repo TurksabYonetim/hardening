@@ -1,0 +1,8 @@
+---
+import Base from "../../layouts/Base.astro";
+import { GuidesPage } from "../../components/GuidePages.tsx";
+import guides from "../../data/guides.json";
+---
+<Base title="Yönergeler">
+	<GuidesPage client:only="react" guides={guides.map(({ slug, title, summary }) => ({ slug, title, summary }))} />
+</Base>

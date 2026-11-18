@@ -1,0 +1,13 @@
+---
+import Base from "../../layouts/Base.astro";
+import { GuidePage } from "../../components/GuidePages.tsx";
+import guides from "../../data/guides.json";
+export function getStaticPaths() {
+	return guides.map((g, i) => ({ params: { slug: g.slug }, props: { i } }));
+}
+const { i } = Astro.props;
+const pick = (g) => (g ? { slug: g.slug, title: g.title } : undefined);
+---
+<Base title={guides[i].title}>
+	<GuidePage client:only="react" guide={guides[i]} prev={pick(guides[i - 1])} next={pick(guides[i + 1])} />
+</Base>

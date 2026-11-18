@@ -1,0 +1,31 @@
+{
+  "name": "istoc-mimari-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "data": "node scripts/build-data.mjs",
+    "dev": "npm run data && astro dev --port 4321",
+    "build": "npm run data && astro build",
+    "preview": "astro preview --port 4322",
+    "test": "playwright test",
+    "lint:ui": "node scripts/ui-gate.mjs",
+    "preview:test": "astro preview --port 4322 && tail -f /dev/null"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^6.3.4",
+    "@astrojs/react": "^7.1.9",
+    "@fontsource/outfit": "^5.3.0",
+    "antd": "^6.7.1",
+    "astro": "^7.4.12",
+    "marked": "^18.2.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "sanitize-html": "^2.18.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}

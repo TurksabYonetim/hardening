@@ -1,0 +1,10 @@
+---
+import Base from "../../layouts/Base.astro";
+import { ContextsPage } from "../../components/ContextPages.tsx";
+import contexts from "../../data/contexts.json";
+import docs from "../../data/doctype-summary.json";
+const slim = contexts.map(({ ctx, title }) => ({ ctx, title, sections: [] }));
+---
+<Base title="Bağlamlar">
+	<ContextsPage client:only="react" contexts={slim} docs={docs} />
+</Base>
