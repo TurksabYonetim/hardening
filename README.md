@@ -2,7 +2,7 @@
 
 `tradehub_core` uygulamasını modüler monolit yapıya taşıma planı. Plan fazlara ve görevlere bölünmüştür.
 
-Site adresi yayından sonra buraya eklenecek.
+**Site:** https://turksabyonetim.github.io/hardening/
 
 ## Bu depoda ne var?
 
