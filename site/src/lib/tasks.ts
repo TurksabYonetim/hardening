@@ -51,6 +51,29 @@ export const PRIORITY_ORDER = ["Kriz", "Kritik", "Acil", "Önemli", "Düşük"];
 export const PHASE_ORDER = ["Faz -1", "Faz 0", "Faz 1", "Faz 2", "Faz 3", "Faz 4", "Faz 5"];
 export const phaseLabel = (id: string) => id.replace("-", "−");
 
+/** Bağlamın insan adı. Klasör adı yalnız adreste ve kopyalanan metinde kalır. */
+export const CTX_LABELS: Record<string, string> = {
+	genel: "Genel",
+	"01-kimlik-erisim": "Kimlik ve erişim",
+	"02-satici-magaza": "Satıcı ve mağaza",
+	"03a-katalog": "Katalog",
+	"03b-ice-aktarma": "İçe aktarma",
+	"03c-kesif": "Keşif",
+	"04-siparis": "Sipariş",
+	"05-odeme": "Ödeme",
+	"06-vergi-fatura": "Vergi ve fatura",
+	"07-lojistik": "Lojistik",
+	"08-medya": "Medya",
+	"09-icerik-vitrin": "İçerik ve vitrin",
+	"10-seo": "SEO",
+	"11-degerlendirme": "Değerlendirme",
+	"12-bildirim-iletisim": "Bildirim ve iletişim",
+	"13-uyum-gizlilik": "Uyum ve gizlilik",
+	"14-platform-cekirdek": "Platform çekirdeği",
+};
+export const ctxLabel = (c: string) => CTX_LABELS[c] || c;
+export const lowerTr = (s: string) => s.toLocaleLowerCase("tr");
+
 const STORE_KEY = "istoc-mimari-kanban-v1";
 
 /** Pano durumu yalnız bu tarayıcıda saklanır. Erişilemezse boş döner. */
@@ -91,7 +114,7 @@ export function taskToText(task: Task, doc?: DoctypeSummary): string {
 			head.join("\n") +
 			(task.owner ? `\nSorumlu: ${task.owner}` : "") +
 			`\nKaynak: mimari/FAZ-GOREVLERI.md\n` +
-			(task.story ? `\nUser story:\n${task.story}\n` : "") +
+			(task.story ? `\nKullanıcı hikâyesi:\n${task.story}\n` : "") +
 			list("Kabul kriterleri", task.acceptance || [], true) +
 			list("Yapmamanız gerekenler", task.donts || []) +
 			list("Kontrol listesi", task.checklist || [], true) +
@@ -103,7 +126,7 @@ export function taskToText(task: Task, doc?: DoctypeSummary): string {
 	return (
 		head.join("\n") +
 		`\nKaynak rapor: mimari/doctypes/${doc.id}.md\n` +
-		(e?.story ? `\nUser story:\n${e.story}\n` : "") +
+		(e?.story ? `\nKullanıcı hikâyesi:\n${e.story}\n` : "") +
 		list("Kabul kriterleri", e?.acceptance || [], true) +
 		list("Yapmamanız gerekenler", e?.donts || []) +
 		list("Kontrol listesi", e?.checklist || [], true) +

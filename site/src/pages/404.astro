@@ -1,0 +1,7 @@
+---
+import Base from "../layouts/Base.astro";
+import { NotFoundPage } from "../components/NotFound.tsx";
+---
+<Base title="Sayfa bulunamadı">
+	<NotFoundPage client:only="react" />
+</Base>
