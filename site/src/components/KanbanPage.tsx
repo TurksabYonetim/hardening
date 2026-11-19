@@ -349,9 +349,6 @@ export default function KanbanPage({ tasks, docs }: { tasks: Task[]; docs: Docty
 		<AppShell active="/kanban/" crumbs={[{ title: "Genel bakış", href: "/" }, { title: "Kanban" }]}>
 			{/* Başlık, sayı ve yardım tek satırda. Liste ekranın üstüne yaklaşsın. */}
 			<header data-sayfa-basi data-kanban-bas>
-				<span data-hayalet aria-hidden>
-					{tasks.length}
-				</span>
 				<div data-kanban-basyer>
 				<Typography.Title level={1} data-kanban-sayfa-basligi>
 					Kanban

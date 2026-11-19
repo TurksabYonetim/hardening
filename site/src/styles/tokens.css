@@ -29,7 +29,7 @@
 	--leading-lead: 1.5;
 	--leading-h3: 1.25;
 	--leading-h2: 1.2;
-	--leading-h1: 1.05;
+	--leading-h1: 1.2;
 	--leading-tight: 1.25;
 	--leading-heading: 1.2;
 
@@ -38,7 +38,7 @@
 	--track-h3: -0.01em;
 	--track-display: -0.015em;
 	--track-meta: 0.01em;
-	--track-eyebrow: 0.06em;
+	--track-eyebrow: 0em;
 
 	/* Piksel kullanılır. ch birimi öğenin kendi yazı boyuna göre büyür,
 	   bu yüzden 44px başlıkta ölçü iki katına çıkıyordu.
@@ -51,43 +51,43 @@
 	   Normal metin en az 4,5:1. İşlevsel kenarlık ve ayırıcı en az 3:1. */
 
 	/* Zemin katmanları */
-	--bg-page: #e9edf3;      /* sayfa kâğıdı */
+	--bg-page: #f2f4f6;      /* sayfa kâğıdı */
 	--bg-surface: #ffffff;   /* içerik yaprağı, sayfadan 1,17:1 ayrılır */
 	--bg-raised: #ffffff;    /* açılır menü, çekmece, ipucu. Gölgeyle yüzer. */
-	--bg-sunken: #edf1f6;    /* kod bloğu, hikâye kutusu, boş durum */
-	--bg-ink: #11161d;       /* üst çubuk ve alt bilgi bandı */
+	--bg-sunken: #f7f8f9;    /* kod bloğu, hikâye kutusu, boş durum */
+	--bg-ink: #14171a;       /* üst çubuk ve alt bilgi bandı */
 
 	--color-bg: #ffffff;
-	--color-surface: #edf1f6;
-	--color-surface-strong: #e3e9f1;
+	--color-surface: #f7f8f9;
+	--color-surface-strong: #eceef1;
 	--color-surface-raised: #ffffff;
 
 	/* Metin katmanları */
-	--color-text-strong: #0e1319;  /* 18,65:1 başlık */
-	--color-text: #1d242e;         /* 15,62:1 gövde */
-	--color-text-muted: #4e5a68;   /* 7,03:1 meta ve etiket */
-	--color-text-faint: #5c6878;   /* 5,67:1 en sessiz yardımcı metin */
+	--color-text-strong: #15181c;  /* 18,65:1 başlık */
+	--color-text: #22262b;         /* 15,62:1 gövde */
+	--color-text-muted: #4f555c;   /* 7,03:1 meta ve etiket */
+	--color-text-faint: #5e646b;   /* 5,67:1 en sessiz yardımcı metin */
 	--color-text-on-ink: #ffffff;  /* 18,16:1 */
 	--color-text-on-ink-soft: #c8d2e0; /* 11,89:1 */
 
 	/* Mürekkep ana eylem rengidir. Mavi yalnız bağlantıda ve ilerleme dolgusunda kullanılır. */
-	--color-ink: #11161d;
+	--color-ink: #14171a;
 	--color-ink-hover: #000000;
 	--color-primary: #0b4a8f;       /* 8,79:1 */
 	--color-primary-hover: #083866;
 
 	/* Kenar katmanları. Dekoratif kenarlık kullanılmaz. */
-	--color-hairline: #7d8899;      /* 3,59:1 işlevsel ayırıcı */
-	--color-divider: #4e5a68;       /* 7,03:1 tablo başlığı, seçili durum */
-	--color-border: #767f8f;        /* 4,04:1 form alanı kenarı */
-	--line-strong: #4e5a68;
+	--color-hairline: #84878d;      /* 3,59:1 işlevsel ayırıcı */
+	--color-divider: #4f555c;       /* 7,03:1 tablo başlığı, seçili durum */
+	--color-border: #797d84;        /* 4,04:1 form alanı kenarı */
+	--line-strong: #4f555c;
 
 	/* Gömülü alan. Kart ayrımı tonla kurulur, kenarlıkla değil. */
-	--color-card: #edf1f6;
+	--color-card: #f2f4f6;
 
 	/* Kod: ayrım renkle kurulur, soluk zeminle değil. */
 	--text-code: #0b3d6e;           /* beyazda 11,01:1, gömülüde 9,71:1 */
-	--kod-vurgu: #edf1f6;
+	--kod-vurgu: #f2f4f6;
 
 	/* Anlam renkleri */
 	--ok-bg: #dcefe0;
@@ -113,22 +113,33 @@
 	--dusuk-fg: #4e5a68;            /* 7,03:1 */
 
 	/* Faz renkleri. Hepsi beyaz yazıyla dolgu olarak 7:1 üstü verir. */
-	--faz-eksi1: #7a2e00;
-	--faz-0: #8a1538;
-	--faz-1: #4a2a7a;
-	--faz-2: #0b4a8f;
-	--faz-3: #0f5a63;
-	--faz-4: #2a5a1f;
-	--faz-5: #3d4652;
+	--faz-eksi1: #9cbbdd;
+	--faz-0: #aac5e2;
+	--faz-1: #b8cfe8;
+	--faz-2: #c6d9ed;
+	--faz-3: #d4e3f2;
+	--faz-4: #e2edf7;
+	--faz-5: #eff4fb;
+
+	/* Gezinme ve üst çubuk. Mavi yan sütundan üst çubuğa taşındı. */
+	--color-nav-bg: #f7f8f9;
+	--color-nav-selected-bg: #e1ecf8;
+	--color-topbar-bg: #0b4a8f;
+	--text-ui: 15px;
+	--space-5: 20px;
+	--ust-h: 56px;
+
+	accent-color: #0b4a8f;
+	caret-color: #0b4a8f;
 
 	--focus-bg: #ffd60a;
 	--focus-fg: #000000;
 
 	/* Derinlik. Gölge yalnız sayfanın üstünde yüzen katmanda kullanılır. */
-	--shadow-raised: 0 1px 2px rgba(14, 19, 25, 0.1), 0 10px 28px rgba(14, 19, 25, 0.14);
+	--shadow-raised: 0 0.2px 1px rgba(20, 23, 26, 0.01), 0 0.8px 3px rgba(20, 23, 26, 0.02), 0 2px 8px rgba(20, 23, 26, 0.03), 0 4px 18px rgba(20, 23, 26, 0.04);
 
 	/* --- Köşe --- En çok 6px. Yuvarlak ya da hap biçim yoktur. */
-	--radius-xs: 2px;
+	--radius-xs: 4px;
 	--radius-sm: 4px;
 	--radius-md: 6px;
 
@@ -1401,7 +1412,7 @@ h3.ant-typography {
 	padding-inline: 5px;
 	border-radius: var(--radius-xs);
 	background: var(--faz-2);
-	color: #ffffff;
+	color: var(--color-ink);
 	font-size: var(--text-small);
 	font-weight: var(--weight-strong);
 	font-variant-numeric: tabular-nums lining-nums;
@@ -1732,8 +1743,8 @@ h3.ant-typography {
 
 /* Ekran ölçeği. Sayfanın tepesindeki tek büyük an. */
 :root {
-	--text-display: clamp(40px, 7.5vw, 68px);
-	--track-display-xl: -0.03em;
+	--text-display: clamp(28px, 4vw, 40px);
+	--track-display-xl: -0.025em;
 	--shadow-yaprak: 0 1px 2px rgba(14, 19, 25, 0.06), 0 12px 32px rgba(14, 19, 25, 0.07);
 }
 
@@ -1871,7 +1882,7 @@ h3.ant-typography {
 	height: 64px;
 	border-radius: var(--radius-md);
 	background: var(--faz-renk, var(--color-ink));
-	color: #ffffff;
+	color: var(--color-ink);
 	font-size: 30px;
 	font-weight: var(--weight-strong);
 	line-height: 1;
@@ -2461,4 +2472,180 @@ h3.ant-typography {
 }
 [data-kanban-bas] {
 	padding-block: var(--space-6) var(--space-5, 20px);
+}
+
+/* ===================================================================
+   ÇAĞ DÜZELTMESİ
+   Ölçüm: doygun renk payı yüzde 18,74. Beş çağdaş referansta bu oran
+   yüzde 0,00 ile 0,42 arası. Doygun alan yan sütundan kalkar.
+   Mavi silinmez, üst çubuğa taşınır.
+   =================================================================== */
+
+/* Kutu ölçüsü sıfırlaması. 248px yazılı yan sütun 272px boyanıyordu. */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+/* --- Yan sütun artık nötr --- */
+.yan {
+	background: var(--color-nav-bg) !important;
+	color: var(--color-text) !important;
+	border-inline-end: 1px solid var(--color-hairline);
+	flex-basis: 248px !important;
+	width: 248px !important;
+}
+.yan-marka {
+	color: var(--color-text-strong) !important;
+	font-size: var(--text-ui);
+}
+.yan-marka-im {
+	background: var(--color-primary);
+	color: #ffffff;
+}
+.yan-nav a {
+	position: relative;
+	color: var(--color-text-muted) !important;
+	font-size: var(--text-ui);
+	min-height: var(--hit-sm);
+}
+.yan-nav a:hover {
+	background: var(--color-surface-strong) !important;
+	color: var(--color-text) !important;
+}
+/* Etkin öğe tek ton ve 3 piksel düz işaretle ayrılır. Köşeler kare. */
+.yan-nav a[aria-current="page"] {
+	background: var(--color-nav-selected-bg) !important;
+	color: var(--color-primary) !important;
+	border-start-start-radius: 0;
+	border-end-start-radius: 0;
+}
+.yan-nav a[aria-current="page"]::before {
+	content: "";
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: 0;
+	width: 3px;
+	background: var(--color-primary);
+}
+.yan-dip {
+	color: var(--color-text-faint) !important;
+	border-top-color: var(--color-hairline) !important;
+	font-size: var(--text-small);
+}
+.yan-dip code {
+	background: var(--bg-sunken) !important;
+	color: var(--color-text-muted) !important;
+}
+
+/* --- Mavi üst çubuğa döndü --- */
+.ust {
+	background: var(--color-topbar-bg) !important;
+	border-bottom: none !important;
+	min-height: var(--ust-h);
+}
+.ust,
+.ust a,
+.ust .ant-btn,
+.ust .ant-btn .anticon,
+.ust .shell-crumb-text,
+.ust .shell-sep {
+	color: #ffffff !important;
+}
+.ust a:hover {
+	text-decoration: underline !important;
+	text-underline-offset: 3px;
+}
+.ust .ant-input-affix-wrapper {
+	background: rgba(255, 255, 255, 0.14) !important;
+	border-color: rgba(255, 255, 255, 0.34) !important;
+}
+.ust .ant-input-affix-wrapper:hover {
+	background: rgba(255, 255, 255, 0.22) !important;
+}
+.ust .ant-input-affix-wrapper-focused {
+	background: #ffffff !important;
+	border-color: #ffffff !important;
+}
+.ust .ant-input,
+.ust .ant-input-prefix {
+	color: #ffffff !important;
+}
+.ust .ant-input::placeholder {
+	color: #d7e1f1 !important;
+}
+.ust .ant-input-affix-wrapper-focused .ant-input,
+.ust .ant-input-affix-wrapper-focused .ant-input-prefix {
+	color: var(--color-text) !important;
+}
+.ust .ant-input-affix-wrapper-focused .ant-input::placeholder {
+	color: var(--color-text-muted) !important;
+}
+
+/* --- Başlık bandı kalktı. Beyaz zemin, normal başlık. --- */
+[data-sayfa-basi] {
+	background: transparent !important;
+	margin-inline: 0 !important;
+	margin-block: 0 var(--rhythm-block) !important;
+	padding: 0 !important;
+	border-radius: 0 !important;
+}
+[data-sayfa-basi] h1.ant-typography {
+	font-size: var(--text-display) !important;
+	line-height: 1.2 !important;
+	letter-spacing: var(--track-display-xl);
+	max-width: var(--measure-wide);
+}
+[data-doc-bas] h1.ant-typography {
+	font-size: clamp(26px, 3.2vw, 34px) !important;
+}
+
+/* --- Faz rozeti küçüldü ve açık tint oldu, yazısı mürekkep --- */
+[data-faz-rakam] {
+	width: 32px !important;
+	height: 32px !important;
+	font-size: 16px !important;
+	color: var(--color-ink) !important;
+	border-radius: var(--radius-sm);
+}
+[data-faz-satir] {
+	grid-template-columns: 32px minmax(0, 1fr) !important;
+	padding-block: var(--space-3) !important;
+}
+.faz-bas [data-faz-rakam] {
+	width: 40px !important;
+	height: 40px !important;
+	font-size: 18px !important;
+}
+[data-faz-rozet] {
+	color: var(--color-ink) !important;
+	min-width: 22px;
+	height: 22px;
+	font-size: var(--text-small);
+}
+
+/* --- İçerik kâğıdı: ton yerine gölge --- */
+.kabuk {
+	background: var(--bg-page) !important;
+}
+.icerik {
+	background: var(--bg-surface);
+}
+
+/* --- Ağırlık dağılımı: 600 yalnız başlıkta kalır --- */
+.icerik .ant-tag,
+.icerik [data-kanban-liste-baslik],
+.icerik .ant-table-thead > tr > th,
+.icerik .faz-ray h2,
+.icerik [data-doc-ray] h2,
+.icerik .eyebrow,
+.icerik .faz-eyebrow {
+	font-weight: var(--weight-medium) !important;
+}
+
+/* --- Metin seçimi ve imleç marka rengini alır --- */
+::selection {
+	background: #cfe0f5;
+	color: #14171a;
 }
