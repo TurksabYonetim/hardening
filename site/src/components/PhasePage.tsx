@@ -92,8 +92,10 @@ const FAZ_CSS = `
 .faz-switch .ant-btn { padding-inline: var(--space-2); min-width: calc(var(--space-6) + var(--space-3)); font-size: var(--text-body); font-weight: var(--weight-medium); color: var(--color-text-muted); font-variant-numeric: tabular-nums; border-radius: var(--radius-sm); }
 .faz-switch .ant-btn:hover { background: var(--bg-sunken) !important; color: var(--color-text) !important; }
 /* Seçili faz dolu bir blok olur. Geçici hover durumu kalıcı seçimden güçlü olamaz. */
-.faz-switch .ant-btn[aria-current="page"],
-.faz-switch .ant-btn[aria-current="page"]:hover { background: var(--color-ink) !important; color: #ffffff !important; font-weight: var(--weight-strong); text-decoration: none; }
+/* Seçili faz dolu blok olur. Üzerine gelince ve basılınca da cevap verir. */
+.faz-switch .ant-btn[aria-current="page"] { background: var(--color-ink) !important; color: #ffffff !important; font-weight: var(--weight-strong); text-decoration: none; }
+.faz-switch .ant-btn[aria-current="page"]:hover { background: var(--durum-ink-hover) !important; color: #ffffff !important; }
+.faz-switch .ant-btn[aria-current="page"]:active { background: var(--durum-ink-basili) !important; color: #ffffff !important; }
 .faz-eyebrow { display: block; align-items: center; gap: var(--space-2); font-size: var(--text-eyebrow); font-weight: var(--weight-strong); color: var(--color-text-muted); letter-spacing: var(--track-eyebrow); margin-bottom: var(--space-3); }
 .faz-eyebrow [data-faz-rozet] { letter-spacing: 0; }
 .faz-lead { font-size: var(--text-lead); line-height: var(--leading-body); margin: 0 0 var(--space-6); }
@@ -189,6 +191,7 @@ function Checks({ items, html, on, onToggle }: { items: string[]; html?: string[
 	return (
 		<DuzListe
 			items={items}
+			kontrol
 			renderItem={(t, i) => (
 				<Checkbox checked={on.has(i)} onChange={(e) => onToggle(i, e.target.checked)} style={{ fontSize: "var(--text-body)" }}>
 					<Inline html={html?.[i]} text={t} />

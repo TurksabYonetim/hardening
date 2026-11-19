@@ -352,12 +352,12 @@ export default function KanbanPage({ tasks }: { tasks: Task[] }) {
 	};
 
 	return (
-		<AppShell active="/kanban/" crumbs={[{ title: "Genel bakış", href: "/" }, { title: "Kanban" }]}>
+		<AppShell active="/kanban/" crumbs={[{ title: "Genel bakış", href: "/" }, { title: "Görevler" }]}>
 			{/* Başlık, sayı ve yardım tek satırda. Liste ekranın üstüne yaklaşsın. */}
 			<header data-sayfa-basi data-kanban-bas>
 				<div data-kanban-basyer>
 				<Typography.Title level={1} data-kanban-sayfa-basligi>
-					Kanban
+					Görevler
 				</Typography.Title>
 				<span data-kanban-toplam>{tasks.length} görev</span>
 				{wide && (
@@ -368,7 +368,7 @@ export default function KanbanPage({ tasks }: { tasks: Task[] }) {
 						onChange={gorunumSec}
 						options={[
 							{ value: "liste", label: "Liste", icon: <UnorderedListOutlined aria-hidden /> },
-							{ value: "pano", label: "Pano", icon: <AppstoreOutlined aria-hidden /> },
+							{ value: "pano", label: "Kanban", icon: <AppstoreOutlined aria-hidden /> },
 						]}
 						style={{ marginInlineStart: "auto" }}
 					/>
@@ -379,7 +379,7 @@ export default function KanbanPage({ tasks }: { tasks: Task[] }) {
 						<DownOutlined aria-hidden style={{ fontSize: 12, transform: howOpen ? "rotate(180deg)" : "none" }} />
 					</summary>
 					<Typography.Paragraph type="secondary" style={{ maxWidth: "var(--measure)", marginBottom: 0, marginTop: "var(--space-2)" }}>
-						Her satır bir görevdir. Görevin durumunu soldaki renkli noktadan değiştirin. Durum yalnız bu tarayıcıda saklanır. Kopyala düğmesi görevi bütün ayrıntısıyla panoya alır. Başlığa dokununca görevin sayfası açılır.
+						Bu sayfada 373 görev vardır. İki görünüm vardır. Liste görünümü bütün görevleri alt alta yazar. Kanban görünümü görevleri durumlarına göre dört sütuna ayırır. Her satır bir görevdir. Görevin durumunu soldaki renkli noktadan değiştirin. Durum yalnız bu tarayıcıda saklanır. Kopyala düğmesi görevi bütün ayrıntısıyla panoya alır. Satıra dokununca görevin sayfası açılır.
 					</Typography.Paragraph>
 				</details>
 				</div>

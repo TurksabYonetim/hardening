@@ -3,6 +3,6 @@ import Base from "../layouts/Base.astro";
 import KanbanPage from "../components/KanbanPage.tsx";
 import tasks from "../data/kanban-liste.json";
 ---
-<Base title="Kanban">
+<Base title="Görevler">
 	<KanbanPage client:only="react" tasks={tasks} />
 </Base>

@@ -339,7 +339,10 @@ samp {
 	outline: none !important;
 }
 
-html[data-focus-mode="keyboard"] :focus-visible {
+/* Özgüllük bilerek iki kat yazıldı. Bazı hover kuralları daha özgüldü ve
+   odaklı satırın üzerine fare gelince sarı göstergeyi eziyordu. Ölçüldü:
+   zemin #ffd60a iken #f2f4f6 oluyordu. Odak her zaman kazanmalıdır. */
+html[data-focus-mode="keyboard"] :focus-visible:focus-visible:focus-visible {
 	outline: none !important;
 	box-shadow: none !important;
 	background-color: var(--focus-bg) !important;
@@ -352,7 +355,8 @@ html[data-focus-mode="keyboard"] :focus-visible {
 /* Gizli girdili bileşenlerde göstergeyi görünen kapsayıcı taşır. */
 html[data-focus-mode="keyboard"] .ant-checkbox-wrapper:has(.ant-checkbox-input:focus-visible),
 html[data-focus-mode="keyboard"] .ant-select:has(input:focus-visible),
-html[data-focus-mode="keyboard"] .ant-input-affix-wrapper:has(input:focus-visible) {
+html[data-focus-mode="keyboard"] .ant-input-affix-wrapper:has(input:focus-visible),
+html[data-focus-mode="keyboard"] [data-kontrol-satiri]:has(.ant-checkbox-input:focus-visible) {
 	background-color: var(--focus-bg) !important;
 	color: var(--focus-fg) !important;
 	text-decoration-line: underline !important;
@@ -2558,6 +2562,9 @@ h3.ant-typography {
 	background: rgba(255, 255, 255, 0.16);
 	text-decoration: none !important;
 }
+.ust a:active {
+	background: rgba(255, 255, 255, 0.28);
+}
 .ust .ant-input-affix-wrapper {
 	background: rgba(255, 255, 255, 0.14) !important;
 	border-color: rgba(255, 255, 255, 0.34) !important;
@@ -2658,11 +2665,18 @@ h3.ant-typography {
    Üç durum ayrı: boşta, üzerinde, seçili.
    =================================================================== */
 
-/* Tıklanabilir satırın hover zemini. Tek bir token, her yerde aynı. */
 :root {
-	--hover-bg: #f2f4f6;
-	--hover-bg-guclu: #eceef1;
-	--secili-bg: #e1ecf8;
+	/* Durum matrisi. Her kontrolün beş durumu vardır:
+	   boşta, üzerinde, basılı, odakta, seçili. Seçili olan da hover'a cevap verir.
+	   Karşıtlıklar hesaplandı, hepsi 4,5:1 üstü. */
+	--durum-hover: #f2f4f6;
+	--durum-hover-guclu: #eceef1;
+	--durum-basili: #e3e6ea;
+	--durum-secili: #e1ecf8;
+	--durum-secili-hover: #d4e3f6;
+	--durum-secili-basili: #c6d9ed;
+	--durum-ink-hover: #22262b;
+	--durum-ink-basili: #2c3138;
 }
 
 /* Satır biçimli bağlantılar: gövdeyi kaplar, köşe alır, zemin değiştirir. */
@@ -2685,7 +2699,7 @@ h3.ant-typography {
 .yok-liste a:hover,
 [data-faz-satir]:hover,
 [data-doc-pager] .ant-btn:hover {
-	background: var(--hover-bg);
+	background: var(--durum-hover);
 }
 
 /* Satır biçimli bağlantılar sayfa kenarına taşar ki zemin nefes alsın. */
@@ -2701,7 +2715,7 @@ h3.ant-typography {
 /* Kanban satırı: hover zemini, seçili satır ayrı ton. Zebra yok. */
 [data-kanban-satir]:hover,
 [data-kanban-liste] [data-kanban-satir]:hover {
-	background: var(--hover-bg) !important;
+	background: var(--durum-hover) !important;
 }
 [data-kanban-satir][data-status="Bitti"] [data-kanban-baslik] {
 	color: var(--color-text-muted);
@@ -2716,7 +2730,7 @@ h3.ant-typography {
 	transition-timing-function: var(--motion-ease);
 }
 .ctx-kart:hover {
-	background: var(--hover-bg-guclu) !important;
+	background: var(--durum-hover-guclu) !important;
 }
 
 /* Tablo satırı: hover zemini, zebra yok. */
@@ -2726,7 +2740,7 @@ h3.ant-typography {
 	transition-timing-function: var(--motion-ease);
 }
 .ant-table-tbody > tr:hover > td {
-	background: var(--hover-bg) !important;
+	background: var(--durum-hover) !important;
 }
 .ant-table-tbody > tr:nth-child(even) > td {
 	background: transparent;
@@ -2755,7 +2769,7 @@ h3.ant-typography {
 /* Ray bağlantısı zaten zemin alıyor. Seçili olan ayrı ton. */
 .faz-ray a:hover,
 [data-doc-ray] a:hover {
-	background: var(--hover-bg-guclu) !important;
+	background: var(--durum-hover-guclu) !important;
 }
 
 /* Düz yazı içindeki bağlantı alt çizgili kalır. Orada çizgi anlam taşır. */
@@ -2769,7 +2783,7 @@ h3.ant-typography {
 .ant-table-tbody > tr.ant-table-row:hover > td,
 .ant-table-tbody > tr.ant-table-row-hover > td,
 .ant-table-wrapper .ant-table-tbody > tr.ant-table-row:hover > td {
-	background: var(--hover-bg) !important;
+	background: var(--durum-hover) !important;
 }
 
 /* ===================================================================
@@ -2837,4 +2851,337 @@ h3.ant-typography {
 .guide-item,
 .yok-liste li {
 	cursor: pointer;
+}
+
+/* ===================================================================
+   DURUM MATRİSİ
+   86 etkileşimli öğe 12 kontrol ailesine düşer. Kural aileye yazılır.
+
+   Her kontrolün beş durumu vardır:
+   boşta, üzerinde, basılı, odakta, seçili.
+   Seçili olan da hover'a cevap verir. Seçili bir son durum değil,
+   bir başlangıç tonudur.
+
+   Odak göstergesi bu bölümde hiç değişmez. Hover ve basılı kuralları
+   !important kullanmaz, böylece odak her zaman kazanır.
+   =================================================================== */
+
+/* Ortak geçiş. "transition: all" yazılmaz. */
+[data-kontrol-satiri],
+.ant-checkbox-wrapper,
+.ant-collapse-header,
+details > summary,
+.ant-select-item,
+.ant-dropdown-menu-item,
+.ant-segmented-item-label,
+.ant-tabs-tab,
+[data-kanban-tab],
+.ant-table .ant-btn-link,
+.ant-pagination-item,
+.ant-pagination-item-link {
+	transition-property: background-color, border-color, color;
+	transition-duration: var(--motion-fast);
+	transition-timing-function: var(--motion-ease);
+}
+
+/* --- 2. Onay kutusu: hedef satırın tamamı --- */
+[data-kontrol-satiri] {
+	border-radius: var(--radius-md);
+	margin-inline: calc(var(--space-2) * -1);
+	padding-inline: var(--space-2);
+	cursor: pointer;
+}
+[data-kontrol-satiri]:hover {
+	background: var(--durum-hover);
+}
+[data-kontrol-satiri]:active {
+	background: var(--durum-basili);
+}
+/* İşaretli satır kendi tonunu alır, üzerine gelince bir basamak koyulaşır. */
+[data-kontrol-satiri]:has(.ant-checkbox-checked) {
+	background: var(--durum-secili);
+}
+[data-kontrol-satiri]:has(.ant-checkbox-checked):hover {
+	background: var(--durum-secili-hover);
+}
+[data-kontrol-satiri]:has(.ant-checkbox-checked):active {
+	background: var(--durum-secili-basili);
+}
+/* Kutunun kenarı da fareye cevap verir. */
+[data-kontrol-satiri]:hover .ant-checkbox-inner {
+	border-color: var(--color-text-muted);
+}
+
+/* --- 6. Collapse başlığı --- */
+.ant-collapse-header {
+	border-radius: var(--radius-sm) !important;
+	cursor: pointer;
+}
+.ant-collapse-header:hover {
+	background: var(--durum-hover);
+}
+.ant-collapse-header:active {
+	background: var(--durum-basili);
+}
+/* Açık panelin başlığı kendi tonunu taşır. */
+.ant-collapse-item-active > .ant-collapse-header {
+	background: var(--durum-hover);
+}
+.ant-collapse-item-active > .ant-collapse-header:hover {
+	background: var(--durum-hover-guclu);
+}
+.ant-collapse-item-active > .ant-collapse-header:active {
+	background: var(--durum-basili);
+}
+
+/* --- 7. details ve summary --- */
+details > summary {
+	border-radius: var(--radius-sm);
+	margin-inline: calc(var(--space-2) * -1);
+	padding-inline: var(--space-2);
+	cursor: pointer;
+}
+details > summary:hover {
+	background: var(--durum-hover);
+}
+details > summary:active {
+	background: var(--durum-basili);
+}
+details[open] > summary {
+	background: var(--durum-hover);
+}
+details[open] > summary:hover {
+	background: var(--durum-hover-guclu);
+}
+
+/* --- 3. Açılır menü seçenekleri: seçili olan da cevap verir --- */
+.ant-select-item-option-selected:hover,
+.ant-dropdown-menu-item-selected:hover {
+	background: var(--durum-ink-hover) !important;
+}
+.ant-select-item-option-selected:active,
+.ant-dropdown-menu-item-selected:active {
+	background: var(--durum-ink-basili) !important;
+}
+.ant-select-item-option:not(.ant-select-item-option-selected):active,
+.ant-dropdown-menu-item:not(.ant-dropdown-menu-item-selected):active {
+	background: var(--durum-basili) !important;
+}
+
+/* --- 5. Segmented: seçili olan da cevap verir --- */
+.ant-segmented-item:not(.ant-segmented-item-selected):active .ant-segmented-item-label {
+	background: var(--durum-basili);
+	border-radius: var(--radius-xs);
+}
+.ant-segmented-item-selected:hover {
+	background: var(--durum-ink-hover) !important;
+}
+.ant-segmented-item-selected:active {
+	background: var(--durum-ink-basili) !important;
+}
+
+/* --- 4. Sekmeler: Ant Tabs ve elle yazılmış tablist --- */
+.ant-tabs-tab:active {
+	background: var(--durum-basili);
+}
+.ant-tabs-tab-active:hover {
+	background: var(--durum-hover);
+}
+[data-kanban-tab]:active {
+	background: var(--durum-basili);
+}
+[data-kanban-tab][aria-selected="true"]:hover {
+	background: var(--durum-hover);
+}
+
+/* --- 10. Kenar menüsü ve çekmece: seçili olan da cevap verir --- */
+.yan-nav a[aria-current="page"]:hover {
+	background: var(--durum-secili-hover) !important;
+}
+.yan-nav a[aria-current="page"]:active {
+	background: var(--durum-secili-basili) !important;
+}
+.yan-nav a:not([aria-current]):active {
+	background: var(--color-surface-strong) !important;
+}
+.shell-drawer-nav a[aria-current="page"]:hover {
+	background: var(--durum-secili-hover) !important;
+}
+.shell-drawer-nav a[aria-current="page"]:active {
+	background: var(--durum-secili-basili) !important;
+}
+.shell-drawer-nav a:not([aria-current]):active {
+	background: var(--durum-basili) !important;
+}
+
+/* --- Faz şeridi ve ray: seçili olan da cevap verir --- */
+.faz-switch .ant-btn[aria-current="page"]:hover,
+.faz-ray a[aria-current="page"]:hover,
+[data-doc-ray] a[aria-current="page"]:hover {
+	background: var(--durum-ink-hover) !important;
+}
+.faz-switch .ant-btn[aria-current="page"]:active,
+.faz-ray a[aria-current="page"]:active,
+[data-doc-ray] a[aria-current="page"]:active {
+	background: var(--durum-ink-basili) !important;
+}
+.faz-switch .ant-btn:not([aria-current]):active {
+	background: var(--durum-basili) !important;
+}
+.faz-ray a:not([aria-current]):active {
+	background: var(--durum-basili) !important;
+}
+
+/* --- 11. Tablo: içindeki bağlantı da cevap verir --- */
+.ant-table .ant-btn-link {
+	border-radius: var(--radius-sm);
+}
+.ant-table .ant-btn-link:hover {
+	background: var(--durum-hover-guclu) !important;
+}
+.ant-table .ant-btn-link:active {
+	background: var(--durum-basili) !important;
+}
+.ant-table-tbody > tr.ant-table-row:active > td {
+	background: var(--durum-basili) !important;
+}
+.ant-pagination-item:active,
+.ant-pagination-item-link:active {
+	background: var(--durum-basili);
+}
+.ant-pagination-item-active:hover {
+	background: var(--durum-hover);
+}
+
+/* --- 1. Bağlantı satırı ve kart: basılı durum --- */
+[data-kanban-satir]:active,
+[data-faz-satir]:active,
+.guide-item:active,
+.yok-liste a:active,
+.ctx-kart:active,
+.home-phases a:active,
+.guide-nav-link:active {
+	background: var(--durum-basili) !important;
+}
+
+/* --- 8. Düğmeler: basılı durum --- */
+.ant-btn-primary:active {
+	background: var(--durum-ink-basili) !important;
+}
+.ant-btn-default:active,
+.ant-btn-text:active,
+[data-kanban-durum]:active,
+[data-kanban-kopyala]:active,
+.ust-btn:active {
+	background: var(--durum-basili) !important;
+}
+.ant-btn-link:active {
+	background: var(--durum-hover-guclu);
+	border-radius: var(--radius-sm);
+}
+
+/* --- 9. Giriş kutuları: basılı yerine etkin kenar --- */
+[data-kanban-suzgec] .ant-select:active,
+[data-kanban-suzgec] .ant-input-affix-wrapper:active {
+	background: var(--durum-basili) !important;
+}
+
+/* --- 12. Başa dön düğmesi --- */
+.ant-float-btn:active .ant-float-btn-body {
+	background: var(--durum-basili) !important;
+}
+
+/* Azaltılmış hareket tercihinde geçiş kalkar. Merkezî kural zaten kapsıyor,
+   burada yeni süre tanımlanmadı. */
+
+/* --- Durum matrisi düzeltmeleri (ölçümden sonra) --- */
+
+/* Segmented'in seçili olmayan öğesi hiç cevap vermiyordu. */
+[data-kanban-gorunum] .ant-segmented-item:not(.ant-segmented-item-selected):hover {
+	background: var(--durum-hover-guclu);
+	border-radius: var(--radius-xs);
+}
+[data-kanban-gorunum] .ant-segmented-item:not(.ant-segmented-item-selected):active {
+	background: var(--durum-basili);
+	border-radius: var(--radius-xs);
+}
+
+/* Satırın hover kuralı iki sınıf özgüllüğündeydi ve basılı durumu eziyordu.
+   Basılı kuralı aynı özgüllükte yazılır. */
+[data-kanban-liste] [data-kanban-satir]:active,
+[data-kanban-board] [data-kanban-satir]:active,
+.icerik [data-faz-satir]:active,
+.icerik .guide-item:active,
+.icerik .ctx-kart:active,
+.icerik .home-phases a:active {
+	background: var(--durum-basili) !important;
+}
+
+/* --- Son dört boşluk. Özgüllük mevcut hover kurallarıyla eşlenir. --- */
+
+/* Ant sekmesi etkin değilken yalnız yazı rengini değiştiriyordu. Zemin de değişir. */
+.ant-tabs .ant-tabs-nav .ant-tabs-tab:not(.ant-tabs-tab-active):hover {
+	background: var(--durum-hover);
+	border-radius: var(--radius-sm);
+}
+.ant-tabs .ant-tabs-nav .ant-tabs-tab:not(.ant-tabs-tab-active):active,
+.ant-tabs .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-active:active {
+	background: var(--durum-basili);
+	border-radius: var(--radius-sm);
+}
+
+/* Tablo satırının basılı durumu, hover kuralıyla aynı özgüllükte yazılır. */
+.ant-table-wrapper .ant-table-tbody > tr.ant-table-row:active > td {
+	background: var(--durum-basili) !important;
+}
+
+/* Kenar menüsünde etkin olmayan öğenin basılı durumu. */
+.yan .yan-nav a:not([aria-current]):active {
+	background: var(--durum-basili) !important;
+}
+
+/* --- Dokunmalı ekran: yapışan hover temizlenir ---
+   Telefonda parmak kalktıktan sonra hover rengi öğenin üstünde kalıyor.
+   Bağlantılarda bu görünmez, çünkü sayfa değişiyor. Sayfayı değiştirmeyen
+   kontrollerde renk kalıyor ve kullanıcı yanlış öğeyi seçili sanıyor.
+   Fare olmayan cihazda bu kontrollerin hover zemini kaldırılır. Basılı
+   durum ve seçili durum korunur, ikisi de dokunmada doğru çalışıyor. */
+@media (hover: none) {
+	[data-kontrol-satiri]:hover:not(:active) {
+		background: transparent;
+	}
+	[data-kontrol-satiri]:has(.ant-checkbox-checked):hover:not(:active) {
+		background: var(--durum-secili);
+	}
+	details > summary:hover:not(:active) {
+		background: transparent;
+	}
+	details[open] > summary:hover:not(:active) {
+		background: var(--durum-hover);
+	}
+	.ant-collapse-header:hover:not(:active) {
+		background: transparent;
+	}
+	.ant-collapse-item-active > .ant-collapse-header:hover:not(:active) {
+		background: var(--durum-hover);
+	}
+	.ant-tabs .ant-tabs-nav .ant-tabs-tab:not(.ant-tabs-tab-active):hover:not(:active) {
+		background: transparent;
+	}
+	.ant-tabs-tab-active:hover:not(:active) {
+		background: transparent;
+	}
+	[data-kanban-tab][aria-selected="true"]:hover:not(:active) {
+		background: transparent;
+	}
+	[data-kanban-gorunum] .ant-segmented-item:not(.ant-segmented-item-selected):hover:not(:active) {
+		background: transparent;
+	}
+	[data-kanban-durum]:hover:not(:active),
+	[data-kanban-kopyala]:hover:not(:active) {
+		background: transparent !important;
+	}
+	.ant-table .ant-btn-link:hover:not(:active) {
+		background: transparent !important;
+	}
 }
