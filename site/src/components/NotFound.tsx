@@ -30,7 +30,7 @@ export function NotFoundPage() {
 					line-height: var(--leading-h3);
 					color: var(--color-text-strong);
 				}
-				.yok-liste a:hover .yok-ad { text-decoration: underline; text-underline-offset: 3px; }
+				.yok-liste a:hover { background: var(--bg-sunken); }
 				.yok-not { display: block; color: var(--color-text-muted); }
 			`}</style>
 			<header data-sayfa-basi>

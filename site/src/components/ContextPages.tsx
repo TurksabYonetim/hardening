@@ -43,7 +43,7 @@ export function ContextsPage({ contexts, docs }: { contexts: Ctx[]; docs: Doctyp
 					text-decoration: none !important;
 					overflow-wrap: anywhere;
 				}
-				.ctx-kart:hover .ctx-kart-bas { text-decoration: underline !important; text-underline-offset: 3px; }
+				.ctx-kart:hover { background: var(--color-surface-strong); }
 				.ctx-kart-klasor {
 					font-size: var(--text-small);
 					color: var(--color-text-muted);
