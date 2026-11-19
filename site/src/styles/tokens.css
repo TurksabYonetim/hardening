@@ -1019,9 +1019,10 @@ h3.ant-typography {
 	font-weight: 500;
 	line-height: 1.4;
 }
+/* Hover alt çizgi çizmez. Satırın zeminini değiştirir. Alt çizgi
+   yalnız düz yazı içindeki bağlantıda kalır. */
 [data-kanban-baslik-bag]:hover [data-kanban-baslik] {
-	text-decoration: underline;
-	text-underline-offset: 2px;
+	text-decoration: none;
 }
 [data-kanban-meta] {
 	display: flex;
@@ -2000,8 +2001,8 @@ h3.ant-typography {
 	text-decoration: none !important;
 }
 .shell-main :where(nav, aside, [data-liste-bag], .ant-table) a:not(.ant-btn):hover {
-	text-decoration: underline !important;
-	text-underline-offset: 3px;
+	background: var(--bg-sunken);
+	text-decoration: none !important;
 }
 /* Tablo içindeki DocType bağlantıları da mürekkep olur. */
 .ant-table a.ant-btn-link,
@@ -2554,8 +2555,8 @@ h3.ant-typography {
 	color: #ffffff !important;
 }
 .ust a:hover {
-	text-decoration: underline !important;
-	text-underline-offset: 3px;
+	background: rgba(255, 255, 255, 0.16);
+	text-decoration: none !important;
 }
 .ust .ant-input-affix-wrapper {
 	background: rgba(255, 255, 255, 0.14) !important;
@@ -2648,4 +2649,125 @@ h3.ant-typography {
 ::selection {
 	background: #cfe0f5;
 	color: #14171a;
+}
+
+/* ===================================================================
+   ETKİLEŞİM DİLİ
+   Hover alt çizgi çizmez, zemin değiştirir. Zebra şerit kullanılmaz.
+   Alt çizgi yalnız düz yazı içindeki bağlantıda kalır (.md a).
+   Üç durum ayrı: boşta, üzerinde, seçili.
+   =================================================================== */
+
+/* Tıklanabilir satırın hover zemini. Tek bir token, her yerde aynı. */
+:root {
+	--hover-bg: #f2f4f6;
+	--hover-bg-guclu: #eceef1;
+	--secili-bg: #e1ecf8;
+}
+
+/* Satır biçimli bağlantılar: gövdeyi kaplar, köşe alır, zemin değiştirir. */
+.home-phases a,
+.faz-dizin a,
+.guide-link,
+.guide-nav-link,
+.yok-liste a,
+[data-faz-satir],
+[data-doc-pager] .ant-btn {
+	border-radius: var(--radius-md);
+	transition-property: background-color;
+	transition-duration: var(--motion-fast);
+	transition-timing-function: var(--motion-ease);
+}
+.home-phases a:hover,
+.faz-dizin a:hover,
+.guide-link:hover,
+.guide-nav-link:hover,
+.yok-liste a:hover,
+[data-faz-satir]:hover,
+[data-doc-pager] .ant-btn:hover {
+	background: var(--hover-bg);
+}
+
+/* Satır biçimli bağlantılar sayfa kenarına taşar ki zemin nefes alsın. */
+.home-phases a,
+.faz-dizin a,
+.guide-link,
+.yok-liste a,
+[data-faz-satir] {
+	margin-inline: calc(var(--space-3) * -1);
+	padding-inline: var(--space-3);
+}
+
+/* Kanban satırı: hover zemini, seçili satır ayrı ton. Zebra yok. */
+[data-kanban-satir]:hover,
+[data-kanban-liste] [data-kanban-satir]:hover {
+	background: var(--hover-bg) !important;
+}
+[data-kanban-satir][data-status="Bitti"] [data-kanban-baslik] {
+	color: var(--color-text-muted);
+	text-decoration: line-through;
+	text-decoration-thickness: 1px;
+}
+
+/* Kart yüzeyleri de hover alır. */
+.ctx-kart {
+	transition-property: background-color;
+	transition-duration: var(--motion-fast);
+	transition-timing-function: var(--motion-ease);
+}
+.ctx-kart:hover {
+	background: var(--hover-bg-guclu) !important;
+}
+
+/* Tablo satırı: hover zemini, zebra yok. */
+.ant-table-tbody > tr > td {
+	transition-property: background-color;
+	transition-duration: var(--motion-fast);
+	transition-timing-function: var(--motion-ease);
+}
+.ant-table-tbody > tr:hover > td {
+	background: var(--hover-bg) !important;
+}
+.ant-table-tbody > tr:nth-child(even) > td {
+	background: transparent;
+}
+
+/* Yönerge listesi öğesi gövdeyi kaplar. */
+.guide-item {
+	border-radius: var(--radius-md);
+	transition-property: background-color;
+	transition-duration: var(--motion-fast);
+	transition-timing-function: var(--motion-ease);
+}
+
+/* Üst çubuktaki bağlantılar zemin alabilmek için gövde kazanır. */
+.ust a {
+	display: inline-flex;
+	align-items: center;
+	min-height: var(--hit-sm);
+	padding-inline: var(--space-2);
+	border-radius: var(--radius-sm);
+	transition-property: background-color;
+	transition-duration: var(--motion-fast);
+	transition-timing-function: var(--motion-ease);
+}
+
+/* Ray bağlantısı zaten zemin alıyor. Seçili olan ayrı ton. */
+.faz-ray a:hover,
+[data-doc-ray] a:hover {
+	background: var(--hover-bg-guclu) !important;
+}
+
+/* Düz yazı içindeki bağlantı alt çizgili kalır. Orada çizgi anlam taşır. */
+.md a:hover,
+.icerik p a:hover {
+	text-decoration-thickness: 2px;
+	background: transparent;
+}
+
+/* Ant tablo satırı hover zeminini kendi tokenından alır. Üstüne yazıyoruz. */
+.ant-table-tbody > tr.ant-table-row:hover > td,
+.ant-table-tbody > tr.ant-table-row-hover > td,
+.ant-table-wrapper .ant-table-tbody > tr.ant-table-row:hover > td {
+	background: var(--hover-bg) !important;
 }

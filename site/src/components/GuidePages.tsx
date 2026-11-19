@@ -21,7 +21,7 @@ const CSS = `
 	color: var(--color-text-strong);
 	text-decoration: none;
 }
-.guide-link:hover .guide-title { text-decoration: underline; text-underline-offset: 3px; }
+.guide-item:hover { background: var(--bg-sunken); }
 .guide-no { flex: none; min-width: 2ch; font-size: var(--text-small); line-height: 1.5; font-variant-numeric: tabular-nums; color: var(--color-text-muted); font-weight: var(--weight-medium); }
 .guide-summary { margin: 0 0 var(--space-4); padding-inline-start: calc(2ch + var(--space-3)); max-width: var(--measure); color: var(--color-text); }
 
@@ -38,7 +38,7 @@ const CSS = `
 	transition: color var(--motion-fast) var(--motion-ease);
 }
 .guide-nav-link:hover { color: var(--color-primary-hover); }
-.guide-nav-link:hover .guide-nav-title { text-decoration: underline; }
+.guide-nav-link:hover { background: var(--bg-sunken); }
 .guide-nav-link .anticon { margin-top: var(--space-1); font-size: var(--text-small); }
 .guide-nav-next { justify-content: flex-end; text-align: end; }
 .guide-nav-kind { display: block; font-size: var(--text-small); color: var(--color-text-muted); }

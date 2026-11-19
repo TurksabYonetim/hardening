@@ -79,10 +79,7 @@ export default function HomePage(props: { phases: Phase[]; overviewHtml: string;
 					line-height: var(--leading-h3);
 					letter-spacing: var(--track-h3);
 				}
-				.home-phases a:hover .home-phase-title {
-					text-decoration: underline;
-					text-underline-offset: 3px;
-				}
+				/* Hover alt çizgi çizmez. Zemin merkezî kuraldan gelir. */
 				.home-phase-count {
 					color: var(--color-text-muted);
 					font-size: var(--text-small);
