@@ -3,7 +3,8 @@ import { App, Button, Col, Dropdown, Flex, Grid, Input, Row, Segmented, Select, 
 import { AppstoreOutlined, CheckOutlined, CopyOutlined, DownOutlined, SearchOutlined, UnorderedListOutlined } from "@ant-design/icons";
 import { AppShell } from "./AppShell";
 import { CopyButton, Inline, PriorityTag } from "./bits";
-import { ctxLabel, loadStatuses, lowerTr, PHASE_ORDER, phaseLabel, PRIORITY_ORDER, saveStatuses, STATUSES, taskToText, type DoctypeSummary, type Status, type Task } from "../lib/tasks";
+import { ctxLabel, loadStatuses, lowerTr, PHASE_ORDER, phaseLabel, PRIORITY_ORDER, saveStatuses, STATUSES, taskToText, type Status, type Task } from "../lib/tasks";
+import { kopyaAl, kopyaBostaYukle, kopyaYukle } from "../lib/kopya";
 import { url } from "../lib/base";
 import { copyText } from "../lib/copy";
 
@@ -53,7 +54,7 @@ const DURUM_RENK: Record<Status, string> = {
 };
 
 /** Satır içi kopyalama. Küçük, sessiz ve yalnız ikonlu. */
-const SatirKopyala = forwardRef<HTMLButtonElement, { text: string; baslik: string }>(function SatirKopyala({ text, baslik }, ref) {
+const SatirKopyala = forwardRef<HTMLButtonElement, { id: string; task: Task; baslik: string }>(function SatirKopyala({ id, task, baslik }, ref) {
 	const { message } = App.useApp();
 	const [bitti, setBitti] = useState(false);
 	useEffect(() => {
@@ -71,7 +72,11 @@ const SatirKopyala = forwardRef<HTMLButtonElement, { text: string; baslik: strin
 				aria-label={`Kopyala: ${baslik}`}
 				onClick={async (e) => {
 					e.stopPropagation();
-					const ok = await copyText(text);
+					// Pano yazma kullanıcı hareketiyle aynı işte çalışmalıdır.
+					// Bu yüzden burada bekleme yapılmaz. Veri hazır değilse
+					// satırın kendi bilgisinden kısa bir metin üretilir.
+					const metin = kopyaAl(id) || taskToText(task);
+					const ok = await copyText(metin);
 					setBitti(ok);
 					if (ok) message.success("Kopyalandı");
 					else message.error("Kopyalanamadı. Metni elle seçin.");
@@ -84,7 +89,7 @@ const SatirKopyala = forwardRef<HTMLButtonElement, { text: string; baslik: strin
 });
 
 /** Görev satırı. Kart değil satır: amaç bir ekranda çok görev göstermek. */
-function TaskRow({ task, doc, status, ilk, fazBasi, onStatus }: { task: Task; doc?: DoctypeSummary; status: Status; ilk?: boolean; fazBasi?: boolean; onStatus: (s: Status) => void }) {
+function TaskRow({ task, status, ilk, fazBasi, onStatus }: { task: Task; status: Status; ilk?: boolean; fazBasi?: boolean; onStatus: (s: Status) => void }) {
 	const { message } = App.useApp();
 	const kopyalaRef = useRef<HTMLButtonElement>(null);
 
@@ -123,7 +128,7 @@ function TaskRow({ task, doc, status, ilk, fazBasi, onStatus }: { task: Task; do
 	};
 
 	return (
-		<div role="listitem" tabIndex={ilk ? 0 : -1} data-task-card={task.id} data-status={status} data-kanban-satir data-faz-basi={fazBasi ? "" : undefined} onKeyDown={onKisayol}>
+		<div role="listitem" tabIndex={ilk ? 0 : -1} data-task-card={task.id} data-status={status} data-kanban-satir data-faz-basi={fazBasi ? "" : undefined} onKeyDown={onKisayol} onPointerEnter={() => void kopyaYukle()} onFocus={() => void kopyaYukle()}>
 			<Dropdown
 				trigger={["click"]}
 				menu={{
@@ -166,17 +171,18 @@ function TaskRow({ task, doc, status, ilk, fazBasi, onStatus }: { task: Task; do
 					</span>
 				</div>
 			</div>
-			<SatirKopyala ref={kopyalaRef} text={taskToText(task, doc)} baslik={task.title} />
+			<SatirKopyala ref={kopyalaRef} id={task.id} task={task} baslik={task.title} />
 		</div>
 	);
 }
 
-export default function KanbanPage({ tasks, docs }: { tasks: Task[]; docs: DoctypeSummary[] }) {
+export default function KanbanPage({ tasks }: { tasks: Task[] }) {
 	const screens = Grid.useBreakpoint();
 	const wide = !!screens.lg;
 	// Tablet ve üstünde süzgeçler seçilen değeri kesmeden gösterecek kadar geniştir.
 	const roomy = !!screens.md;
-	const docMap = useMemo(() => new Map(docs.map((d) => [d.id, d])), [docs]);
+	// Kopyalama metni ayrı bir parçadır. Tarayıcı boşa düşünce yüklenir.
+	useEffect(() => kopyaBostaYukle(), []);
 	// Sayfa yalnız tarayıcıda çalışır. Kayıtlı durumlar ilk çizimden önce okunur, bu yüzden sayılar bir an 0 görünmez.
 	const [statuses, setStatuses] = useState<Record<string, Status>>(loadStatuses);
 	const [column, setColumn] = useState<Status>("Yapılacak");
@@ -327,7 +333,7 @@ export default function KanbanPage({ tasks, docs }: { tasks: Task[]; docs: Docty
 				{items.length > 0 && (
 					<Flex vertical role="list" aria-label={`${s} sütunundaki görevler`} onKeyDown={onRowKey}>
 						{items.slice(0, limits[s]).map((t, i) => (
-							<TaskRow key={t.id} task={t} doc={docMap.get(t.id)} status={statusOf(t.id)} ilk={i === 0} onStatus={(v) => changeStatus(t, s, v)} />
+							<TaskRow key={t.id} task={t} status={statusOf(t.id)} ilk={i === 0} onStatus={(v) => changeStatus(t, s, v)} />
 						))}
 					</Flex>
 				)}
@@ -457,7 +463,6 @@ export default function KanbanPage({ tasks, docs }: { tasks: Task[]; docs: Docty
 							<TaskRow
 								key={t.id}
 								task={t}
-								doc={docMap.get(t.id)}
 								status={statusOf(t.id)}
 								ilk={i === 0}
 								fazBasi={i > 0 && dizi[i - 1].phase !== t.phase}

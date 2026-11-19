@@ -256,6 +256,72 @@ const aramaDizini = [
 	...phases.map((f) => ({ a: f.title, y: `/fazlar/${f.slug}/`, t: "Faz", e: f.label })),
 ];
 writeFileSync(join(OUT, "search-index.json"), JSON.stringify(aramaDizini));
+
+// --- Kanban verisi: hafif liste ve ayrı kopyalama metni ---
+// Kanban sayfası önceden bütün tasks.json ve doctype-summary.json dosyasını
+// adaya props olarak gönderiyordu. Bu, HTML'i 2,2 MB yapıyordu ve ilk
+// boyamada ekran boş kalıyordu. Artık liste hafif, kopyalama metni ayrı
+// bir parçada ve ada bağlandıktan sonra yükleniyor.
+const fazEtiket = (id) => id.replace("-", "\u2212");
+const madde = (baslik, ogeler, kutu = false) =>
+	ogeler && ogeler.length ? `\n${baslik}:\n${ogeler.map((i) => (kutu ? `- [ ] ${i}` : `- ${i}`)).join("\n")}\n` : "";
+const AJAN = `\n---\nAjan talimatı (her görevde zorunlu):\n\n${agentBrief.replace(/^# .+\n/, "").trim()}\n`;
+
+/** src/lib/tasks.ts içindeki taskToText ile aynı metni üretir.
+ *  İki yerin aynı kalması tests/site.spec.ts içindeki kopyalama testiyle korunur. */
+function gorevMetni(task, doc) {
+	const bas = [
+		`Görev: ${task.title}`,
+		`Kimlik: ${task.id}`,
+		`Tür: ${task.kind}`,
+		`Faz: ${fazEtiket(task.phase)}`,
+		`Öncelik: ${task.priority}`,
+		`Bağlam: ${task.ctx}`,
+		`Repo: tradehub-tr/tradehub_core (dal: version-15)`,
+	];
+	if (!doc) {
+		return (
+			bas.join("\n") +
+			(task.owner ? `\nSorumlu: ${task.owner}` : "") +
+			`\nKaynak: mimari/FAZ-GOREVLERI.md\n` +
+			(task.story ? `\nKullanıcı hikâyesi:\n${task.story}\n` : "") +
+			madde("Kabul kriterleri", task.acceptance, true) +
+			madde("Yapmamanız gerekenler", task.donts) +
+			madde("Kontrol listesi", task.checklist, true) +
+			madde("Yönergeler", (task.guides || []).map((g) => `mimari/YONERGELER/${g}.md`)) +
+			AJAN
+		);
+	}
+	const e = doc.epic;
+	return (
+		bas.join("\n") +
+		`\nKaynak rapor: mimari/doctypes/${doc.id}.md\n` +
+		(e && e.story ? `\nKullanıcı hikâyesi:\n${e.story}\n` : "") +
+		madde("Kabul kriterleri", e && e.acceptance, true) +
+		madde("Yapmamanız gerekenler", e && e.donts) +
+		madde("Kontrol listesi", e && e.checklist, true) +
+		madde("Geçiş adımları", doc.steps) +
+		`\nKural: Bağlamlar birbirine yalnız api.py ve olaylarla ulaşır. Başka bağlamın iç dosyasına ve tablosuna yazmayın.\n` +
+		AJAN
+	);
+}
+
+const ozetHarita = new Map(summary.map((d) => [d.id, d]));
+const kanbanListe = tasks.map((t) => ({
+	id: t.id,
+	kind: t.kind,
+	phase: t.phase,
+	ctx: t.ctx,
+	title: t.title,
+	titleHtml: t.titleHtml,
+	priority: t.priority,
+	href: t.href,
+}));
+const kanbanKopya = Object.fromEntries(tasks.map((t) => [t.id, gorevMetni(t, ozetHarita.get(t.id))]));
+writeFileSync(join(OUT, "kanban-liste.json"), JSON.stringify(kanbanListe));
+writeFileSync(join(OUT, "kanban-kopya.json"), JSON.stringify(kanbanKopya));
+console.log("kanban: liste", kanbanListe.length, "kayıt, kopya metni", Object.keys(kanbanKopya).length, "kayıt");
+
 console.log("arama dizini:", aramaDizini.length, "kayıt");
 
 if (warnings.length) {
