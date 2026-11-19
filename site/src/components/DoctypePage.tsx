@@ -106,6 +106,7 @@ function CheckList({ title, kind, items, html, empty, note, storeId }: { title: 
 				<div data-doc-checklist={kind}>
 					<DuzListe
 						items={items}
+						kontrol
 						renderItem={(t, i) => (
 							<Checkbox checked={!!checked[i]} onChange={(e) => isaretle(i, e.target.checked)} style={{ fontSize: 16 }}>
 								<Inline html={html?.[i]} text={t} />

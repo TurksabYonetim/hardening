@@ -211,9 +211,12 @@ test.describe("kanban UX", () => {
 		await expect(list.getByRole("listitem")).toHaveCount(30);
 	});
 
-	test("sayfa Kanban kelimesini ilk paragrafta açıklar", async ({ page }) => {
+	test("Kanban kelimesi Nasıl çalışır bölümünde açıklanır", async ({ page }) => {
 		await ready(page);
-		await expect(page.getByText(/^Kanban, görevleri durumlarına göre sütunlara ayıran bir panodur\./)).toBeVisible();
+		// Sayfanın adı artık yaptığı işi söylüyor: Görevler. Kanban bir görünümdür.
+		await expect(page.getByRole("heading", { level: 1, name: "Görevler" })).toBeVisible();
+		await page.getByText("Nasıl çalışır?").click();
+		await expect(page.getByText(/Kanban görünümü görevleri durumlarına göre dört sütuna ayırır\./)).toBeVisible();
 	});
 
 	test("durum kutusu tablette 320px genişliği aşmaz", async ({ page }) => {
@@ -275,7 +278,7 @@ test.describe("kanban UX", () => {
 
 	test("açıklama tek cümledir ve geri kalanı Nasıl çalışır bölümündedir", async ({ page }) => {
 		await ready(page);
-		const more = page.getByText(/^Her satır bir görevdir\./);
+		const more = page.getByText(/^Bu sayfada 373 görev vardır\./);
 		await expect(more).toBeHidden();
 		await page.getByText("Nasıl çalışır?").click();
 		await expect(more).toBeVisible();

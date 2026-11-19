@@ -5,7 +5,7 @@ import { url } from "../lib/base";
 const YOLLAR = [
 	{ yol: "/", ad: "Genel bakış", not: "Planın özeti ve fazlar" },
 	{ yol: "/fazlar/faz-eksi-1/", ad: "Fazlar", not: "Sıralı yedi faz ve görevleri" },
-	{ yol: "/kanban/", ad: "Kanban", not: "373 görevin listesi ve panosu" },
+	{ yol: "/kanban/", ad: "Görevler", not: "373 görevin listesi ve kanban panosu" },
 	{ yol: "/baglamlar/", ad: "Bağlamlar", not: "16 iş bağlamı ve epic'ler" },
 	{ yol: "/yonergeler/", ad: "Yönergeler", not: "Her görevde geçerli dokuz kural" },
 ];

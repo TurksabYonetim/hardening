@@ -212,11 +212,15 @@ export function Inline({ html, text }: { html?: string; text: string }) {
 /** Düz madde listesi. Ant Design List bileşeni her liste için istenmeyen bir
  *  canlı bölge açıyordu. Ekran okuyucu bir kutu işaretlenince bütün listeyi
  *  yeniden okuyordu. Bu parça düz ul ve li kullanır. */
-export function DuzListe({ items, renderItem, dense }: { items: readonly string[]; renderItem: (t: string, i: number) => ReactNode; dense?: boolean }) {
+export function DuzListe({ items, renderItem, dense, kontrol }: { items: readonly string[]; renderItem: (t: string, i: number) => ReactNode; dense?: boolean; kontrol?: boolean }) {
 	return (
 		<ul data-duz-liste data-sik={dense ? "" : undefined}>
 			{items.map((t, i) => (
-				<li key={i}>{renderItem(t, i)}</li>
+				// kontrol: satırın tamamı fareye cevap verir. Onay kutusu listelerinde
+				// hedef yalnız 16 pikselllik kutu olmasın diye.
+				<li key={i} data-kontrol-satiri={kontrol ? "" : undefined}>
+					{renderItem(t, i)}
+				</li>
 			))}
 		</ul>
 	);

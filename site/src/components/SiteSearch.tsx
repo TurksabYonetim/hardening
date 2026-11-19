@@ -65,7 +65,7 @@ export function SiteSearch({ onGit }: { onGit?: () => void }) {
 		>
 			<Input
 				aria-label="Sitede ara"
-				placeholder="Görev, DocType, bağlam ara"
+				placeholder="Bu planda ara"
 				prefix={<SearchOutlined aria-hidden />}
 				allowClear
 			/>

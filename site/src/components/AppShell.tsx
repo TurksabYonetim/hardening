@@ -8,7 +8,7 @@ import { SiteSearch } from "./SiteSearch";
 
 const NAV = [
 	{ key: "/", label: "Genel bakış", icon: <HomeOutlined /> },
-	{ key: "/kanban/", label: "Kanban", icon: <ProjectOutlined /> },
+	{ key: "/kanban/", label: "Görevler", icon: <ProjectOutlined /> },
 	{ key: "/baglamlar/", label: "Bağlamlar", icon: <ApartmentOutlined /> },
 	{ key: "/yonergeler/", label: "Yönergeler", icon: <SafetyCertificateOutlined /> },
 ];
