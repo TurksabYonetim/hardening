@@ -112,7 +112,7 @@ const FAZ_CSS = `
 	padding-inline: 5px;
 	border-radius: var(--radius-xs);
 	background: var(--faz-renk, var(--color-ink));
-	color: #ffffff;
+	color: var(--color-ink);
 	font-size: var(--text-small);
 	font-weight: var(--weight-strong);
 	font-variant-numeric: tabular-nums lining-nums;
@@ -435,12 +435,8 @@ export default function PhasePage(props: { phase: Phase; phases: PhaseLink[]; gu
 					className="faz-bas"
 					style={{
 						["--bas-zemin" as string]: `color-mix(in srgb, ${FAZ_RENK[phase.id] || "var(--color-ink)"} 9%, #ffffff)`,
-						["--hayalet-renk" as string]: FAZ_RENK[phase.id] || "var(--color-ink)",
 					}}
 				>
-					<span data-hayalet aria-hidden>
-						{phase.label.replace(/^Faz\s+/, "")}
-					</span>
 					<span data-faz-rakam aria-hidden>
 						{phase.label.replace(/^Faz\s+/, "")}
 					</span>
