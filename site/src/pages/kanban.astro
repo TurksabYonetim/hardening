@@ -1,9 +1,8 @@
 ---
 import Base from "../layouts/Base.astro";
 import KanbanPage from "../components/KanbanPage.tsx";
-import tasks from "../data/tasks.json";
-import docs from "../data/doctype-summary.json";
+import tasks from "../data/kanban-liste.json";
 ---
 <Base title="Kanban">
-	<KanbanPage client:only="react" tasks={tasks} docs={docs} />
+	<KanbanPage client:only="react" tasks={tasks} />
 </Base>
