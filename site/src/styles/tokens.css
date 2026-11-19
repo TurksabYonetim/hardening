@@ -2771,3 +2771,70 @@ h3.ant-typography {
 .ant-table-wrapper .ant-table-tbody > tr.ant-table-row:hover > td {
 	background: var(--hover-bg) !important;
 }
+
+/* ===================================================================
+   GENİŞLEYEN BAĞLANTI
+   Kartın ve satırın tamamı tıklanır. Başlığın tek başına tıklanır
+   olması 2005-2012 listeleme desenidir.
+
+   Kartı <a> ile sarmak geçersiz HTML üretir, çünkü içinde düğme ve
+   açılır menü vardır. Bunun yerine başlık bağlantısı ::after ile
+   kartın tamamını kaplar. Erişilebilirlik ağacında tek bağlantı kalır,
+   klavye için tek durak olur. Diğer kontroller üstte durur.
+   =================================================================== */
+
+/* --- Bağlam kartı --- */
+.ctx-kart {
+	position: relative;
+	cursor: pointer;
+}
+.ctx-kart-bas::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	border-radius: inherit;
+}
+.ctx-kart > *:not(.ctx-kart-bas) {
+	position: relative;
+	z-index: 1;
+	pointer-events: none;
+}
+.ctx-kart .ant-tag,
+.ctx-kart .ant-progress {
+	pointer-events: none;
+}
+
+/* --- Kanban satırı --- */
+[data-kanban-satir] {
+	position: relative;
+}
+[data-kanban-baslik-bag]::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+}
+/* Durum düğmesi, kopyalama düğmesi ve meta kaplamanın üstünde durur. */
+[data-kanban-durum],
+[data-kanban-kopyala] {
+	position: relative;
+	z-index: 2;
+}
+[data-kanban-meta] {
+	position: relative;
+	z-index: 1;
+	pointer-events: none;
+}
+[data-kanban-baslik] {
+	position: relative;
+	z-index: 1;
+}
+
+/* Fare satırın her yerinde el işaretini gösterir. */
+[data-kanban-satir],
+[data-faz-satir],
+.guide-item,
+.yok-liste li {
+	cursor: pointer;
+}
